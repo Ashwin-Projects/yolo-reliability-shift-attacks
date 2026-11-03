@@ -12,3 +12,25 @@ backups/
 .venv/
 __pycache__/
 weights/
+# model weights
+*.pt
+*.pth
+*.onnx
+
+# ultralytics output
+runs/
+
+# secrets
+.env
+
+# editor / OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# python / notebook junk
+.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+*.pyc
