@@ -1,0 +1,256 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Does a Person Detector Know What It Misses? A Preliminary Study of Confidence Reliability under Corruptions, Fisheye Distortion and Adversarial Attacks</title><style>
+@page { size: A4; margin: 14mm 15mm 14mm 15mm; }
+body { font-family: Cambria, Georgia, serif; font-size: 9.4pt; line-height: 1.3; color: #111; }
+h1 { font-size: 14.5pt; line-height: 1.22; margin: 0 0 4px 0; }
+h2 { font-size: 11pt; margin: 9px 0 3px 0; }
+p { margin: 3px 0 5px 0; text-align: justify; }
+ul { margin: 2px 0 5px 0; padding-left: 18px; }
+li { margin: 1px 0; }
+table { border-collapse: collapse; margin: 4px 0 6px 0; font-size: 8.4pt; width: 100%; }
+th, td { border-bottom: 1px solid #bbb; padding: 1.5px 5px; text-align: right; }
+th:first-child, td:first-child { text-align: left; }
+th { border-bottom: 1.5px solid #333; }
+img { display: block; margin: 4px auto 0 auto; }
+img[alt="Figure 1"] { width: 7.0in; }
+img[alt="Figure 2"] { width: 4.2in; }
+.keep { break-inside: avoid; page-break-inside: avoid; }
+em { font-size: 8.6pt; }
+code { font-size: 8.6pt; }
+</style></head><body><h1>Does a Person Detector Know What It Misses? A Preliminary Study of Confidence Reliability under Corruptions, Fisheye Distortion and Adversarial Attacks</h1>
+<p><strong>Ashwin Lakshminarasimhan</strong>, VIT Vellore</p>
+<p><strong>Preliminary results</strong> · 2026-11-03 · all numbers produced by the code and data of commit <code>8ad4f20</code></p>
+<div class="keep"><h2>Abstract</h2>
+<p>In headcounts and surveillance, a person the detector misses is often the costly error. We ask whether a detector's confidence reveals such misses. We evaluate YOLO11n (CPU, person class only) on 500 COCO val2017 images under 14 synthetic shifts, including a synthetic equidistant fisheye, and on 100 images under a white-box PGD attack with a random-noise control. Under shift, recall at confidence ≥ 0.25 falls from 0.656 to as low as 0.059, while precision stays between 0.747 and 0.873. The detector is underconfident in all 15 clean and shifted conditions; per-detection calibration metrics cannot account for the missed people, because a missed person produces no detection to evaluate. The share of misses recoverable at confidence ≥ 0.05 falls from 0.476 to 0.097. PGD with ε = 4/255 removes all person detections in 96/96 images, random noise of size 8/255 in 0/96. Main limitations: one small model, few images, synthetic fisheye and a non-adaptive attacker.</p></div>
+<div class="keep"><h2>1 Introduction</h2>
+<p>People counting, occupancy monitoring and surveillance rely on person detectors. In these uses a missed person (a false negative) is often the costly error: a headcount comes out too low, or a person in a restricted area goes unreported. A detector's confidence score is the usual signal of how far to trust its output, and calibration studies ask whether the confidence of an emitted box matches its probability of being correct. A missed person, however, produces no box and therefore no confidence.</p></div>
+<p>This report asks: when the input to a person detector degrades, through common corruptions, fisheye-like lens distortion or adversarial perturbation, do its confidence scores, or simple test-time signals derived from them, indicate that people are being missed? We study this for one small detector (YOLO11n) on COCO person images. The results are preliminary and are meant to decide where a fuller study should focus.</p>
+<div class="keep"><h2>2 Related work</h2>
+<p>Michaelis et al. [1] showed that object detectors lose substantial accuracy under common image corruptions; our shift conditions follow the same idea with a small set of corruptions. Calibration of detectors is commonly measured with the detection expected calibration error (D-ECE) of Küppers et al. [2], which we use, and Huseljic et al. [3] systematically evaluated uncertainty calibration in pretrained detectors. Park et al. [4] point out that per-prediction calibration does not account for missed objects and study image-level uncertainty for detection transformers; our first finding is an empirical demonstration of this point for a YOLO detector under distribution shift, not a new observation.</p></div>
+<p>Adversarial attacks on person detection are well established: Thys et al. [5] hid persons from a detector with printed adversarial patches. We use projected gradient descent (PGD) [6] in the digital domain. Nesti et al. [7] detect adversarial examples through input transformations, defense perturbations and voting; our fifth finding is consistent with this known effect. Athalye et al. [8] showed that attacks optimised over a distribution of transformations (EOT) stay effective under such transformations, so an adaptive attacker would likely defeat the signals tested here. For wide-angle imagery, Zhang et al. [9] craft distortion-aware adversarial perturbations for 360° images from perspective views, and Duan et al. [10] address rotation-aware people detection in real overhead fisheye images.</p>
+<div class="keep"><h2>3 Method</h2>
+<p><strong>Model and data.</strong> YOLO11n, input size 640, CPU only, seed 0. The data are the first 500 COCO val2017 images (by image id) that contain at least one non-crowd person (2042 non-crowd person boxes); only the person class is evaluated. Predictions are kept down to confidence 0.001 for mAP; all other metrics use detections with confidence ≥ 0.25 unless stated.</p></div>
+<p><strong>Shift conditions (14).</strong> Gaussian blur (σ = 1, 2, 4 px), additive Gaussian noise (std 0.04, 0.08, 0.12 on [0, 1], seeded per image), low light (intensity × 0.5, 0.3, 0.15), JPEG re-encoding (quality 30, 15, 5) and a synthetic equidistant fisheye whose image half-diagonal maps to 60, 80° (s1, s2). For fisheye, ground-truth boxes are warped with the forward mapping (20 points per edge, then the bounding box, clipped); 36 (s1) and 45 (s2) of 2090 person boxes become smaller than 4 px and are dropped.</p>
+<p><strong>Attack.</strong> On the first 100 images (466 non-crowd persons), a white-box PGD "vanishing" attack [6] perturbs the image at its original resolution and minimises the sum of the top-100 person scores over all predictions: 20 sign-gradient steps of 1/255, ε = 4/255 or 8/255, no random start, keeping the iterate with the lowest loss. The letterbox resize and padding are differentiable and reproduce ultralytics' rectangular letterbox. Attacked images are rounded to 8 bits, saved as PNG and evaluated through the normal pipeline. Control: uniform noise in ±8/255 (rand_eps8). Reference: the same 100 clean images (clean_100).</p>
+<p><strong>Matching.</strong> Detections are matched greedily in descending confidence to non-crowd person boxes at IoU ≥ 0.5. An unmatched detection that overlaps a crowd box by at least half of its own area is ignored (COCO crowd rule).</p>
+<p><strong>Metrics.</strong></p>
+<ul>
+<li>mAP50, mAP50–95: pycocotools COCOeval, person class only.</li>
+<li>Recall at threshold t: matched non-crowd persons / all non-crowd persons, with detections of confidence ≥ t (t = 0.05, 0.10, 0.25).</li>
+<li>Precision at t: TP / (TP + FP); ignored detections are excluded.</li>
+<li>D-ECE [2]: Σ (n_bin / N) · |mean confidence − precision| over 10 equal-width confidence bins.</li>
+<li>Signed calibration gap: Σ (n_bin / N) · (precision − mean confidence) over the same bins; positive means underconfident.</li>
+<li>Recoverable share: (recall at 0.05 − recall at 0.25) / (1 − recall at 0.25), the share of persons missed at 0.25 that are found at 0.05.</li>
+<li>AUROC: separability of true from false positives (box level), of images that miss at least half of their persons (image level), or of attacked from non-attacked images.</li>
+<li>Risk-coverage: false-positive fraction among the detections kept when ranking by a score.</li>
+<li>View signals: consistency = mean over two views (horizontal flip, input size 576) of a detection's best IoU with a detection in that view; view disagreement = mean relative change in the number of detections across views.</li>
+</ul>
+<p><strong>Audit.</strong> The code was checked by an independent second agent; every issue found and its fix are recorded in RESEARCH_LOG.md.</p>
+<div class="keep"><h2>4 Results</h2>
+<p><strong>Table 1.</strong> Key conditions. Recall, precision and mean true-positive confidence at confidence ≥ 0.25. "Signed gap" equals D-ECE wherever defined, because no bin is overconfident. "–" = undefined (no detections at confidence ≥ 0.25). The first seven rows use 500 images, the last four the first 100.</p></div>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Images</th>
+<th>mAP50</th>
+<th>Recall</th>
+<th>Precision</th>
+<th>Mean TP conf.</th>
+<th>Signed gap</th>
+<th>Recov. share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clean</td>
+<td>500</td>
+<td>0.780</td>
+<td>0.656</td>
+<td>0.854</td>
+<td>0.686</td>
+<td>0.208</td>
+<td>0.476</td>
+</tr>
+<tr>
+<td>gaussian_blur_s3</td>
+<td>500</td>
+<td>0.505</td>
+<td>0.380</td>
+<td>0.837</td>
+<td>0.661</td>
+<td>0.217</td>
+<td>0.227</td>
+</tr>
+<tr>
+<td>gaussian_noise_s3</td>
+<td>500</td>
+<td>0.598</td>
+<td>0.452</td>
+<td>0.843</td>
+<td>0.643</td>
+<td>0.239</td>
+<td>0.319</td>
+</tr>
+<tr>
+<td>low_light_s3</td>
+<td>500</td>
+<td>0.738</td>
+<td>0.585</td>
+<td>0.872</td>
+<td>0.676</td>
+<td>0.230</td>
+<td>0.413</td>
+</tr>
+<tr>
+<td>jpeg_s3</td>
+<td>500</td>
+<td>0.135</td>
+<td>0.059</td>
+<td>0.747</td>
+<td>0.494</td>
+<td>0.289</td>
+<td>0.097</td>
+</tr>
+<tr>
+<td>fisheye_s1</td>
+<td>500</td>
+<td>0.757</td>
+<td>0.612</td>
+<td>0.858</td>
+<td>0.678</td>
+<td>0.220</td>
+<td>0.456</td>
+</tr>
+<tr>
+<td>fisheye_s2</td>
+<td>500</td>
+<td>0.708</td>
+<td>0.564</td>
+<td>0.857</td>
+<td>0.670</td>
+<td>0.225</td>
+<td>0.372</td>
+</tr>
+<tr>
+<td>clean_100</td>
+<td>100</td>
+<td>0.794</td>
+<td>0.663</td>
+<td>0.866</td>
+<td>0.684</td>
+<td>0.220</td>
+<td>0.446</td>
+</tr>
+<tr>
+<td>rand_eps8</td>
+<td>100</td>
+<td>0.783</td>
+<td>0.661</td>
+<td>0.883</td>
+<td>0.674</td>
+<td>0.236</td>
+<td>0.418</td>
+</tr>
+<tr>
+<td>pgd_eps4</td>
+<td>100</td>
+<td>0.018</td>
+<td>0.000</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>pgd_eps8</td>
+<td>100</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>0.000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>F1 Silent omission under natural shift.</strong> Across the 14 shift conditions, recall at 0.25 ranges from 0.059 (jpeg_s3) to 0.654 (low_light_s1), compared with 0.656 on clean images, while precision stays between 0.747 and 0.873 (clean 0.854). The mean confidence of true positives stays between 0.634 and 0.682 (clean 0.686) in all conditions except jpeg_s3 (0.494) (Figure 1). The signed calibration gap is positive in all 15 clean and shifted conditions (0.208 to 0.289), and none of their 119 populated confidence bins is overconfident. The boxes that are emitted are at least as reliable as their confidence suggests, while a growing share of persons is not reported at all. Per-detection calibration cannot reveal this, as Park et al. [4] noted.</p>
+<div class="keep"><p><img alt="Figure 1" src="figures/fig_silent_failure.png" /></p>
+<p><em>Figure 1. Recall at confidence ≥ 0.25 against the mean confidence of true positives, one panel per corruption family (clean → s1 → s2 → s3; grey: all other conditions).</em></p></div>
+<p><strong>F2 Fewer misses are recoverable as severity grows.</strong> On clean images, 0.476 of the persons missed at 0.25 are found at 0.05, at a precision of 0.515 (vs 0.854 at 0.25). In all 5 families this share decreases at every severity step (Figure 2), down to 0.227 (blur s3), 0.319 (noise s3), 0.413 (low light s3), 0.097 (JPEG s3) and 0.372 (fisheye s2). Under strong shift, missed persons are increasingly absent from the low-confidence detections as well, so lowering the threshold recovers fewer of them.</p>
+<div class="keep"><p><img alt="Figure 2" src="figures/fig_recoverable.png" /></p>
+<p><em>Figure 2. Recoverable share against severity (clean = 0), one line per corruption family.</em></p></div>
+<p><strong>F3 View consistency does not beat confidence under natural shift.</strong> For separating true from false positives, confidence reaches AUROC 0.823 to 0.865 and view consistency 0.728 to 0.793 in the 14 of 15 clean and shifted conditions where confidence is better. Consistency is higher only for jpeg_s3 (0.776 vs 0.726). At image level (pooled over 7,498 condition-image observations from 500 source images; descriptive only), mean confidence is more strongly associated with the miss rate (Spearman -0.706) than view disagreement is (0.245).</p>
+<p><strong>F4 PGD suppresses all person detections at confidence ≥ 0.25 on the 100-image subset; random noise of equal size does not.</strong> With ε = 4/255, all 96 of the 96 images that had at least one person detection at 0.25 lose all of them (mean persons per image 3.95 → 0.00); ε = 8/255 gives 96/96. Uniform noise of size 8/255 removes all persons in 0/96 images (3.95 → 3.87 persons per image), and mAP50 moves from 0.794 to 0.783, compared with 0.018 (ε = 4/255) and 0.000 (ε = 8/255) under PGD. The effect comes from the optimised direction of the perturbation, not from its size.</p>
+<p><strong>F5 Against this non-adaptive attacker, simple views partly undo the attack.</strong> On PGD images, recall at 0.25 is 0 in the original view, but 0.494 with a horizontal flip and 0.481 at input size 576 for ε = 4/255 (0.356 and 0.408 for ε = 8/255), against 0.663 on the clean images. View disagreement separates pgd_eps8 images from clean images with AUROC 0.835 and from random-noise images with 0.831. This is consistent with the known effect used for detection by input transformations [7]. The attack was not optimised over these views, and an adaptive EOT attack [8] would likely remove the effect. Mean confidence separates attacked from clean images almost perfectly (raw AUROC 0.020, 0.980 with the sign flipped) only because attacked images have no detections; it flags any image without confident detections in the same way.</p>
+<div class="keep"><h2>5 Limitations</h2>
+<ul>
+<li>One small model (YOLO11n) and only the person class; larger models or other detector families may behave differently.</li>
+<li>500 images (100 for the attack) and no confidence intervals, so small differences between conditions should not be over-interpreted.</li>
+<li>The fisheye is synthetic, and warped ground-truth boxes are bounding boxes of warped rectangles, looser than boxes drawn on real fisheye images. The drop in mAP50–95 (ratio mAP50–95 / mAP50: 0.684 on clean images, 0.597 for fisheye_s2) may partly reflect these looser warped ground-truth boxes, but this study does not separate that effect from distorted appearance or detector localization.</li>
+<li>The attack is white-box, digital (not a physical patch) and not adaptive to the view transformations.</li>
+<li>At low thresholds many boxes are emitted (precision 0.515 at 0.05 on clean images), so some matches at IoU ≥ 0.5 may be chance overlaps; recall at 0.05 and the recoverable share may be overestimated for this reason.</li>
+<li>Pooled image-level statistics combine 15 conditions of the same 500 images and are descriptive only; no p-values are reported for them.</li>
+</ul></div>
+<div class="keep"><h2>6 Next steps</h2>
+<ul>
+<li>Position-dependent adversarial vulnerability under fisheye geometry: place the same person at the image centre and at the edge, and measure the minimal attack strength that removes the detection.</li>
+<li>An adaptive EOT attack [8] against the flip and rescale signals.</li>
+<li>Larger YOLO models and at least one non-YOLO detector.</li>
+<li>Real overhead fisheye data, for example the datasets used with RAPiD [10].</li>
+</ul></div>
+<div class="keep"><h2>7 Reproducibility</h2>
+<p>Code, all result CSVs and the prediction caches are in a local git repository (results frozen at commit <code>8ad4f20</code>). <code>reproduce.bat</code> (Windows) and <code>reproduce.sh</code> run all stages and rebuild <code>results/summary.md</code>; rerunning them from the caches reproduced all 100 result CSVs byte-identically. <code>RESEARCH_LOG.md</code> records every problem, fix and design decision. CPU runtimes as measured on the machine that produced the results (from the README):</p></div>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Full</th>
+<th>From cache</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline (500 images)</td>
+<td>66 s (+ ~640 s one-off image download, 1.3 s/image)</td>
+<td>9 s</td>
+</tr>
+<tr>
+<td>shift (14 conditions × 500)</td>
+<td>859 s</td>
+<td>98 s</td>
+</tr>
+<tr>
+<td>reliability (15 conditions × 2 views × 500)</td>
+<td>2179 s</td>
+<td>119 s</td>
+</tr>
+<tr>
+<td>attack (100 images; PGD generation ≈ 500 s per eps)</td>
+<td>1162 s</td>
+<td>8 s</td>
+</tr>
+<tr>
+<td><code>--stage attack --gradcheck 5</code></td>
+<td>63 s</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td><code>reproduce.sh</code>, all stages + summary</td>
+<td>≈ 4,270 s (≈ 71 min, excl. download)</td>
+<td>290 s</td>
+</tr>
+</tbody>
+</table>
+<div class="keep"><h2>Acknowledgements</h2>
+<p>Code for this study was written with the assistance of AI coding tools (Claude Code and OpenAI Codex). All design decisions, analyses and conclusions are the author's; every result was independently re-audited, and all problems found are documented in RESEARCH_LOG.md.</p></div>
+<div class="keep"><h2>References</h2>
+<p>[1] Michaelis et al. Benchmarking Robustness in Object Detection: Autonomous Driving when Winter is Coming. arXiv:1907.07484, 2019.</p></div>
+<p>[2] Küppers et al. Multivariate Confidence Calibration for Object Detection. CVPR Workshops, 2020.</p>
+<p>[3] Huseljic et al. Systematic Evaluation of Uncertainty Calibration in Pretrained Object Detectors. International Journal of Computer Vision, vol. 133, pp. 1033–1047, 2025.</p>
+<p>[4] Park, Sobolewski, Azizan. Quantifying the Reliability of Predictions in Detection Transformers: Object-Level Calibration and Image-Level Uncertainty. arXiv:2412.01782v3, 2024.</p>
+<p>[5] Thys et al. Fooling Automated Surveillance Cameras: Adversarial Patches to Attack Person Detection. CVPR Workshops, 2019.</p>
+<p>[6] Madry et al. Towards Deep Learning Models Resistant to Adversarial Attacks. ICLR, 2018.</p>
+<p>[7] Nesti et al. Detecting Adversarial Examples by Input Transformations, Defense Perturbations, and Voting. arXiv:2101.11466, 2021.</p>
+<p>[8] Athalye et al. Synthesizing Robust Adversarial Examples. ICML, 2018.</p>
+<p>[9] Zhang et al. 360-Attack: Distortion-Aware Perturbations from Perspective-Views. CVPR, 2022.</p>
+<p>[10] Duan et al. RAPiD: Rotation-Aware People Detection in Overhead Fisheye Images. CVPR Workshops, 2020.</p></body></html>

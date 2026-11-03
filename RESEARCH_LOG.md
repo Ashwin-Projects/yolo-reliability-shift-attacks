@@ -260,3 +260,90 @@ fix or decision.
 - **Minimal proposed fix (not applied):** Say 7498 condition-image observations from 500 source images and retain the descriptive-only qualification.
 - **Fix (applied 2026-11-03):** The Findings bullet now reads "7,498 condition-image observations from 500 source images … descriptive only, as the observations are not independent". README.md already said "7,498 rows from only 500 source images" and results/summary.md has no such count; neither needed a change.
 - **Impact:** None on saved results (wording only).
+
+### Report PDF not written by headless Edge
+- **Date:** 2026-11-03
+- **Stage:** report (build_report.py)
+- **What went wrong:** The first build crashed with `FileNotFoundError: ...\report\report.pdf`. `msedge.exe --headless --print-to-pdf` returned exit code 0 after 0.1 s and wrote the PDF a few seconds later (seen when debugging: absent right after the call, present after 5 s). A first attempt that only added `--headless=new` and a separate `--user-data-dir` still checked too early.
+- **Fix:** `build_report.py` uses `--headless=new` with a temporary profile directory and waits (up to 120 s) until the PDF exists and its size is stable.
+- **Impact:** None on saved results (report build only).
+
+### Report runtime table included unrelated README tables
+- **Date:** 2026-11-03
+- **Stage:** report (build_report.py)
+- **What went wrong:** `readme_runtime_table` copied every markdown table line after the "Runtime on CPU" heading, so the report's reproducibility section also contained the README's shift-condition, fisheye f and attack-condition tables. The PDF ran to 5 pages.
+- **Fix:** Only the first contiguous table after the heading is copied. The layout was also tightened (font 9.4 pt, Figure 2 at 50% width). The PDF is now 4 pages.
+- **Impact:** None on saved results (report text only).
+
+### Codex report verification: Signed calibration gap definition has the wrong implied sign
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** D-ECE is written with |mean confidence - precision|. Saying the signed gap is the same sum without the absolute value implies mean confidence - precision, whereas the code computes precision - mean confidence so that positive means underconfident. The CSV values follow the code; the report method definition is inconsistent.
+- **File and line:** report/report.md:38-39 (also report/report.pdf, page 2)
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** State the signed expression explicitly as sum_b (n_b/N)*(precision_b - mean_confidence_b).
+- **Fix (applied 2026-11-03):** The Metrics list now defines it directly: Σ (n_bin / N) · (precision − mean confidence) over the same bins; positive means underconfident. The "without the absolute value" wording is removed.
+- **Impact:** None on saved results (report only).
+
+### Codex report verification: Abstract overstates what confidence can reveal about misses
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** The abstract concludes that confidence of emitted boxes does not reveal misses. This is stronger than the reported evidence: pooled mean confidence has Spearman rho -0.705940784807534 with miss_rate. Per-detection calibration alone does not measure recall, but this does not establish that aggregate confidence is uninformative about misses.
+- **File and line:** report/report.md:9; compare report/report.md:77
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** Limit the conclusion to per-detection calibration not accounting for false negatives; distinguish it from image-level confidence signals.
+- **Fix (applied 2026-11-03):** Abstract now reads: "…underconfident in all 15 clean and shifted conditions; per-detection calibration metrics cannot account for the missed people, because a missed person produces no detection to evaluate." It no longer claims confidence is uninformative (F3 keeps the image-level Spearman −0.706).
+- **Impact:** None on saved results (report only).
+
+### Codex report verification: PDF figure readability and heading pagination need correction
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** Both PDF figures render, but axis/legend/direct-label text is roughly 3-4 points at the printed size (Figure 1 spans five panels in approximately 499 PDF points; Figure 2 is only approximately 250 points wide). The heading 6 Next steps is orphaned at the bottom of PDF page 3, with its list starting on page 4. The results table itself is readable.
+- **File and line:** report/report.md:65-71 and report/report.md:92; report/build_report.py:286,295-296
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** Give plots enough space for readable labels and keep headings with their following content; no figure or report was changed.
+- **Fix (applied 2026-11-03):** The report now uses its own copies of the figures in report/figures/, drawn at their printed size (Figure 1: 7.0 × 3.6 in, 3 + 2 panels; Figure 2: 4.2 × 2.2 in), so text prints at 8–10 pt. `fig_silent_failure` / `fig_recoverable` gained optional ncols/figsize/title parameters; their defaults reproduce results/fig_silent_failure.png and results/fig_recoverable.png byte-identically (md5 unchanged). Each h2 heading is wrapped with its following block, and each figure with its caption, in a break-inside: avoid container; figures moved next to F1 and F2. PDF: 4 pages, no stranded heading.
+- **Impact:** None on saved results (report only).
+
+### Codex report verification: Fisheye limitation makes an unsupported causal attribution
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** The report says loose warped GT mainly affects mAP50-95 and gives AP50-95/AP50 ratios 0.684 and 0.597. Those ratios are numerically correct, but no manually annotated warped-GT comparison or ablation isolates how much of the change is due to GT box looseness versus image distortion and detector localization.
+- **File and line:** report/report.md:87
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** Describe box looseness as a possible contributor and the ratios as descriptive, rather than attributing the change mainly to it.
+- **Fix (applied 2026-11-03):** Limitation now reads: the drop in mAP50–95 (ratio 0.684 clean, 0.597 fisheye_s2) may partly reflect looser warped ground-truth boxes, but this study does not separate that effect from distorted appearance or detector localization.
+- **Impact:** None on saved results (report only).
+
+### Codex report verification: Reference 1 title is incomplete
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** Reference 1 lists Benchmarking Robustness in Object Detection, but the cited arXiv:1907.07484 title is Benchmarking Robustness in Object Detection: Autonomous Driving when Winter is Coming. Authors/arXiv identifier/2019 first-submission year are correct.
+- **File and line:** report/report.md:114
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** Use the full title including the subtitle.
+- **Fix (applied 2026-11-03):** Reference 1 now has the full title "Benchmarking Robustness in Object Detection: Autonomous Driving when Winter is Coming". Reference 4 cites arXiv:2412.01782v3; reference 3 is given as International Journal of Computer Vision, vol. 133, pp. 1033–1047, 2025.
+- **Impact:** None on saved results (report only).
+
+### Codex report verification: Finding F4 heading describes removal of persons rather than detections
+- **Date:** 2026-11-03
+- **Stage:** report verification
+- **What is wrong:** The F4 heading says PGD removes all persons. The data show suppression of person detections at confidence >=0.25 on the tested 100-image subset, not removal of people from the images or a universal result. The paragraph beneath supplies the correct detection-based denominator and scope, so the issue is the stronger headline.
+- **File and line:** report/report.md:79
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved report/documentation only; saved result CSV values are unaffected.
+- **Minimal proposed fix (not applied):** Say PGD suppresses all person detections at the tested threshold, and retain the subset and non-adaptive attack scope.
+- **Fix (applied 2026-11-03):** F4 heading now reads "PGD suppresses all person detections at confidence ≥ 0.25 on the 100-image subset; random noise of equal size does not." The non-adaptive scope remains stated in F5 and the Limitations.
+- **Impact:** None on saved results (report only).
+
+### Overlapping y-axis labels in the 3 + 2 report figure
+- **Date:** 2026-11-03
+- **Stage:** report (Figure 1 layout)
+- **What went wrong:** With the new 3 + 2 panel layout, the long y-axis label was drawn for each row; at the printed size it was clipped and overlapped between rows. The taller figure also pushed the PDF to 5 pages, with Figure 1 leaving half of page 2 empty.
+- **Fix:** In grid layouts one figure-level y label (`fig.supylabel`) replaces the per-row labels; the one-row default is unchanged. Figure heights reduced (7.0 × 3.6 in, 4.2 × 2.2 in) and figures placed after F1 and F2. PDF back to 4 pages.
+- **Impact:** None on saved results (report figures only; results/ figures byte-identical).

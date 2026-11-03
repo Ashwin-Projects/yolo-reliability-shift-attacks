@@ -175,11 +175,13 @@ def _place_labels(fig, ax, points):
         taken.append(box)
 
 
-def fig_silent_failure(table, path, suffix=""):
+def fig_silent_failure(table, path, suffix="", ncols=None, figsize=None, title=True):
     """recall_025 vs mean_conf_tp per condition, one panel per corruption family.
 
     Each panel joins clean to the family's severities; all other conditions are
-    shown as faint context points. Shared axes keep panels comparable.
+    shown as faint context points. Shared axes keep panels comparable. By default
+    all panels sit in one row; `ncols` wraps them into a grid (e.g. 3 + 2) and
+    `figsize` sets the size, e.g. the printed size so font sizes are true points.
     """
     rows = table.set_index("condition")
     clean = "clean" + suffix
@@ -188,22 +190,34 @@ def fig_silent_failure(table, path, suffix=""):
     families = {}
     for name, c in config.SHIFT_CONDITIONS.items():
         families.setdefault(c["family"], []).append(name + suffix)
-    fig, axes = plt.subplots(1, len(families), figsize=(3.6 * len(families), 4.4),
-                             sharex=True, sharey=True, facecolor="#fcfcfb")
-    for ax, (family, names) in zip(axes, families.items()):
+    n = len(families)
+    ncols = ncols or n
+    nrows = -(-n // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=figsize or (3.6 * n, 4.4),
+                             sharex=True, sharey=True, facecolor="#fcfcfb", squeeze=False)
+    axes = axes.ravel()
+    for ax in axes[n:]:
+        ax.axis("off")
+    for i, (ax, (family, names)) in enumerate(zip(axes, families.items())):
         _style(ax)
-        chain = [n for n in [clean] + names if n in rows.index]
+        chain = [c for c in [clean] + names if c in rows.index]
         ax.scatter(rows["recall_025"], rows["mean_conf_tp"], s=14, color=GRID, zorder=1)
         ax.plot(rows.loc[chain, "recall_025"], rows.loc[chain, "mean_conf_tp"],
                 color=BLUE, linewidth=1.5, zorder=2)
         ax.scatter(rows.loc[chain, "recall_025"], rows.loc[chain, "mean_conf_tp"], s=46,
                    color=BLUE, edgecolor="#fcfcfb", linewidth=1.5, zorder=3)
         ax.set_title(family, loc="left", fontsize=10, color=INK)
-        ax.set_xlabel("Recall at conf ≥ 0.25")
-    axes[0].set_ylabel("Mean confidence of true positives")
+        if i + ncols >= n:  # no panel below: show this panel's x axis
+            ax.tick_params(labelbottom=True)
+            ax.set_xlabel("Recall at conf ≥ 0.25")
+        if i % ncols == 0 and nrows == 1:
+            ax.set_ylabel("Mean confidence of true positives")
+    if nrows > 1:  # one label for the whole grid; per-row labels would overlap
+        fig.supylabel("Mean confidence of true positives", fontsize=10, color=INK_2)
     axes[0].margins(x=0.12, y=0.08)
-    fig.suptitle("Recall at conf ≥ 0.25 vs mean confidence of true positives, per condition "
-                 "(grey: all other conditions)", x=0.01, ha="left", fontsize=11, color=INK)
+    if title:
+        fig.suptitle("Recall at conf ≥ 0.25 vs mean confidence of true positives, per condition "
+                     "(grey: all other conditions)", x=0.01, ha="left", fontsize=11, color=INK)
     fig.tight_layout()  # fix the layout before measuring label positions
     for ax, names in zip(axes, families.values()):
         chain = [n for n in [clean] + names if n in rows.index]
@@ -214,14 +228,14 @@ def fig_silent_failure(table, path, suffix=""):
     plt.close(fig)
 
 
-def fig_recoverable(table, path, suffix=""):
+def fig_recoverable(table, path, suffix="", figsize=(7.5, 4.8), title=True):
     """recoverable_share vs severity (clean = 0), one line per corruption family."""
     rows = table.set_index("condition")
     clean = "clean" + suffix
     families = {}
     for name, c in config.SHIFT_CONDITIONS.items():
         families.setdefault(c["family"], []).append(name + suffix)
-    fig, ax = plt.subplots(figsize=(7.5, 4.8), facecolor="#fcfcfb")
+    fig, ax = plt.subplots(figsize=figsize, facecolor="#fcfcfb")
     _style(ax)
     for color, (family, names) in zip(FAMILY_COLORS, families.items()):
         chain = [n for n in [clean] + names if n in rows.index]
@@ -232,8 +246,9 @@ def fig_recoverable(table, path, suffix=""):
     ax.set_xticks(range(4), ["0 (clean)", "1", "2", "3"])
     ax.set_xlabel("Severity")
     ax.set_ylabel("Recoverable share")
-    ax.set_title("Share of people missed at conf ≥ 0.25 that are matched at conf ≥ 0.05",
-                 loc="left", fontsize=11, color=INK)
+    if title:
+        ax.set_title("Share of people missed at conf ≥ 0.25 that are matched at conf ≥ 0.05",
+                     loc="left", fontsize=11, color=INK)
     ax.legend(frameon=False, fontsize=9, labelcolor=INK_2, loc="best")
     fig.tight_layout()
     fig.savefig(path, dpi=150)

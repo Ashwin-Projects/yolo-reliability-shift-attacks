@@ -249,6 +249,10 @@ prints the loss per iteration, the best loss and its iteration, and persons ≥ 
 before and after. It passes if, for every image, the best loss is ≤ 50% of the
 starting loss and the number of persons does not increase.
 
+## Report
+
+`report/build_report.py` builds `report/report.md`, `report/report.html` and `report/report.pdf` from the result CSVs, `config.py` and the runtime table above; every number in the report is read from these files. It needs `pip install -r report/requirements.txt` (markdown) and prints the PDF with headless Microsoft Edge or Chrome.
+
 ## Layout
 
 ```
