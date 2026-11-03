@@ -137,7 +137,7 @@ fix or decision.
 - Exception: at the most severe JPEG level (jpeg_s3), D-ECE rises from 0.208 to 0.289, mean TP confidence drops to 0.494, and recall at conf ≥ 0.25 falls to 0.059 (121 TP).
 - (2026-11-03, stage reliability) Many missed people are present at low confidence: clean recall is 0.656 at conf ≥ 0.25 but 0.820 at conf ≥ 0.05; for gaussian_blur_s3, 0.380 vs 0.521; for jpeg_s3, 0.059 vs 0.150.
 - (2026-11-03) Box level, TP vs FP: confidence alone (AUROC 0.82–0.86 in 14 of 15 conditions) beats view consistency alone (0.73–0.79) everywhere except jpeg_s3 (0.726 vs 0.776). Multiplying them improves on confidence in only 4 of 15 conditions (gaussian_blur_s3, gaussian_noise_s3, jpeg_s1, jpeg_s3), by at most 0.058 (jpeg_s3: 0.784 vs 0.726).
-- (2026-11-03) Image level (pooled, 7498 images, 2787 with miss_rate ≥ 0.5): mean_conf has the strongest relation to miss_rate (Spearman −0.706; AUROC 0.141, i.e. 0.859 with the sign flipped), then mean_consistency (−0.678; 0.161), view_disagreement (0.245; 0.613) and n_det (−0.202; 0.332). Caveat: mean_conf and n_det use the same detections that define miss_rate.
+- (2026-11-03) Image level (pooled, 7,498 condition-image observations from 500 source images, 2787 with miss_rate ≥ 0.5; descriptive only, as the observations are not independent): mean_conf has the strongest relation to miss_rate (Spearman −0.706; AUROC 0.141, i.e. 0.859 with the sign flipped), then mean_consistency (−0.678; 0.161), view_disagreement (0.245; 0.613) and n_det (−0.202; 0.332). Caveat: mean_conf and n_det use the same detections that define miss_rate.
 
 ### Codex audit: pooled Spearman significance ignores repeated images
 - **Date:** 2026-11-03
@@ -227,3 +227,36 @@ fix or decision.
 - **What went wrong:** Launching the script from Git Bash as `cmd //c reproduce.bat` failed after 1 s with "'reproduce.bat' is not recognized as an internal or external command"; no stage ran.
 - **Fix:** Ran it from PowerShell in the project folder (`& .\reproduce.bat`). It completed all stages in 294 s with no inference or image regeneration, and all 215 checked files (100 CSVs, summary.md, prediction caches) were byte-identical. The script itself was not changed.
 - **Impact:** None on saved results.
+
+### Codex final audit: ignored attack audit CSVs and metadata are absent from the frozen commit
+- **Date:** 2026-11-03
+- **Stage:** final whole-project audit / packaging
+- **What is wrong:** The blanket results/adv/ ignore rule excludes six small attack_info.csv files and six meta.json files in addition to large PNGs. The working folder has 100 result CSVs, but HEAD a6e3538 contains only 94. The excluded files hold per-image start/best/last losses, best-iterate indices and attack-generation settings/weights hashes needed to independently check the attack method and mean_best_iter findings without regenerating the attacks.
+- **File and line:** .gitignore:5; README.md:47 and README.md:215-216 identify the affected artifacts/claims.
+- **Found by:** found by Codex.
+- **Impact:** Affects current saved-result packaging and verification from the committed project; local CSV metric values are unaffected. Also affects future fresh checkouts.
+- **Minimal proposed fix (not applied):** Exclude large PNGs while retaining and committing the small attack_info.csv and meta.json files for full and smoke conditions.
+- **Fix (applied 2026-11-03):** `.gitignore` rule `results/adv/` replaced by `results/adv/**/*.png`. `git check-ignore`: all 330 PNGs are ignored; all 6 `attack_info.csv` and all 6 `meta.json` (full and smoke conditions) are not. These 12 files were committed.
+- **Impact:** None on saved results. The committed result CSVs go from 94 to 100 (all in the working folder).
+
+### Codex final audit: letterbox numerical-agreement claim lacks its image scope
+- **Date:** 2026-11-03
+- **Stage:** final whole-project audit / documentation
+- **What is wrong:** The README reports a maximum letterbox pixel difference of 2.97e-08 without identifying that this was measured on images that require no resizing. Resized source images give larger float-versus-uint8 interpolation differences: image 1353 gives 0.00293836 and image 1584 gives approximately 0.0029824 on [0,1] pixels. The geometry still matches and both differences are below 1/255; the claim should not imply general near-bit-exact pixel equality.
+- **File and line:** README.md:202-203.
+- **Found by:** found by Codex.
+- **Impact:** Affects current saved documentation used for the write-up; no CSV metrics are affected.
+- **Minimal proposed fix (not applied):** State the tested image IDs/sizes and distinguish geometric agreement from the resize/rounding pixel tolerance.
+- **Fix (applied 2026-11-03):** The README now says the geometry matches exactly. The maximum pixel difference is 2.97e-08 for images needing no resize (139, 640×426) and about 0.0029, below 1/255, for resized images, with the reason (cv2 uint8 resize vs float interpolation). Re-measured before editing: 139 → 0.00000003, 1353 (375×500) → 0.00293836, 1584 (612×612) → 0.00298240; geometry equal in all three.
+- **Impact:** None on saved results (documentation only).
+
+### Codex final audit: pooled Findings sample count needs qualification
+- **Date:** 2026-11-03
+- **Stage:** final whole-project audit / Findings wording
+- **What is wrong:** The Findings bullet calls the pooled sample 7498 images without qualifying in that bullet that these are condition-image observations from 500 unique source images. There are 499 source IDs with 15 observations and one source ID with 13. The count and descriptive statistics are correct, but the write-up must not present this as 7498 independent source images; the README already explains this dependence correctly.
+- **File and line:** RESEARCH_LOG.md:140.
+- **Found by:** found by Codex.
+- **Impact:** Affects current saved Findings wording and sample-size interpretation; no CSV metric values are affected.
+- **Minimal proposed fix (not applied):** Say 7498 condition-image observations from 500 source images and retain the descriptive-only qualification.
+- **Fix (applied 2026-11-03):** The Findings bullet now reads "7,498 condition-image observations from 500 source images … descriptive only, as the observations are not independent". README.md already said "7,498 rows from only 500 source images" and results/summary.md has no such count; neither needed a change.
+- **Impact:** None on saved results (wording only).
