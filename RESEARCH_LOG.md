@@ -347,3 +347,10 @@ fix or decision.
 - **What went wrong:** With the new 3 + 2 panel layout, the long y-axis label was drawn for each row; at the printed size it was clipped and overlapped between rows. The taller figure also pushed the PDF to 5 pages, with Figure 1 leaving half of page 2 empty.
 - **Fix:** In grid layouts one figure-level y label (`fig.supylabel`) replaces the per-row labels; the one-row default is unchanged. Figure heights reduced (7.0 × 3.6 in, 4.2 × 2.2 in) and figures placed after F1 and F2. PDF back to 4 pages.
 - **Impact:** None on saved results (report figures only; results/ figures byte-identical).
+
+### PDF text comparison reported spurious differences
+- **Date:** 2026-11-04
+- **Stage:** report (updating the cited results commit)
+- **What went wrong:** The first before/after comparison of the PDF text reported 174 changed lines, 170 of them blank. The "before" text had been saved with Windows newline translation, so its line endings did not match the freshly extracted text.
+- **Fix:** Compared again with line endings normalised and blank lines dropped: 174 → 174 text lines, exactly 2 changed (the two commit-hash mentions, 8ad4f20 → a4e3e1d), and all 382 other numbers in the PDF identical. report.md is byte-identical to the previous version apart from the hash.
+- **Impact:** None on saved results (verification step only).

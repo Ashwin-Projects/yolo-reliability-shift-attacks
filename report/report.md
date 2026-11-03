@@ -2,7 +2,7 @@
 
 **Ashwin Lakshminarasimhan**, VIT Vellore
 
-**Preliminary results** · 2026-11-03 · all numbers produced by the code and data of commit `8ad4f20`
+**Preliminary results** · 2026-11-03 · all numbers produced by the code and data of commit `a4e3e1d`
 
 ## Abstract
 
@@ -98,7 +98,7 @@ Adversarial attacks on person detection are well established: Thys et al. [5] hi
 
 ## 7 Reproducibility
 
-Code, all result CSVs and the prediction caches are in a local git repository (results frozen at commit `8ad4f20`). `reproduce.bat` (Windows) and `reproduce.sh` run all stages and rebuild `results/summary.md`; rerunning them from the caches reproduced all 100 result CSVs byte-identically. `RESEARCH_LOG.md` records every problem, fix and design decision. CPU runtimes as measured on the machine that produced the results (from the README):
+Code, all result CSVs and the prediction caches are in a local git repository (results frozen at commit `a4e3e1d`). `reproduce.bat` (Windows) and `reproduce.sh` run all stages and rebuild `results/summary.md`; rerunning them from the caches reproduced all 100 result CSVs byte-identically. `RESEARCH_LOG.md` records every problem, fix and design decision. CPU runtimes as measured on the machine that produced the results (from the README):
 
 | Stage | Full | From cache |
 |---|---|---|

@@ -18,7 +18,7 @@ em { font-size: 8.6pt; }
 code { font-size: 8.6pt; }
 </style></head><body><h1>Does a Person Detector Know What It Misses? A Preliminary Study of Confidence Reliability under Corruptions, Fisheye Distortion and Adversarial Attacks</h1>
 <p><strong>Ashwin Lakshminarasimhan</strong>, VIT Vellore</p>
-<p><strong>Preliminary results</strong> · 2026-11-03 · all numbers produced by the code and data of commit <code>8ad4f20</code></p>
+<p><strong>Preliminary results</strong> · 2026-11-03 · all numbers produced by the code and data of commit <code>a4e3e1d</code></p>
 <div class="keep"><h2>Abstract</h2>
 <p>In headcounts and surveillance, a person the detector misses is often the costly error. We ask whether a detector's confidence reveals such misses. We evaluate YOLO11n (CPU, person class only) on 500 COCO val2017 images under 14 synthetic shifts, including a synthetic equidistant fisheye, and on 100 images under a white-box PGD attack with a random-noise control. Under shift, recall at confidence ≥ 0.25 falls from 0.656 to as low as 0.059, while precision stays between 0.747 and 0.873. The detector is underconfident in all 15 clean and shifted conditions; per-detection calibration metrics cannot account for the missed people, because a missed person produces no detection to evaluate. The share of misses recoverable at confidence ≥ 0.05 falls from 0.476 to 0.097. PGD with ε = 4/255 removes all person detections in 96/96 images, random noise of size 8/255 in 0/96. Main limitations: one small model, few images, synthetic fisheye and a non-adaptive attacker.</p></div>
 <div class="keep"><h2>1 Introduction</h2>
@@ -199,7 +199,7 @@ code { font-size: 8.6pt; }
 <li>Real overhead fisheye data, for example the datasets used with RAPiD [10].</li>
 </ul></div>
 <div class="keep"><h2>7 Reproducibility</h2>
-<p>Code, all result CSVs and the prediction caches are in a local git repository (results frozen at commit <code>8ad4f20</code>). <code>reproduce.bat</code> (Windows) and <code>reproduce.sh</code> run all stages and rebuild <code>results/summary.md</code>; rerunning them from the caches reproduced all 100 result CSVs byte-identically. <code>RESEARCH_LOG.md</code> records every problem, fix and design decision. CPU runtimes as measured on the machine that produced the results (from the README):</p></div>
+<p>Code, all result CSVs and the prediction caches are in a local git repository (results frozen at commit <code>a4e3e1d</code>). <code>reproduce.bat</code> (Windows) and <code>reproduce.sh</code> run all stages and rebuild <code>results/summary.md</code>; rerunning them from the caches reproduced all 100 result CSVs byte-identically. <code>RESEARCH_LOG.md</code> records every problem, fix and design decision. CPU runtimes as measured on the machine that produced the results (from the README):</p></div>
 <table>
 <thead>
 <tr>

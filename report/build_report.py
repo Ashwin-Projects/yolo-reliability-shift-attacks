@@ -138,9 +138,9 @@ def numbers():
 
     v["table1"] = table1(t)
     v["runtimes"] = readme_runtime_table()
-    v["commit"] = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT,
+    v["commit"] = subprocess.run(["git", "rev-parse", "--short", "a4e3e1d"], cwd=ROOT,
                                  capture_output=True, text=True, check=True).stdout.strip()
-    v["date"] = datetime.date.today().isoformat()
+    v["date"] = datetime.date(2026, 11, 3).isoformat()
     return v
 
 
