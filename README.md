@@ -1,7 +1,17 @@
 # detconf
 
-Does YOLO's confidence track its errors? Stage 1: clean baseline for YOLO11n on
-the COCO val2017 **person** class (CPU only, seed 0).
+Does a person detector know what it misses? This repository contains the code,
+result tables and preliminary report of a study of confidence reliability for
+YOLO11n on the COCO val2017 **person** class (CPU only, seed 0). It measures how
+recall, precision, calibration and simple test-time signals (low-threshold recall,
+agreement across flipped and rescaled views) change under synthetic corruptions
+(blur, noise, low light, JPEG), a synthetic equidistant fisheye distortion, and a
+white-box PGD attack that suppresses person detections. Findings, limitations and
+next steps are in the report: [report/report.pdf](report/report.pdf)
+(source: [report/report.md](report/report.md)). The code is released under the
+[MIT License](LICENSE).
+
+Images shown in results/vis/ are from COCO val2017 and remain subject to their original licenses; COCO annotations are CC BY 4.0.
 
 Problems, fixes and design decisions are recorded in [RESEARCH_LOG.md](RESEARCH_LOG.md).
 
