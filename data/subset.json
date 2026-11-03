@@ -1,0 +1,3502 @@
+[
+ {
+  "id": 139,
+  "file_name": "000000000139.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000000139.jpg"
+ },
+ {
+  "id": 785,
+  "file_name": "000000000785.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000000785.jpg"
+ },
+ {
+  "id": 872,
+  "file_name": "000000000872.jpg",
+  "width": 621,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000000872.jpg"
+ },
+ {
+  "id": 885,
+  "file_name": "000000000885.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000000885.jpg"
+ },
+ {
+  "id": 1000,
+  "file_name": "000000001000.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001000.jpg"
+ },
+ {
+  "id": 1268,
+  "file_name": "000000001268.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001268.jpg"
+ },
+ {
+  "id": 1296,
+  "file_name": "000000001296.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001296.jpg"
+ },
+ {
+  "id": 1353,
+  "file_name": "000000001353.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001353.jpg"
+ },
+ {
+  "id": 1490,
+  "file_name": "000000001490.jpg",
+  "width": 640,
+  "height": 315,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001490.jpg"
+ },
+ {
+  "id": 1584,
+  "file_name": "000000001584.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001584.jpg"
+ },
+ {
+  "id": 1761,
+  "file_name": "000000001761.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000001761.jpg"
+ },
+ {
+  "id": 2006,
+  "file_name": "000000002006.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002006.jpg"
+ },
+ {
+  "id": 2153,
+  "file_name": "000000002153.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002153.jpg"
+ },
+ {
+  "id": 2261,
+  "file_name": "000000002261.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002261.jpg"
+ },
+ {
+  "id": 2299,
+  "file_name": "000000002299.jpg",
+  "width": 500,
+  "height": 302,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002299.jpg"
+ },
+ {
+  "id": 2431,
+  "file_name": "000000002431.jpg",
+  "width": 457,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002431.jpg"
+ },
+ {
+  "id": 2473,
+  "file_name": "000000002473.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002473.jpg"
+ },
+ {
+  "id": 2532,
+  "file_name": "000000002532.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002532.jpg"
+ },
+ {
+  "id": 2685,
+  "file_name": "000000002685.jpg",
+  "width": 640,
+  "height": 555,
+  "coco_url": "http://images.cocodataset.org/val2017/000000002685.jpg"
+ },
+ {
+  "id": 3156,
+  "file_name": "000000003156.jpg",
+  "width": 443,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000003156.jpg"
+ },
+ {
+  "id": 3255,
+  "file_name": "000000003255.jpg",
+  "width": 640,
+  "height": 363,
+  "coco_url": "http://images.cocodataset.org/val2017/000000003255.jpg"
+ },
+ {
+  "id": 3553,
+  "file_name": "000000003553.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000003553.jpg"
+ },
+ {
+  "id": 3934,
+  "file_name": "000000003934.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000003934.jpg"
+ },
+ {
+  "id": 4134,
+  "file_name": "000000004134.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000004134.jpg"
+ },
+ {
+  "id": 4395,
+  "file_name": "000000004395.jpg",
+  "width": 425,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000004395.jpg"
+ },
+ {
+  "id": 4765,
+  "file_name": "000000004765.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000004765.jpg"
+ },
+ {
+  "id": 5001,
+  "file_name": "000000005001.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005001.jpg"
+ },
+ {
+  "id": 5037,
+  "file_name": "000000005037.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005037.jpg"
+ },
+ {
+  "id": 5060,
+  "file_name": "000000005060.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005060.jpg"
+ },
+ {
+  "id": 5193,
+  "file_name": "000000005193.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005193.jpg"
+ },
+ {
+  "id": 5529,
+  "file_name": "000000005529.jpg",
+  "width": 444,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005529.jpg"
+ },
+ {
+  "id": 5586,
+  "file_name": "000000005586.jpg",
+  "width": 320,
+  "height": 240,
+  "coco_url": "http://images.cocodataset.org/val2017/000000005586.jpg"
+ },
+ {
+  "id": 6040,
+  "file_name": "000000006040.jpg",
+  "width": 640,
+  "height": 351,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006040.jpg"
+ },
+ {
+  "id": 6460,
+  "file_name": "000000006460.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006460.jpg"
+ },
+ {
+  "id": 6471,
+  "file_name": "000000006471.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006471.jpg"
+ },
+ {
+  "id": 6763,
+  "file_name": "000000006763.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006763.jpg"
+ },
+ {
+  "id": 6771,
+  "file_name": "000000006771.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006771.jpg"
+ },
+ {
+  "id": 6894,
+  "file_name": "000000006894.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006894.jpg"
+ },
+ {
+  "id": 6954,
+  "file_name": "000000006954.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000006954.jpg"
+ },
+ {
+  "id": 7088,
+  "file_name": "000000007088.jpg",
+  "width": 478,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007088.jpg"
+ },
+ {
+  "id": 7278,
+  "file_name": "000000007278.jpg",
+  "width": 640,
+  "height": 482,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007278.jpg"
+ },
+ {
+  "id": 7281,
+  "file_name": "000000007281.jpg",
+  "width": 640,
+  "height": 361,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007281.jpg"
+ },
+ {
+  "id": 7511,
+  "file_name": "000000007511.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007511.jpg"
+ },
+ {
+  "id": 7816,
+  "file_name": "000000007816.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007816.jpg"
+ },
+ {
+  "id": 7977,
+  "file_name": "000000007977.jpg",
+  "width": 429,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000007977.jpg"
+ },
+ {
+  "id": 8021,
+  "file_name": "000000008021.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000008021.jpg"
+ },
+ {
+  "id": 8211,
+  "file_name": "000000008211.jpg",
+  "width": 640,
+  "height": 459,
+  "coco_url": "http://images.cocodataset.org/val2017/000000008211.jpg"
+ },
+ {
+  "id": 8532,
+  "file_name": "000000008532.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000008532.jpg"
+ },
+ {
+  "id": 8690,
+  "file_name": "000000008690.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000008690.jpg"
+ },
+ {
+  "id": 8844,
+  "file_name": "000000008844.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000008844.jpg"
+ },
+ {
+  "id": 9378,
+  "file_name": "000000009378.jpg",
+  "width": 600,
+  "height": 400,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009378.jpg"
+ },
+ {
+  "id": 9400,
+  "file_name": "000000009400.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009400.jpg"
+ },
+ {
+  "id": 9448,
+  "file_name": "000000009448.jpg",
+  "width": 551,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009448.jpg"
+ },
+ {
+  "id": 9483,
+  "file_name": "000000009483.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009483.jpg"
+ },
+ {
+  "id": 9590,
+  "file_name": "000000009590.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009590.jpg"
+ },
+ {
+  "id": 9769,
+  "file_name": "000000009769.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009769.jpg"
+ },
+ {
+  "id": 9772,
+  "file_name": "000000009772.jpg",
+  "width": 550,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009772.jpg"
+ },
+ {
+  "id": 9891,
+  "file_name": "000000009891.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000009891.jpg"
+ },
+ {
+  "id": 10707,
+  "file_name": "000000010707.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000010707.jpg"
+ },
+ {
+  "id": 10764,
+  "file_name": "000000010764.jpg",
+  "width": 640,
+  "height": 424,
+  "coco_url": "http://images.cocodataset.org/val2017/000000010764.jpg"
+ },
+ {
+  "id": 11051,
+  "file_name": "000000011051.jpg",
+  "width": 640,
+  "height": 536,
+  "coco_url": "http://images.cocodataset.org/val2017/000000011051.jpg"
+ },
+ {
+  "id": 11149,
+  "file_name": "000000011149.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000011149.jpg"
+ },
+ {
+  "id": 11197,
+  "file_name": "000000011197.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000011197.jpg"
+ },
+ {
+  "id": 11511,
+  "file_name": "000000011511.jpg",
+  "width": 640,
+  "height": 464,
+  "coco_url": "http://images.cocodataset.org/val2017/000000011511.jpg"
+ },
+ {
+  "id": 11699,
+  "file_name": "000000011699.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000011699.jpg"
+ },
+ {
+  "id": 12120,
+  "file_name": "000000012120.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012120.jpg"
+ },
+ {
+  "id": 12280,
+  "file_name": "000000012280.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012280.jpg"
+ },
+ {
+  "id": 12576,
+  "file_name": "000000012576.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012576.jpg"
+ },
+ {
+  "id": 12639,
+  "file_name": "000000012639.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012639.jpg"
+ },
+ {
+  "id": 12670,
+  "file_name": "000000012670.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012670.jpg"
+ },
+ {
+  "id": 12748,
+  "file_name": "000000012748.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000012748.jpg"
+ },
+ {
+  "id": 13177,
+  "file_name": "000000013177.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013177.jpg"
+ },
+ {
+  "id": 13201,
+  "file_name": "000000013201.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013201.jpg"
+ },
+ {
+  "id": 13291,
+  "file_name": "000000013291.jpg",
+  "width": 500,
+  "height": 335,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013291.jpg"
+ },
+ {
+  "id": 13348,
+  "file_name": "000000013348.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013348.jpg"
+ },
+ {
+  "id": 13546,
+  "file_name": "000000013546.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013546.jpg"
+ },
+ {
+  "id": 13659,
+  "file_name": "000000013659.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013659.jpg"
+ },
+ {
+  "id": 13729,
+  "file_name": "000000013729.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013729.jpg"
+ },
+ {
+  "id": 13774,
+  "file_name": "000000013774.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000013774.jpg"
+ },
+ {
+  "id": 14226,
+  "file_name": "000000014226.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000014226.jpg"
+ },
+ {
+  "id": 14439,
+  "file_name": "000000014439.jpg",
+  "width": 640,
+  "height": 404,
+  "coco_url": "http://images.cocodataset.org/val2017/000000014439.jpg"
+ },
+ {
+  "id": 14473,
+  "file_name": "000000014473.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000014473.jpg"
+ },
+ {
+  "id": 15335,
+  "file_name": "000000015335.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000015335.jpg"
+ },
+ {
+  "id": 15597,
+  "file_name": "000000015597.jpg",
+  "width": 433,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000015597.jpg"
+ },
+ {
+  "id": 15660,
+  "file_name": "000000015660.jpg",
+  "width": 640,
+  "height": 348,
+  "coco_url": "http://images.cocodataset.org/val2017/000000015660.jpg"
+ },
+ {
+  "id": 15956,
+  "file_name": "000000015956.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000015956.jpg"
+ },
+ {
+  "id": 16228,
+  "file_name": "000000016228.jpg",
+  "width": 640,
+  "height": 440,
+  "coco_url": "http://images.cocodataset.org/val2017/000000016228.jpg"
+ },
+ {
+  "id": 16249,
+  "file_name": "000000016249.jpg",
+  "width": 500,
+  "height": 365,
+  "coco_url": "http://images.cocodataset.org/val2017/000000016249.jpg"
+ },
+ {
+  "id": 16451,
+  "file_name": "000000016451.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000016451.jpg"
+ },
+ {
+  "id": 16598,
+  "file_name": "000000016598.jpg",
+  "width": 478,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000016598.jpg"
+ },
+ {
+  "id": 17207,
+  "file_name": "000000017207.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017207.jpg"
+ },
+ {
+  "id": 17379,
+  "file_name": "000000017379.jpg",
+  "width": 478,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017379.jpg"
+ },
+ {
+  "id": 17436,
+  "file_name": "000000017436.jpg",
+  "width": 481,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017436.jpg"
+ },
+ {
+  "id": 17627,
+  "file_name": "000000017627.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017627.jpg"
+ },
+ {
+  "id": 17899,
+  "file_name": "000000017899.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017899.jpg"
+ },
+ {
+  "id": 17905,
+  "file_name": "000000017905.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017905.jpg"
+ },
+ {
+  "id": 17959,
+  "file_name": "000000017959.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000017959.jpg"
+ },
+ {
+  "id": 18150,
+  "file_name": "000000018150.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018150.jpg"
+ },
+ {
+  "id": 18193,
+  "file_name": "000000018193.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018193.jpg"
+ },
+ {
+  "id": 18380,
+  "file_name": "000000018380.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018380.jpg"
+ },
+ {
+  "id": 18491,
+  "file_name": "000000018491.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018491.jpg"
+ },
+ {
+  "id": 18519,
+  "file_name": "000000018519.jpg",
+  "width": 515,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018519.jpg"
+ },
+ {
+  "id": 18770,
+  "file_name": "000000018770.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018770.jpg"
+ },
+ {
+  "id": 18837,
+  "file_name": "000000018837.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000018837.jpg"
+ },
+ {
+  "id": 19109,
+  "file_name": "000000019109.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019109.jpg"
+ },
+ {
+  "id": 19221,
+  "file_name": "000000019221.jpg",
+  "width": 640,
+  "height": 478,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019221.jpg"
+ },
+ {
+  "id": 19402,
+  "file_name": "000000019402.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019402.jpg"
+ },
+ {
+  "id": 19432,
+  "file_name": "000000019432.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019432.jpg"
+ },
+ {
+  "id": 19786,
+  "file_name": "000000019786.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019786.jpg"
+ },
+ {
+  "id": 19924,
+  "file_name": "000000019924.jpg",
+  "width": 458,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000019924.jpg"
+ },
+ {
+  "id": 20333,
+  "file_name": "000000020333.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000020333.jpg"
+ },
+ {
+  "id": 20571,
+  "file_name": "000000020571.jpg",
+  "width": 539,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000020571.jpg"
+ },
+ {
+  "id": 20992,
+  "file_name": "000000020992.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000020992.jpg"
+ },
+ {
+  "id": 21167,
+  "file_name": "000000021167.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000021167.jpg"
+ },
+ {
+  "id": 21604,
+  "file_name": "000000021604.jpg",
+  "width": 512,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000021604.jpg"
+ },
+ {
+  "id": 21839,
+  "file_name": "000000021839.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000021839.jpg"
+ },
+ {
+  "id": 21879,
+  "file_name": "000000021879.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000021879.jpg"
+ },
+ {
+  "id": 21903,
+  "file_name": "000000021903.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000021903.jpg"
+ },
+ {
+  "id": 22371,
+  "file_name": "000000022371.jpg",
+  "width": 425,
+  "height": 282,
+  "coco_url": "http://images.cocodataset.org/val2017/000000022371.jpg"
+ },
+ {
+  "id": 22479,
+  "file_name": "000000022479.jpg",
+  "width": 640,
+  "height": 605,
+  "coco_url": "http://images.cocodataset.org/val2017/000000022479.jpg"
+ },
+ {
+  "id": 22705,
+  "file_name": "000000022705.jpg",
+  "width": 482,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000022705.jpg"
+ },
+ {
+  "id": 22935,
+  "file_name": "000000022935.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000022935.jpg"
+ },
+ {
+  "id": 23034,
+  "file_name": "000000023034.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000023034.jpg"
+ },
+ {
+  "id": 23126,
+  "file_name": "000000023126.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000023126.jpg"
+ },
+ {
+  "id": 23359,
+  "file_name": "000000023359.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000023359.jpg"
+ },
+ {
+  "id": 23899,
+  "file_name": "000000023899.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000023899.jpg"
+ },
+ {
+  "id": 24021,
+  "file_name": "000000024021.jpg",
+  "width": 640,
+  "height": 390,
+  "coco_url": "http://images.cocodataset.org/val2017/000000024021.jpg"
+ },
+ {
+  "id": 24027,
+  "file_name": "000000024027.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000024027.jpg"
+ },
+ {
+  "id": 24243,
+  "file_name": "000000024243.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000024243.jpg"
+ },
+ {
+  "id": 24567,
+  "file_name": "000000024567.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000024567.jpg"
+ },
+ {
+  "id": 25057,
+  "file_name": "000000025057.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025057.jpg"
+ },
+ {
+  "id": 25096,
+  "file_name": "000000025096.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025096.jpg"
+ },
+ {
+  "id": 25181,
+  "file_name": "000000025181.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025181.jpg"
+ },
+ {
+  "id": 25228,
+  "file_name": "000000025228.jpg",
+  "width": 640,
+  "height": 436,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025228.jpg"
+ },
+ {
+  "id": 25386,
+  "file_name": "000000025386.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025386.jpg"
+ },
+ {
+  "id": 25393,
+  "file_name": "000000025393.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025393.jpg"
+ },
+ {
+  "id": 25394,
+  "file_name": "000000025394.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025394.jpg"
+ },
+ {
+  "id": 25424,
+  "file_name": "000000025424.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025424.jpg"
+ },
+ {
+  "id": 25560,
+  "file_name": "000000025560.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025560.jpg"
+ },
+ {
+  "id": 25603,
+  "file_name": "000000025603.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000025603.jpg"
+ },
+ {
+  "id": 26204,
+  "file_name": "000000026204.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000026204.jpg"
+ },
+ {
+  "id": 26465,
+  "file_name": "000000026465.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000026465.jpg"
+ },
+ {
+  "id": 26690,
+  "file_name": "000000026690.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000026690.jpg"
+ },
+ {
+  "id": 26941,
+  "file_name": "000000026941.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000026941.jpg"
+ },
+ {
+  "id": 27186,
+  "file_name": "000000027186.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000027186.jpg"
+ },
+ {
+  "id": 27696,
+  "file_name": "000000027696.jpg",
+  "width": 640,
+  "height": 410,
+  "coco_url": "http://images.cocodataset.org/val2017/000000027696.jpg"
+ },
+ {
+  "id": 27768,
+  "file_name": "000000027768.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000027768.jpg"
+ },
+ {
+  "id": 27972,
+  "file_name": "000000027972.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000027972.jpg"
+ },
+ {
+  "id": 28993,
+  "file_name": "000000028993.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000028993.jpg"
+ },
+ {
+  "id": 29187,
+  "file_name": "000000029187.jpg",
+  "width": 640,
+  "height": 491,
+  "coco_url": "http://images.cocodataset.org/val2017/000000029187.jpg"
+ },
+ {
+  "id": 29397,
+  "file_name": "000000029397.jpg",
+  "width": 640,
+  "height": 449,
+  "coco_url": "http://images.cocodataset.org/val2017/000000029397.jpg"
+ },
+ {
+  "id": 29984,
+  "file_name": "000000029984.jpg",
+  "width": 640,
+  "height": 492,
+  "coco_url": "http://images.cocodataset.org/val2017/000000029984.jpg"
+ },
+ {
+  "id": 30504,
+  "file_name": "000000030504.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000030504.jpg"
+ },
+ {
+  "id": 30828,
+  "file_name": "000000030828.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000030828.jpg"
+ },
+ {
+  "id": 31093,
+  "file_name": "000000031093.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031093.jpg"
+ },
+ {
+  "id": 31118,
+  "file_name": "000000031118.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031118.jpg"
+ },
+ {
+  "id": 31217,
+  "file_name": "000000031217.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031217.jpg"
+ },
+ {
+  "id": 31296,
+  "file_name": "000000031296.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031296.jpg"
+ },
+ {
+  "id": 31322,
+  "file_name": "000000031322.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031322.jpg"
+ },
+ {
+  "id": 31620,
+  "file_name": "000000031620.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031620.jpg"
+ },
+ {
+  "id": 31817,
+  "file_name": "000000031817.jpg",
+  "width": 334,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000031817.jpg"
+ },
+ {
+  "id": 32038,
+  "file_name": "000000032038.jpg",
+  "width": 333,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032038.jpg"
+ },
+ {
+  "id": 32081,
+  "file_name": "000000032081.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032081.jpg"
+ },
+ {
+  "id": 32334,
+  "file_name": "000000032334.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032334.jpg"
+ },
+ {
+  "id": 32570,
+  "file_name": "000000032570.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032570.jpg"
+ },
+ {
+  "id": 32735,
+  "file_name": "000000032735.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032735.jpg"
+ },
+ {
+  "id": 32817,
+  "file_name": "000000032817.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032817.jpg"
+ },
+ {
+  "id": 32861,
+  "file_name": "000000032861.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032861.jpg"
+ },
+ {
+  "id": 32887,
+  "file_name": "000000032887.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032887.jpg"
+ },
+ {
+  "id": 32901,
+  "file_name": "000000032901.jpg",
+  "width": 640,
+  "height": 546,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032901.jpg"
+ },
+ {
+  "id": 32941,
+  "file_name": "000000032941.jpg",
+  "width": 458,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000032941.jpg"
+ },
+ {
+  "id": 33005,
+  "file_name": "000000033005.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033005.jpg"
+ },
+ {
+  "id": 33104,
+  "file_name": "000000033104.jpg",
+  "width": 428,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033104.jpg"
+ },
+ {
+  "id": 33221,
+  "file_name": "000000033221.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033221.jpg"
+ },
+ {
+  "id": 33368,
+  "file_name": "000000033368.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033368.jpg"
+ },
+ {
+  "id": 33638,
+  "file_name": "000000033638.jpg",
+  "width": 425,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033638.jpg"
+ },
+ {
+  "id": 33759,
+  "file_name": "000000033759.jpg",
+  "width": 640,
+  "height": 457,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033759.jpg"
+ },
+ {
+  "id": 33854,
+  "file_name": "000000033854.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000033854.jpg"
+ },
+ {
+  "id": 34139,
+  "file_name": "000000034139.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000034139.jpg"
+ },
+ {
+  "id": 34417,
+  "file_name": "000000034417.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000034417.jpg"
+ },
+ {
+  "id": 34452,
+  "file_name": "000000034452.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000034452.jpg"
+ },
+ {
+  "id": 35062,
+  "file_name": "000000035062.jpg",
+  "width": 425,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000035062.jpg"
+ },
+ {
+  "id": 35197,
+  "file_name": "000000035197.jpg",
+  "width": 429,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000035197.jpg"
+ },
+ {
+  "id": 35279,
+  "file_name": "000000035279.jpg",
+  "width": 640,
+  "height": 463,
+  "coco_url": "http://images.cocodataset.org/val2017/000000035279.jpg"
+ },
+ {
+  "id": 35682,
+  "file_name": "000000035682.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000035682.jpg"
+ },
+ {
+  "id": 36494,
+  "file_name": "000000036494.jpg",
+  "width": 640,
+  "height": 434,
+  "coco_url": "http://images.cocodataset.org/val2017/000000036494.jpg"
+ },
+ {
+  "id": 36539,
+  "file_name": "000000036539.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000036539.jpg"
+ },
+ {
+  "id": 36660,
+  "file_name": "000000036660.jpg",
+  "width": 500,
+  "height": 323,
+  "coco_url": "http://images.cocodataset.org/val2017/000000036660.jpg"
+ },
+ {
+  "id": 36936,
+  "file_name": "000000036936.jpg",
+  "width": 640,
+  "height": 404,
+  "coco_url": "http://images.cocodataset.org/val2017/000000036936.jpg"
+ },
+ {
+  "id": 37670,
+  "file_name": "000000037670.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000037670.jpg"
+ },
+ {
+  "id": 37689,
+  "file_name": "000000037689.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000037689.jpg"
+ },
+ {
+  "id": 37751,
+  "file_name": "000000037751.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000037751.jpg"
+ },
+ {
+  "id": 37988,
+  "file_name": "000000037988.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000037988.jpg"
+ },
+ {
+  "id": 38048,
+  "file_name": "000000038048.jpg",
+  "width": 299,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000038048.jpg"
+ },
+ {
+  "id": 38118,
+  "file_name": "000000038118.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000038118.jpg"
+ },
+ {
+  "id": 38210,
+  "file_name": "000000038210.jpg",
+  "width": 428,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000038210.jpg"
+ },
+ {
+  "id": 38678,
+  "file_name": "000000038678.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000038678.jpg"
+ },
+ {
+  "id": 38829,
+  "file_name": "000000038829.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000038829.jpg"
+ },
+ {
+  "id": 39405,
+  "file_name": "000000039405.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039405.jpg"
+ },
+ {
+  "id": 39480,
+  "file_name": "000000039480.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039480.jpg"
+ },
+ {
+  "id": 39484,
+  "file_name": "000000039484.jpg",
+  "width": 640,
+  "height": 437,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039484.jpg"
+ },
+ {
+  "id": 39551,
+  "file_name": "000000039551.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039551.jpg"
+ },
+ {
+  "id": 39785,
+  "file_name": "000000039785.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039785.jpg"
+ },
+ {
+  "id": 39914,
+  "file_name": "000000039914.jpg",
+  "width": 487,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039914.jpg"
+ },
+ {
+  "id": 39951,
+  "file_name": "000000039951.jpg",
+  "width": 640,
+  "height": 445,
+  "coco_url": "http://images.cocodataset.org/val2017/000000039951.jpg"
+ },
+ {
+  "id": 40036,
+  "file_name": "000000040036.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000040036.jpg"
+ },
+ {
+  "id": 40083,
+  "file_name": "000000040083.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000040083.jpg"
+ },
+ {
+  "id": 40757,
+  "file_name": "000000040757.jpg",
+  "width": 425,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000040757.jpg"
+ },
+ {
+  "id": 41990,
+  "file_name": "000000041990.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000041990.jpg"
+ },
+ {
+  "id": 42070,
+  "file_name": "000000042070.jpg",
+  "width": 640,
+  "height": 512,
+  "coco_url": "http://images.cocodataset.org/val2017/000000042070.jpg"
+ },
+ {
+  "id": 42102,
+  "file_name": "000000042102.jpg",
+  "width": 246,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000042102.jpg"
+ },
+ {
+  "id": 42528,
+  "file_name": "000000042528.jpg",
+  "width": 640,
+  "height": 495,
+  "coco_url": "http://images.cocodataset.org/val2017/000000042528.jpg"
+ },
+ {
+  "id": 42628,
+  "file_name": "000000042628.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000042628.jpg"
+ },
+ {
+  "id": 43314,
+  "file_name": "000000043314.jpg",
+  "width": 500,
+  "height": 376,
+  "coco_url": "http://images.cocodataset.org/val2017/000000043314.jpg"
+ },
+ {
+  "id": 43435,
+  "file_name": "000000043435.jpg",
+  "width": 638,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000043435.jpg"
+ },
+ {
+  "id": 43816,
+  "file_name": "000000043816.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000043816.jpg"
+ },
+ {
+  "id": 44195,
+  "file_name": "000000044195.jpg",
+  "width": 361,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000044195.jpg"
+ },
+ {
+  "id": 44279,
+  "file_name": "000000044279.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000044279.jpg"
+ },
+ {
+  "id": 44590,
+  "file_name": "000000044590.jpg",
+  "width": 640,
+  "height": 246,
+  "coco_url": "http://images.cocodataset.org/val2017/000000044590.jpg"
+ },
+ {
+  "id": 44877,
+  "file_name": "000000044877.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000044877.jpg"
+ },
+ {
+  "id": 45070,
+  "file_name": "000000045070.jpg",
+  "width": 640,
+  "height": 596,
+  "coco_url": "http://images.cocodataset.org/val2017/000000045070.jpg"
+ },
+ {
+  "id": 45090,
+  "file_name": "000000045090.jpg",
+  "width": 500,
+  "height": 259,
+  "coco_url": "http://images.cocodataset.org/val2017/000000045090.jpg"
+ },
+ {
+  "id": 45550,
+  "file_name": "000000045550.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000045550.jpg"
+ },
+ {
+  "id": 45596,
+  "file_name": "000000045596.jpg",
+  "width": 408,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000045596.jpg"
+ },
+ {
+  "id": 46048,
+  "file_name": "000000046048.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000046048.jpg"
+ },
+ {
+  "id": 46252,
+  "file_name": "000000046252.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000046252.jpg"
+ },
+ {
+  "id": 46463,
+  "file_name": "000000046463.jpg",
+  "width": 500,
+  "height": 400,
+  "coco_url": "http://images.cocodataset.org/val2017/000000046463.jpg"
+ },
+ {
+  "id": 46497,
+  "file_name": "000000046497.jpg",
+  "width": 500,
+  "height": 332,
+  "coco_url": "http://images.cocodataset.org/val2017/000000046497.jpg"
+ },
+ {
+  "id": 46872,
+  "file_name": "000000046872.jpg",
+  "width": 640,
+  "height": 391,
+  "coco_url": "http://images.cocodataset.org/val2017/000000046872.jpg"
+ },
+ {
+  "id": 47112,
+  "file_name": "000000047112.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047112.jpg"
+ },
+ {
+  "id": 47571,
+  "file_name": "000000047571.jpg",
+  "width": 639,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047571.jpg"
+ },
+ {
+  "id": 47585,
+  "file_name": "000000047585.jpg",
+  "width": 424,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047585.jpg"
+ },
+ {
+  "id": 47740,
+  "file_name": "000000047740.jpg",
+  "width": 640,
+  "height": 359,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047740.jpg"
+ },
+ {
+  "id": 47801,
+  "file_name": "000000047801.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047801.jpg"
+ },
+ {
+  "id": 47819,
+  "file_name": "000000047819.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047819.jpg"
+ },
+ {
+  "id": 47828,
+  "file_name": "000000047828.jpg",
+  "width": 640,
+  "height": 318,
+  "coco_url": "http://images.cocodataset.org/val2017/000000047828.jpg"
+ },
+ {
+  "id": 48153,
+  "file_name": "000000048153.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000048153.jpg"
+ },
+ {
+  "id": 48396,
+  "file_name": "000000048396.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000048396.jpg"
+ },
+ {
+  "id": 48504,
+  "file_name": "000000048504.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000048504.jpg"
+ },
+ {
+  "id": 48555,
+  "file_name": "000000048555.jpg",
+  "width": 640,
+  "height": 465,
+  "coco_url": "http://images.cocodataset.org/val2017/000000048555.jpg"
+ },
+ {
+  "id": 48564,
+  "file_name": "000000048564.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000048564.jpg"
+ },
+ {
+  "id": 49060,
+  "file_name": "000000049060.jpg",
+  "width": 640,
+  "height": 411,
+  "coco_url": "http://images.cocodataset.org/val2017/000000049060.jpg"
+ },
+ {
+  "id": 49259,
+  "file_name": "000000049259.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000049259.jpg"
+ },
+ {
+  "id": 49759,
+  "file_name": "000000049759.jpg",
+  "width": 640,
+  "height": 457,
+  "coco_url": "http://images.cocodataset.org/val2017/000000049759.jpg"
+ },
+ {
+  "id": 50006,
+  "file_name": "000000050006.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050006.jpg"
+ },
+ {
+  "id": 50145,
+  "file_name": "000000050145.jpg",
+  "width": 480,
+  "height": 320,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050145.jpg"
+ },
+ {
+  "id": 50326,
+  "file_name": "000000050326.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050326.jpg"
+ },
+ {
+  "id": 50380,
+  "file_name": "000000050380.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050380.jpg"
+ },
+ {
+  "id": 50638,
+  "file_name": "000000050638.jpg",
+  "width": 640,
+  "height": 393,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050638.jpg"
+ },
+ {
+  "id": 50811,
+  "file_name": "000000050811.jpg",
+  "width": 640,
+  "height": 605,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050811.jpg"
+ },
+ {
+  "id": 50943,
+  "file_name": "000000050943.jpg",
+  "width": 640,
+  "height": 319,
+  "coco_url": "http://images.cocodataset.org/val2017/000000050943.jpg"
+ },
+ {
+  "id": 51314,
+  "file_name": "000000051314.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000051314.jpg"
+ },
+ {
+  "id": 51610,
+  "file_name": "000000051610.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000051610.jpg"
+ },
+ {
+  "id": 51712,
+  "file_name": "000000051712.jpg",
+  "width": 640,
+  "height": 368,
+  "coco_url": "http://images.cocodataset.org/val2017/000000051712.jpg"
+ },
+ {
+  "id": 51938,
+  "file_name": "000000051938.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000051938.jpg"
+ },
+ {
+  "id": 51976,
+  "file_name": "000000051976.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000051976.jpg"
+ },
+ {
+  "id": 52007,
+  "file_name": "000000052007.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052007.jpg"
+ },
+ {
+  "id": 52017,
+  "file_name": "000000052017.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052017.jpg"
+ },
+ {
+  "id": 52413,
+  "file_name": "000000052413.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052413.jpg"
+ },
+ {
+  "id": 52507,
+  "file_name": "000000052507.jpg",
+  "width": 640,
+  "height": 438,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052507.jpg"
+ },
+ {
+  "id": 52591,
+  "file_name": "000000052591.jpg",
+  "width": 359,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052591.jpg"
+ },
+ {
+  "id": 52891,
+  "file_name": "000000052891.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052891.jpg"
+ },
+ {
+  "id": 52996,
+  "file_name": "000000052996.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000052996.jpg"
+ },
+ {
+  "id": 53529,
+  "file_name": "000000053529.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000053529.jpg"
+ },
+ {
+  "id": 53624,
+  "file_name": "000000053624.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000053624.jpg"
+ },
+ {
+  "id": 53626,
+  "file_name": "000000053626.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000053626.jpg"
+ },
+ {
+  "id": 53909,
+  "file_name": "000000053909.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000053909.jpg"
+ },
+ {
+  "id": 54164,
+  "file_name": "000000054164.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054164.jpg"
+ },
+ {
+  "id": 54592,
+  "file_name": "000000054592.jpg",
+  "width": 640,
+  "height": 418,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054592.jpg"
+ },
+ {
+  "id": 54593,
+  "file_name": "000000054593.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054593.jpg"
+ },
+ {
+  "id": 54605,
+  "file_name": "000000054605.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054605.jpg"
+ },
+ {
+  "id": 54628,
+  "file_name": "000000054628.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054628.jpg"
+ },
+ {
+  "id": 54654,
+  "file_name": "000000054654.jpg",
+  "width": 407,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054654.jpg"
+ },
+ {
+  "id": 54931,
+  "file_name": "000000054931.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054931.jpg"
+ },
+ {
+  "id": 54967,
+  "file_name": "000000054967.jpg",
+  "width": 424,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000054967.jpg"
+ },
+ {
+  "id": 55002,
+  "file_name": "000000055002.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055002.jpg"
+ },
+ {
+  "id": 55022,
+  "file_name": "000000055022.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055022.jpg"
+ },
+ {
+  "id": 55150,
+  "file_name": "000000055150.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055150.jpg"
+ },
+ {
+  "id": 55167,
+  "file_name": "000000055167.jpg",
+  "width": 640,
+  "height": 360,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055167.jpg"
+ },
+ {
+  "id": 55528,
+  "file_name": "000000055528.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055528.jpg"
+ },
+ {
+  "id": 55950,
+  "file_name": "000000055950.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000055950.jpg"
+ },
+ {
+  "id": 56350,
+  "file_name": "000000056350.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000056350.jpg"
+ },
+ {
+  "id": 57150,
+  "file_name": "000000057150.jpg",
+  "width": 240,
+  "height": 320,
+  "coco_url": "http://images.cocodataset.org/val2017/000000057150.jpg"
+ },
+ {
+  "id": 57597,
+  "file_name": "000000057597.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000057597.jpg"
+ },
+ {
+  "id": 57672,
+  "file_name": "000000057672.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000057672.jpg"
+ },
+ {
+  "id": 57760,
+  "file_name": "000000057760.jpg",
+  "width": 500,
+  "height": 313,
+  "coco_url": "http://images.cocodataset.org/val2017/000000057760.jpg"
+ },
+ {
+  "id": 58350,
+  "file_name": "000000058350.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000058350.jpg"
+ },
+ {
+  "id": 58393,
+  "file_name": "000000058393.jpg",
+  "width": 640,
+  "height": 486,
+  "coco_url": "http://images.cocodataset.org/val2017/000000058393.jpg"
+ },
+ {
+  "id": 58539,
+  "file_name": "000000058539.jpg",
+  "width": 640,
+  "height": 421,
+  "coco_url": "http://images.cocodataset.org/val2017/000000058539.jpg"
+ },
+ {
+  "id": 58705,
+  "file_name": "000000058705.jpg",
+  "width": 640,
+  "height": 482,
+  "coco_url": "http://images.cocodataset.org/val2017/000000058705.jpg"
+ },
+ {
+  "id": 59044,
+  "file_name": "000000059044.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000059044.jpg"
+ },
+ {
+  "id": 59598,
+  "file_name": "000000059598.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000059598.jpg"
+ },
+ {
+  "id": 59635,
+  "file_name": "000000059635.jpg",
+  "width": 486,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000059635.jpg"
+ },
+ {
+  "id": 60052,
+  "file_name": "000000060052.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060052.jpg"
+ },
+ {
+  "id": 60090,
+  "file_name": "000000060090.jpg",
+  "width": 640,
+  "height": 423,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060090.jpg"
+ },
+ {
+  "id": 60102,
+  "file_name": "000000060102.jpg",
+  "width": 640,
+  "height": 360,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060102.jpg"
+ },
+ {
+  "id": 60347,
+  "file_name": "000000060347.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060347.jpg"
+ },
+ {
+  "id": 60507,
+  "file_name": "000000060507.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060507.jpg"
+ },
+ {
+  "id": 60823,
+  "file_name": "000000060823.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060823.jpg"
+ },
+ {
+  "id": 60886,
+  "file_name": "000000060886.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060886.jpg"
+ },
+ {
+  "id": 60899,
+  "file_name": "000000060899.jpg",
+  "width": 360,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060899.jpg"
+ },
+ {
+  "id": 60932,
+  "file_name": "000000060932.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000060932.jpg"
+ },
+ {
+  "id": 61268,
+  "file_name": "000000061268.jpg",
+  "width": 640,
+  "height": 424,
+  "coco_url": "http://images.cocodataset.org/val2017/000000061268.jpg"
+ },
+ {
+  "id": 61418,
+  "file_name": "000000061418.jpg",
+  "width": 640,
+  "height": 458,
+  "coco_url": "http://images.cocodataset.org/val2017/000000061418.jpg"
+ },
+ {
+  "id": 61584,
+  "file_name": "000000061584.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000061584.jpg"
+ },
+ {
+  "id": 61747,
+  "file_name": "000000061747.jpg",
+  "width": 640,
+  "height": 574,
+  "coco_url": "http://images.cocodataset.org/val2017/000000061747.jpg"
+ },
+ {
+  "id": 61960,
+  "file_name": "000000061960.jpg",
+  "width": 640,
+  "height": 371,
+  "coco_url": "http://images.cocodataset.org/val2017/000000061960.jpg"
+ },
+ {
+  "id": 62353,
+  "file_name": "000000062353.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000062353.jpg"
+ },
+ {
+  "id": 62355,
+  "file_name": "000000062355.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000062355.jpg"
+ },
+ {
+  "id": 62692,
+  "file_name": "000000062692.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000062692.jpg"
+ },
+ {
+  "id": 62808,
+  "file_name": "000000062808.jpg",
+  "width": 640,
+  "height": 481,
+  "coco_url": "http://images.cocodataset.org/val2017/000000062808.jpg"
+ },
+ {
+  "id": 63047,
+  "file_name": "000000063047.jpg",
+  "width": 640,
+  "height": 561,
+  "coco_url": "http://images.cocodataset.org/val2017/000000063047.jpg"
+ },
+ {
+  "id": 63154,
+  "file_name": "000000063154.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000063154.jpg"
+ },
+ {
+  "id": 63740,
+  "file_name": "000000063740.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000063740.jpg"
+ },
+ {
+  "id": 63965,
+  "file_name": "000000063965.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000063965.jpg"
+ },
+ {
+  "id": 64084,
+  "file_name": "000000064084.jpg",
+  "width": 640,
+  "height": 436,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064084.jpg"
+ },
+ {
+  "id": 64462,
+  "file_name": "000000064462.jpg",
+  "width": 500,
+  "height": 378,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064462.jpg"
+ },
+ {
+  "id": 64523,
+  "file_name": "000000064523.jpg",
+  "width": 640,
+  "height": 444,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064523.jpg"
+ },
+ {
+  "id": 64718,
+  "file_name": "000000064718.jpg",
+  "width": 640,
+  "height": 464,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064718.jpg"
+ },
+ {
+  "id": 64868,
+  "file_name": "000000064868.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064868.jpg"
+ },
+ {
+  "id": 64898,
+  "file_name": "000000064898.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000064898.jpg"
+ },
+ {
+  "id": 65288,
+  "file_name": "000000065288.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000065288.jpg"
+ },
+ {
+  "id": 65350,
+  "file_name": "000000065350.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000065350.jpg"
+ },
+ {
+  "id": 65455,
+  "file_name": "000000065455.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000065455.jpg"
+ },
+ {
+  "id": 65736,
+  "file_name": "000000065736.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000065736.jpg"
+ },
+ {
+  "id": 65798,
+  "file_name": "000000065798.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000065798.jpg"
+ },
+ {
+  "id": 66038,
+  "file_name": "000000066038.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000066038.jpg"
+ },
+ {
+  "id": 66231,
+  "file_name": "000000066231.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000066231.jpg"
+ },
+ {
+  "id": 66706,
+  "file_name": "000000066706.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000066706.jpg"
+ },
+ {
+  "id": 66771,
+  "file_name": "000000066771.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000066771.jpg"
+ },
+ {
+  "id": 66886,
+  "file_name": "000000066886.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000066886.jpg"
+ },
+ {
+  "id": 67180,
+  "file_name": "000000067180.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067180.jpg"
+ },
+ {
+  "id": 67213,
+  "file_name": "000000067213.jpg",
+  "width": 640,
+  "height": 485,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067213.jpg"
+ },
+ {
+  "id": 67310,
+  "file_name": "000000067310.jpg",
+  "width": 486,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067310.jpg"
+ },
+ {
+  "id": 67315,
+  "file_name": "000000067315.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067315.jpg"
+ },
+ {
+  "id": 67406,
+  "file_name": "000000067406.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067406.jpg"
+ },
+ {
+  "id": 67534,
+  "file_name": "000000067534.jpg",
+  "width": 306,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067534.jpg"
+ },
+ {
+  "id": 67616,
+  "file_name": "000000067616.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000067616.jpg"
+ },
+ {
+  "id": 68093,
+  "file_name": "000000068093.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000068093.jpg"
+ },
+ {
+  "id": 68387,
+  "file_name": "000000068387.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000068387.jpg"
+ },
+ {
+  "id": 68409,
+  "file_name": "000000068409.jpg",
+  "width": 640,
+  "height": 263,
+  "coco_url": "http://images.cocodataset.org/val2017/000000068409.jpg"
+ },
+ {
+  "id": 68628,
+  "file_name": "000000068628.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000068628.jpg"
+ },
+ {
+  "id": 69213,
+  "file_name": "000000069213.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000069213.jpg"
+ },
+ {
+  "id": 69224,
+  "file_name": "000000069224.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000069224.jpg"
+ },
+ {
+  "id": 69356,
+  "file_name": "000000069356.jpg",
+  "width": 640,
+  "height": 505,
+  "coco_url": "http://images.cocodataset.org/val2017/000000069356.jpg"
+ },
+ {
+  "id": 70229,
+  "file_name": "000000070229.jpg",
+  "width": 481,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000070229.jpg"
+ },
+ {
+  "id": 70254,
+  "file_name": "000000070254.jpg",
+  "width": 640,
+  "height": 384,
+  "coco_url": "http://images.cocodataset.org/val2017/000000070254.jpg"
+ },
+ {
+  "id": 70739,
+  "file_name": "000000070739.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000070739.jpg"
+ },
+ {
+  "id": 71711,
+  "file_name": "000000071711.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000071711.jpg"
+ },
+ {
+  "id": 71877,
+  "file_name": "000000071877.jpg",
+  "width": 428,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000071877.jpg"
+ },
+ {
+  "id": 71938,
+  "file_name": "000000071938.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000071938.jpg"
+ },
+ {
+  "id": 72281,
+  "file_name": "000000072281.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000072281.jpg"
+ },
+ {
+  "id": 72795,
+  "file_name": "000000072795.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000072795.jpg"
+ },
+ {
+  "id": 72852,
+  "file_name": "000000072852.jpg",
+  "width": 424,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000072852.jpg"
+ },
+ {
+  "id": 73153,
+  "file_name": "000000073153.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000073153.jpg"
+ },
+ {
+  "id": 73533,
+  "file_name": "000000073533.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000073533.jpg"
+ },
+ {
+  "id": 73702,
+  "file_name": "000000073702.jpg",
+  "width": 464,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000073702.jpg"
+ },
+ {
+  "id": 73946,
+  "file_name": "000000073946.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000073946.jpg"
+ },
+ {
+  "id": 74058,
+  "file_name": "000000074058.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074058.jpg"
+ },
+ {
+  "id": 74092,
+  "file_name": "000000074092.jpg",
+  "width": 332,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074092.jpg"
+ },
+ {
+  "id": 74200,
+  "file_name": "000000074200.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074200.jpg"
+ },
+ {
+  "id": 74256,
+  "file_name": "000000074256.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074256.jpg"
+ },
+ {
+  "id": 74457,
+  "file_name": "000000074457.jpg",
+  "width": 640,
+  "height": 364,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074457.jpg"
+ },
+ {
+  "id": 74646,
+  "file_name": "000000074646.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074646.jpg"
+ },
+ {
+  "id": 74733,
+  "file_name": "000000074733.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074733.jpg"
+ },
+ {
+  "id": 74860,
+  "file_name": "000000074860.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000074860.jpg"
+ },
+ {
+  "id": 75612,
+  "file_name": "000000075612.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000075612.jpg"
+ },
+ {
+  "id": 76416,
+  "file_name": "000000076416.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000076416.jpg"
+ },
+ {
+  "id": 76468,
+  "file_name": "000000076468.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000076468.jpg"
+ },
+ {
+  "id": 76547,
+  "file_name": "000000076547.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000076547.jpg"
+ },
+ {
+  "id": 76625,
+  "file_name": "000000076625.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000076625.jpg"
+ },
+ {
+  "id": 77460,
+  "file_name": "000000077460.jpg",
+  "width": 428,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000077460.jpg"
+ },
+ {
+  "id": 78170,
+  "file_name": "000000078170.jpg",
+  "width": 640,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078170.jpg"
+ },
+ {
+  "id": 78404,
+  "file_name": "000000078404.jpg",
+  "width": 500,
+  "height": 350,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078404.jpg"
+ },
+ {
+  "id": 78565,
+  "file_name": "000000078565.jpg",
+  "width": 640,
+  "height": 499,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078565.jpg"
+ },
+ {
+  "id": 78748,
+  "file_name": "000000078748.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078748.jpg"
+ },
+ {
+  "id": 78843,
+  "file_name": "000000078843.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078843.jpg"
+ },
+ {
+  "id": 78915,
+  "file_name": "000000078915.jpg",
+  "width": 481,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000078915.jpg"
+ },
+ {
+  "id": 79014,
+  "file_name": "000000079014.jpg",
+  "width": 291,
+  "height": 455,
+  "coco_url": "http://images.cocodataset.org/val2017/000000079014.jpg"
+ },
+ {
+  "id": 79031,
+  "file_name": "000000079031.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000079031.jpg"
+ },
+ {
+  "id": 79229,
+  "file_name": "000000079229.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000079229.jpg"
+ },
+ {
+  "id": 79588,
+  "file_name": "000000079588.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000079588.jpg"
+ },
+ {
+  "id": 79969,
+  "file_name": "000000079969.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000079969.jpg"
+ },
+ {
+  "id": 80022,
+  "file_name": "000000080022.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080022.jpg"
+ },
+ {
+  "id": 80153,
+  "file_name": "000000080153.jpg",
+  "width": 428,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080153.jpg"
+ },
+ {
+  "id": 80273,
+  "file_name": "000000080273.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080273.jpg"
+ },
+ {
+  "id": 80340,
+  "file_name": "000000080340.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080340.jpg"
+ },
+ {
+  "id": 80659,
+  "file_name": "000000080659.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080659.jpg"
+ },
+ {
+  "id": 80671,
+  "file_name": "000000080671.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080671.jpg"
+ },
+ {
+  "id": 80932,
+  "file_name": "000000080932.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000080932.jpg"
+ },
+ {
+  "id": 81394,
+  "file_name": "000000081394.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000081394.jpg"
+ },
+ {
+  "id": 81594,
+  "file_name": "000000081594.jpg",
+  "width": 478,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000081594.jpg"
+ },
+ {
+  "id": 81738,
+  "file_name": "000000081738.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000081738.jpg"
+ },
+ {
+  "id": 81988,
+  "file_name": "000000081988.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000081988.jpg"
+ },
+ {
+  "id": 82085,
+  "file_name": "000000082085.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082085.jpg"
+ },
+ {
+  "id": 82688,
+  "file_name": "000000082688.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082688.jpg"
+ },
+ {
+  "id": 82696,
+  "file_name": "000000082696.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082696.jpg"
+ },
+ {
+  "id": 82715,
+  "file_name": "000000082715.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082715.jpg"
+ },
+ {
+  "id": 82812,
+  "file_name": "000000082812.jpg",
+  "width": 640,
+  "height": 360,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082812.jpg"
+ },
+ {
+  "id": 82821,
+  "file_name": "000000082821.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082821.jpg"
+ },
+ {
+  "id": 82986,
+  "file_name": "000000082986.jpg",
+  "width": 640,
+  "height": 444,
+  "coco_url": "http://images.cocodataset.org/val2017/000000082986.jpg"
+ },
+ {
+  "id": 83172,
+  "file_name": "000000083172.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000083172.jpg"
+ },
+ {
+  "id": 83531,
+  "file_name": "000000083531.jpg",
+  "width": 500,
+  "height": 275,
+  "coco_url": "http://images.cocodataset.org/val2017/000000083531.jpg"
+ },
+ {
+  "id": 83540,
+  "file_name": "000000083540.jpg",
+  "width": 640,
+  "height": 443,
+  "coco_url": "http://images.cocodataset.org/val2017/000000083540.jpg"
+ },
+ {
+  "id": 84031,
+  "file_name": "000000084031.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084031.jpg"
+ },
+ {
+  "id": 84170,
+  "file_name": "000000084170.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084170.jpg"
+ },
+ {
+  "id": 84241,
+  "file_name": "000000084241.jpg",
+  "width": 640,
+  "height": 396,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084241.jpg"
+ },
+ {
+  "id": 84270,
+  "file_name": "000000084270.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084270.jpg"
+ },
+ {
+  "id": 84362,
+  "file_name": "000000084362.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084362.jpg"
+ },
+ {
+  "id": 84477,
+  "file_name": "000000084477.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084477.jpg"
+ },
+ {
+  "id": 84492,
+  "file_name": "000000084492.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084492.jpg"
+ },
+ {
+  "id": 84674,
+  "file_name": "000000084674.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000084674.jpg"
+ },
+ {
+  "id": 85089,
+  "file_name": "000000085089.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085089.jpg"
+ },
+ {
+  "id": 85157,
+  "file_name": "000000085157.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085157.jpg"
+ },
+ {
+  "id": 85329,
+  "file_name": "000000085329.jpg",
+  "width": 640,
+  "height": 449,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085329.jpg"
+ },
+ {
+  "id": 85376,
+  "file_name": "000000085376.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085376.jpg"
+ },
+ {
+  "id": 85682,
+  "file_name": "000000085682.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085682.jpg"
+ },
+ {
+  "id": 85772,
+  "file_name": "000000085772.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000085772.jpg"
+ },
+ {
+  "id": 86220,
+  "file_name": "000000086220.jpg",
+  "width": 640,
+  "height": 428,
+  "coco_url": "http://images.cocodataset.org/val2017/000000086220.jpg"
+ },
+ {
+  "id": 86483,
+  "file_name": "000000086483.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000086483.jpg"
+ },
+ {
+  "id": 86582,
+  "file_name": "000000086582.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000086582.jpg"
+ },
+ {
+  "id": 86755,
+  "file_name": "000000086755.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000086755.jpg"
+ },
+ {
+  "id": 86956,
+  "file_name": "000000086956.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000086956.jpg"
+ },
+ {
+  "id": 87038,
+  "file_name": "000000087038.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000087038.jpg"
+ },
+ {
+  "id": 87144,
+  "file_name": "000000087144.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000087144.jpg"
+ },
+ {
+  "id": 87244,
+  "file_name": "000000087244.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000087244.jpg"
+ },
+ {
+  "id": 87470,
+  "file_name": "000000087470.jpg",
+  "width": 640,
+  "height": 470,
+  "coco_url": "http://images.cocodataset.org/val2017/000000087470.jpg"
+ },
+ {
+  "id": 87476,
+  "file_name": "000000087476.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000087476.jpg"
+ },
+ {
+  "id": 88345,
+  "file_name": "000000088345.jpg",
+  "width": 640,
+  "height": 425,
+  "coco_url": "http://images.cocodataset.org/val2017/000000088345.jpg"
+ },
+ {
+  "id": 88485,
+  "file_name": "000000088485.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000088485.jpg"
+ },
+ {
+  "id": 88848,
+  "file_name": "000000088848.jpg",
+  "width": 640,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000088848.jpg"
+ },
+ {
+  "id": 88951,
+  "file_name": "000000088951.jpg",
+  "width": 500,
+  "height": 374,
+  "coco_url": "http://images.cocodataset.org/val2017/000000088951.jpg"
+ },
+ {
+  "id": 88970,
+  "file_name": "000000088970.jpg",
+  "width": 333,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000088970.jpg"
+ },
+ {
+  "id": 89078,
+  "file_name": "000000089078.jpg",
+  "width": 479,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000089078.jpg"
+ },
+ {
+  "id": 89296,
+  "file_name": "000000089296.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000089296.jpg"
+ },
+ {
+  "id": 89648,
+  "file_name": "000000089648.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000089648.jpg"
+ },
+ {
+  "id": 89697,
+  "file_name": "000000089697.jpg",
+  "width": 640,
+  "height": 429,
+  "coco_url": "http://images.cocodataset.org/val2017/000000089697.jpg"
+ },
+ {
+  "id": 90284,
+  "file_name": "000000090284.jpg",
+  "width": 640,
+  "height": 639,
+  "coco_url": "http://images.cocodataset.org/val2017/000000090284.jpg"
+ },
+ {
+  "id": 90891,
+  "file_name": "000000090891.jpg",
+  "width": 640,
+  "height": 431,
+  "coco_url": "http://images.cocodataset.org/val2017/000000090891.jpg"
+ },
+ {
+  "id": 90956,
+  "file_name": "000000090956.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000090956.jpg"
+ },
+ {
+  "id": 91406,
+  "file_name": "000000091406.jpg",
+  "width": 640,
+  "height": 424,
+  "coco_url": "http://images.cocodataset.org/val2017/000000091406.jpg"
+ },
+ {
+  "id": 91495,
+  "file_name": "000000091495.jpg",
+  "width": 640,
+  "height": 447,
+  "coco_url": "http://images.cocodataset.org/val2017/000000091495.jpg"
+ },
+ {
+  "id": 91500,
+  "file_name": "000000091500.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000091500.jpg"
+ },
+ {
+  "id": 92053,
+  "file_name": "000000092053.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000092053.jpg"
+ },
+ {
+  "id": 92091,
+  "file_name": "000000092091.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000092091.jpg"
+ },
+ {
+  "id": 92416,
+  "file_name": "000000092416.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000092416.jpg"
+ },
+ {
+  "id": 92939,
+  "file_name": "000000092939.jpg",
+  "width": 424,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000092939.jpg"
+ },
+ {
+  "id": 93261,
+  "file_name": "000000093261.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000093261.jpg"
+ },
+ {
+  "id": 93353,
+  "file_name": "000000093353.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000093353.jpg"
+ },
+ {
+  "id": 93437,
+  "file_name": "000000093437.jpg",
+  "width": 640,
+  "height": 361,
+  "coco_url": "http://images.cocodataset.org/val2017/000000093437.jpg"
+ },
+ {
+  "id": 93717,
+  "file_name": "000000093717.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000093717.jpg"
+ },
+ {
+  "id": 94157,
+  "file_name": "000000094157.jpg",
+  "width": 372,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094157.jpg"
+ },
+ {
+  "id": 94185,
+  "file_name": "000000094185.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094185.jpg"
+ },
+ {
+  "id": 94326,
+  "file_name": "000000094326.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094326.jpg"
+ },
+ {
+  "id": 94614,
+  "file_name": "000000094614.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094614.jpg"
+ },
+ {
+  "id": 94751,
+  "file_name": "000000094751.jpg",
+  "width": 375,
+  "height": 500,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094751.jpg"
+ },
+ {
+  "id": 94871,
+  "file_name": "000000094871.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094871.jpg"
+ },
+ {
+  "id": 94944,
+  "file_name": "000000094944.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000094944.jpg"
+ },
+ {
+  "id": 95155,
+  "file_name": "000000095155.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000095155.jpg"
+ },
+ {
+  "id": 95862,
+  "file_name": "000000095862.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000095862.jpg"
+ },
+ {
+  "id": 96427,
+  "file_name": "000000096427.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000096427.jpg"
+ },
+ {
+  "id": 96493,
+  "file_name": "000000096493.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000096493.jpg"
+ },
+ {
+  "id": 96825,
+  "file_name": "000000096825.jpg",
+  "width": 640,
+  "height": 503,
+  "coco_url": "http://images.cocodataset.org/val2017/000000096825.jpg"
+ },
+ {
+  "id": 97278,
+  "file_name": "000000097278.jpg",
+  "width": 457,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000097278.jpg"
+ },
+ {
+  "id": 97337,
+  "file_name": "000000097337.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000097337.jpg"
+ },
+ {
+  "id": 97679,
+  "file_name": "000000097679.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000097679.jpg"
+ },
+ {
+  "id": 97924,
+  "file_name": "000000097924.jpg",
+  "width": 600,
+  "height": 400,
+  "coco_url": "http://images.cocodataset.org/val2017/000000097924.jpg"
+ },
+ {
+  "id": 97988,
+  "file_name": "000000097988.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000097988.jpg"
+ },
+ {
+  "id": 98287,
+  "file_name": "000000098287.jpg",
+  "width": 415,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000098287.jpg"
+ },
+ {
+  "id": 98392,
+  "file_name": "000000098392.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000098392.jpg"
+ },
+ {
+  "id": 98716,
+  "file_name": "000000098716.jpg",
+  "width": 640,
+  "height": 359,
+  "coco_url": "http://images.cocodataset.org/val2017/000000098716.jpg"
+ },
+ {
+  "id": 98853,
+  "file_name": "000000098853.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000098853.jpg"
+ },
+ {
+  "id": 99024,
+  "file_name": "000000099024.jpg",
+  "width": 640,
+  "height": 482,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099024.jpg"
+ },
+ {
+  "id": 99039,
+  "file_name": "000000099039.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099039.jpg"
+ },
+ {
+  "id": 99054,
+  "file_name": "000000099054.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099054.jpg"
+ },
+ {
+  "id": 99114,
+  "file_name": "000000099114.jpg",
+  "width": 500,
+  "height": 335,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099114.jpg"
+ },
+ {
+  "id": 99182,
+  "file_name": "000000099182.jpg",
+  "width": 500,
+  "height": 334,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099182.jpg"
+ },
+ {
+  "id": 99242,
+  "file_name": "000000099242.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099242.jpg"
+ },
+ {
+  "id": 99810,
+  "file_name": "000000099810.jpg",
+  "width": 500,
+  "height": 332,
+  "coco_url": "http://images.cocodataset.org/val2017/000000099810.jpg"
+ },
+ {
+  "id": 100238,
+  "file_name": "000000100238.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000100238.jpg"
+ },
+ {
+  "id": 100428,
+  "file_name": "000000100428.jpg",
+  "width": 640,
+  "height": 491,
+  "coco_url": "http://images.cocodataset.org/val2017/000000100428.jpg"
+ },
+ {
+  "id": 100510,
+  "file_name": "000000100510.jpg",
+  "width": 600,
+  "height": 400,
+  "coco_url": "http://images.cocodataset.org/val2017/000000100510.jpg"
+ },
+ {
+  "id": 100624,
+  "file_name": "000000100624.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000100624.jpg"
+ },
+ {
+  "id": 100723,
+  "file_name": "000000100723.jpg",
+  "width": 500,
+  "height": 333,
+  "coco_url": "http://images.cocodataset.org/val2017/000000100723.jpg"
+ },
+ {
+  "id": 101068,
+  "file_name": "000000101068.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000101068.jpg"
+ },
+ {
+  "id": 102331,
+  "file_name": "000000102331.jpg",
+  "width": 500,
+  "height": 357,
+  "coco_url": "http://images.cocodataset.org/val2017/000000102331.jpg"
+ },
+ {
+  "id": 102356,
+  "file_name": "000000102356.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000102356.jpg"
+ },
+ {
+  "id": 102411,
+  "file_name": "000000102411.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000102411.jpg"
+ },
+ {
+  "id": 102805,
+  "file_name": "000000102805.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000102805.jpg"
+ },
+ {
+  "id": 102820,
+  "file_name": "000000102820.jpg",
+  "width": 427,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000102820.jpg"
+ },
+ {
+  "id": 103548,
+  "file_name": "000000103548.jpg",
+  "width": 640,
+  "height": 480,
+  "coco_url": "http://images.cocodataset.org/val2017/000000103548.jpg"
+ },
+ {
+  "id": 103723,
+  "file_name": "000000103723.jpg",
+  "width": 480,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000103723.jpg"
+ },
+ {
+  "id": 104424,
+  "file_name": "000000104424.jpg",
+  "width": 424,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000104424.jpg"
+ },
+ {
+  "id": 105264,
+  "file_name": "000000105264.jpg",
+  "width": 640,
+  "height": 427,
+  "coco_url": "http://images.cocodataset.org/val2017/000000105264.jpg"
+ },
+ {
+  "id": 105335,
+  "file_name": "000000105335.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000105335.jpg"
+ },
+ {
+  "id": 105912,
+  "file_name": "000000105912.jpg",
+  "width": 500,
+  "height": 375,
+  "coco_url": "http://images.cocodataset.org/val2017/000000105912.jpg"
+ },
+ {
+  "id": 105923,
+  "file_name": "000000105923.jpg",
+  "width": 640,
+  "height": 468,
+  "coco_url": "http://images.cocodataset.org/val2017/000000105923.jpg"
+ },
+ {
+  "id": 106757,
+  "file_name": "000000106757.jpg",
+  "width": 426,
+  "height": 640,
+  "coco_url": "http://images.cocodataset.org/val2017/000000106757.jpg"
+ },
+ {
+  "id": 106912,
+  "file_name": "000000106912.jpg",
+  "width": 612,
+  "height": 612,
+  "coco_url": "http://images.cocodataset.org/val2017/000000106912.jpg"
+ },
+ {
+  "id": 107094,
+  "file_name": "000000107094.jpg",
+  "width": 640,
+  "height": 426,
+  "coco_url": "http://images.cocodataset.org/val2017/000000107094.jpg"
+ }
+]

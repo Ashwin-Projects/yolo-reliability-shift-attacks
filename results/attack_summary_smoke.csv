@@ -1,0 +1,4 @@
+condition,n_images,n_images_with_persons_before,attack_success_rate,mean_persons_before,mean_persons_after,mean_best_iter
+rand_eps8_limit10,10,10,0.0,3.7,3.6,
+pgd_eps4_limit10,10,10,1.0,3.7,0.0,19.1
+pgd_eps8_limit10,10,10,1.0,3.7,0.0,19.1

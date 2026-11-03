@@ -1,0 +1,3 @@
+# keep script line endings fixed regardless of core.autocrlf
+*.sh text eol=lf
+*.bat text eol=crlf

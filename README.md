@@ -1,0 +1,250 @@
+# detconf
+
+Does YOLO's confidence track its errors? Stage 1: clean baseline for YOLO11n on
+the COCO val2017 **person** class (CPU only, seed 0).
+
+Problems, fixes and design decisions are recorded in [RESEARCH_LOG.md](RESEARCH_LOG.md).
+
+## Reproduce
+
+Windows (Git Bash or PowerShell), Python 3.12, from this folder:
+
+```bash
+py -3.12 -m venv .venv
+.venv/Scripts/python -m pip install --upgrade pip
+.venv/Scripts/python -m pip install -r requirements.txt
+
+# smoke test (first 20 subset images)
+.venv/Scripts/python run.py --stage baseline --limit 20
+
+# full baseline (500 images)
+.venv/Scripts/python run.py --stage baseline
+
+# recompute cached predictions
+.venv/Scripts/python run.py --stage baseline --force
+
+# distribution shift: smoke test, full run, single condition
+.venv/Scripts/python run.py --stage shift --limit 20
+.venv/Scripts/python run.py --stage shift
+.venv/Scripts/python run.py --stage shift --only fisheye_s1
+
+# reliability signals (needs the baseline and shift caches): smoke test, full run
+.venv/Scripts/python run.py --stage reliability --limit 20
+.venv/Scripts/python run.py --stage reliability
+
+# white-box attack on the first 100 subset images: gradient check, smoke test, full run
+.venv/Scripts/python run.py --stage attack --gradcheck 5
+.venv/Scripts/python run.py --stage attack --limit 10
+.venv/Scripts/python run.py --stage attack
+```
+
+On Linux/macOS use `python3 -m venv .venv` and `.venv/bin/python`.
+On Windows the PyPI `torch` wheel is CPU-only; `device="cpu"` is set in `config.py` regardless.
+
+**All stages at once.** `reproduce.bat` (Windows) or `bash reproduce.sh` runs baseline,
+shift, reliability and attack in order (without `--force`, so valid caches are reused),
+then rebuilds `results/summary.md` with `python summarize.py`. Running it from the
+frozen caches reproduced all 100 result CSVs, `summary.md` and all prediction caches
+byte-identically.
+
+### Runtime on CPU
+
+Measured on the machine that produced the results (Windows 11, CPU only, YOLO11n).
+"Full" = predictions computed; "from cache" = rerun with valid caches (no inference).
+
+| Stage | Full | From cache |
+|---|---|---|
+| baseline (500 images) | 66 s (+ ~640 s one-off image download, 1.3 s/image) | 9 s |
+| shift (14 conditions × 500) | 859 s | 98 s |
+| reliability (15 conditions × 2 views × 500) | 2179 s | 119 s |
+| attack (100 images; PGD generation ≈ 500 s per eps) | 1162 s | 8 s |
+| `--stage attack --gradcheck 5` | 63 s | n/a |
+| `reproduce.sh`, all stages + summary | ≈ 4,270 s (≈ 71 min, excl. download) | 290 s |
+
+The "from cache" times come from the `reproduce.sh` reproducibility run. Without
+`results/adv/` (excluded from git), the attack stage regenerates the attacked images
+(≈ 17 min) and, because the PNG hashes are part of the prediction-cache metadata,
+recomputes their predictions only if the regenerated PNGs differ.
+
+## What it does
+
+| Step | Detail |
+|---|---|
+| Data | Downloads `annotations_trainval2017.zip`, extracts `instances_val2017.json`. Selects the first 500 val2017 images (sorted by image id) with at least one non-crowd person annotation and saves them to `data/subset.json`. On every run the selection is recomputed and must match the saved file exactly (count, order, ids), otherwise the run stops with an error. Only those images are downloaded from their official `coco_url` into `data/coco/val2017/` (they are the same files as in `val2017.zip`). |
+| Model | `yolo11n.pt` (stored in `weights/`), `imgsz=640`, `conf=0.001`, `device="cpu"`, other ultralytics predict defaults (NMS IoU 0.7, max_det 300). |
+| Inference | All classes are predicted, then only YOLO class 0 (person) is kept. Boxes are in original image pixels, stored as COCO `[x, y, w, h]` with `category_id=1` in `results/preds/clean.json` (`clean_limit{N}.json` for `--limit N`). Each cache file stores metadata (weights, imgsz, conf, device, condition, sorted image ids); it is reused only if all of these match the requested run, otherwise the mismatched field is printed and predictions are recomputed. `--force` always recomputes. |
+| mAP | pycocotools `COCOeval` (bbox), `params.imgIds` = subset, `params.catIds = [1]`. Reports AP@0.5 and AP@[0.5:0.95]. |
+| D-ECE | Detections with conf ≥ 0.25. Per image, sorted by descending confidence, each is greedily matched to the highest-IoU unmatched non-crowd person GT; TP if IoU ≥ 0.5. COCO crowd rule: an unmatched detection whose intersection / detection area with any crowd person GT is ≥ 0.5 is ignored (neither TP nor FP, excluded from D-ECE and counts, reported as `n_ignored`); other unmatched detections are FP. 10 equal-width bins on [0, 1]; `D-ECE = Σ (n_bin/N)·|mean_conf − precision|` over non-ignored detections, empty bins skipped. |
+| Output | Full runs: `results/table.csv` (one row per condition, replaced on rerun). `--limit N` runs write only to `results/table_smoke.csv` with condition `<condition>_limit<N>` and never touch `table.csv`. `results/vis/clean/`: first 5 subset images, GT green, predictions with conf ≥ 0.25 red with scores. |
+
+**Note on the earlier crowd rule.** The first version of the baseline excluded
+crowd GT from matching entirely, so every detection on a crowd region counted as
+a false positive. Under that rule the 500-image clean baseline gave
+D-ECE = 0.156724 (1340 TP, 372 FP). With the COCO crowd rule above, 143 of those
+FPs are ignored instead. mAP is unaffected because pycocotools already applies the crowd rule.
+
+## Stage "shift"
+
+The same 500 images are corrupted on the fly (never saved) and run through the
+identical pipeline. Conditions are defined in `config.SHIFT_CONDITIONS`:
+
+| Condition | Corruption |
+|---|---|
+| `gaussian_blur_s1..s3` | `cv2.GaussianBlur`, sigma 1.0 / 2.0 / 4.0 px (kernel size derived from sigma) |
+| `gaussian_noise_s1..s3` | additive N(0, std) on [0, 1] pixels, std 0.04 / 0.08 / 0.12, clipped; RNG seeded with `(0, image_id)`, so every image gets the same noise field at every run (scaled by std) |
+| `low_light_s1..s3` | pixel values × 0.5 / 0.3 / 0.15 |
+| `jpeg_s1..s3` | `cv2.imencode` JPEG quality 30 / 15 / 5, then decode |
+| `fisheye_s1`, `fisheye_s2` | equidistant fisheye, half-diagonal at theta = 60° / 80° |
+
+**Fisheye.** Same output size, centred on the image centre (continuous coordinates,
+pixel centres at +0.5). For an output pixel at radius r_d: theta = r_d / f,
+source radius r_u = f·tan(theta), sampled with `cv2.remap` (bilinear). Pixels
+with theta ≥ 89° or outside the source are black. f is set per image so the
+half-diagonal R maps to theta_max:
+
+`f = R / theta_max = 0.5·sqrt(W² + H²) / radians(theta_max)`
+
+Because COCO image sizes vary, f varies per image. The exact f for every image is
+written to `results/fisheye/<condition>.csv`. For the two most common sizes:
+
+| Image size | f (s1, 60°) | f (s2, 80°) |
+|---|---|---|
+| 640×480 | 381.971863 | 286.478898 |
+| 640×427 | 367.346744 | 275.510058 |
+
+GT boxes (crowd included) are warped with the forward map
+r_u → theta = atan(r_u / f) → r_d = f·theta at 20 points per edge, then the
+bounding box of the warped points is taken, clipped to the image, and dropped if
+narrower or shorter than 4 px. Each warped box keeps the original COCO
+segment-area / box-area ratio in its `area` field (this only affects COCO's
+small/medium/large breakdown, not the reported mAP). The warped person-only GT is
+a separate COCO object per fisheye condition and is used for both mAP and TP/FP
+matching. Dropped-box counts are printed and saved to `results/fisheye/`.
+
+**Outputs per condition** (smoke runs use `<condition>_limit<N>` names):
+
+- `results/preds/<condition>.json`: cached predictions; metadata includes the corruption parameters, plus `fisheye_max_theta_deg` for fisheye and `seed` for gaussian noise
+- `results/table.csv` (full) or `results/table_smoke.csv` (`--limit`): one row per condition, clean first. Besides the baseline columns:
+  - `n_gt`: non-crowd person GT boxes (warped GT for fisheye)
+  - `recall_025`: `n_tp / n_gt` at conf ≥ 0.25
+  - `signed_cal_gap`: `Σ (n_bin/N)·(precision − mean_conf)` over the D-ECE bins; positive = underconfident, negative = overconfident. It equals `d_ece` whenever no bin is overconfident.
+- `results/bins/<condition>.csv`: D-ECE bin breakdown
+- `results/dets/<condition>.csv`: every detection with conf ≥ 0.25: `image_id, score, label (TP/FP/ignored), x, y, w, h, r_norm`, where `r_norm` is the box-centre distance from the image centre divided by the half-diagonal (0 = centre, 1 = corner)
+- `results/vis/<condition>/`: first 3 subset images, GT green, predictions red
+
+The baseline uses the same code path, so it also writes `results/bins/clean.csv` and `results/dets/clean.csv`.
+
+The run ends with sanity checks: whether mAP50 strictly decreases with severity
+within each family (flagged otherwise; results are not altered) and the number
+of fisheye GT boxes dropped.
+
+## Stage "reliability"
+
+Runs over clean and all 14 shift conditions. Design details and caveats are in
+[RESEARCH_LOG.md](RESEARCH_LOG.md).
+
+**Part A (no inference).** From the cached original-view predictions, adds
+`recall_005` and `recall_010` to the table: matched non-crowd person GT / `n_gt`
+using detections with conf ≥ 0.05 / 0.10 (same greedy matching and crowd rule as
+`recall_025`). A missing or stale cache raises an error instead of running inference.
+It also adds `precision_005`, `precision_010`, `precision_025` (TP / (TP + FP) at
+each threshold, ignored excluded, same matcher) and `recoverable_share` =
+(recall_005 − recall_025) / (1 − recall_025), the share of people missed at 0.25
+that are matched at 0.05.
+
+**Part B (views).** Each condition image is also predicted as a horizontal flip
+(boxes mapped back to original coordinates) and at imgsz = 576, cached as
+`results/preds/<condition>__hflip.json` / `__imgsz576.json`. `--force` recomputes
+only these view caches.
+
+- Box level: for each detection with conf ≥ 0.25, `consistency` = mean over the two
+  views of its max IoU with any view detection (conf ≥ 0.25), 0 if none.
+  `results/box_level.csv` reports AUROC for TP vs FP (ignored excluded) of
+  confidence, consistency and confidence × consistency. Per-detection values are in
+  `results/box_level_dets.csv`.
+- Image level: `miss_rate` = 1 − matched / non-crowd person GT at conf ≥ 0.25;
+  signals `n_det`, `mean_conf` (0 if no detection), `view_disagreement`
+  (mean over views of |n_det_view − n_det| / max(n_det, 1)), `mean_consistency`
+  (0 if no detection). `results/image_level.csv` gives, per condition and pooled,
+  the Spearman correlation with `miss_rate` and the AUROC for
+  `miss_rate ≥ 0.5` (raw; below 0.5 means low values indicate misses).
+  Per-condition rows also give the Spearman p-value (one row per image). Pooled
+  rows have no p-value (`spearman_p` is empty): they hold 7,498 rows from only 500
+  source images, so ordinary p-values are invalid; pooled rho and AUROC are
+  descriptive only. Per-image rows are in `results/image_level_per_image.csv`.
+- Figures: `results/fig_silent_failure.png` (recall_025 vs mean_conf_tp per
+  condition, severities joined from clean), `results/fig_risk_coverage.png`
+  (FP fraction among kept detections vs coverage, ranked by confidence vs
+  consistency, for clean, gaussian_blur_s3 and fisheye_s2) and
+  `results/fig_recoverable.png` (recoverable_share vs severity, clean = 0, one
+  line per corruption family).
+
+Smoke runs (`--limit`) write `*_smoke` versions of all these files.
+
+## Stage "attack"
+
+White-box PGD "vanishing" attack on persons, on the first 100 subset images
+(`--limit N`: the first N of those). Conditions:
+
+| Condition | Images |
+|---|---|
+| `clean_100` | the 100 clean images (fair reference) |
+| `rand_eps8` | + uniform noise in [−8/255, 8/255], seeded with `(0, image_id)`, clipped |
+| `pgd_eps4`, `pgd_eps8` | PGD with eps 4/255 / 8/255 |
+
+**PGD.** The raw torch model (`YOLO("yolo11n.pt").model`, eval mode, float32, not
+fused) is attacked directly, since the ultralytics predictor runs under no_grad.
+The perturbation lives at the original resolution (RGB in [0, 1]). The forward pass
+letterboxes differentiably: bilinear `F.interpolate` to scale r, then padding with
+114/255. **The letterbox matches the rectangular letterbox that `model.predict`
+actually uses (`rect=True` → `LetterBox(auto=True)`): the image is padded only to the
+next multiple of 32 (e.g. 640×426 → 448×640), not to a 640×640 square.** The
+gradient check verifies the differentiable letterbox against ultralytics' own
+(max abs pixel difference 2.97e-08). The model output is `(1, 84, N)` with
+sigmoid-activated class scores; row 4 is person.
+
+Loss = sum of the top-100 person scores over all N predictions. 20 sign-gradient
+descent steps, alpha = 1/255, no random start; after each step the image is
+projected to the L∞ ball and clipped to [0, 1], and the iterate with the lowest
+loss seen (including the starting image) is returned.
+
+**Saved images.** Attacked images are rounded to uint8 and saved as PNG in
+`results/adv/<condition>/` and evaluated from those files through the normal
+pipeline, so reported numbers reflect quantized images. `meta.json` records the
+attack spec, model weights (name and SHA-256), imgsz, letterbox settings and image
+ids; any mismatch regenerates the images. `attack_info.csv` holds per-image start,
+best and last loss and the best-iterate index. Prediction caches of attack
+conditions include a SHA-256 of the saved PNGs.
+
+**Outputs.** Rows in `results/table.csv` (all columns), the views and box/image-level
+rows in `results/box_level.csv` and `results/image_level.csv` (as in stage
+reliability; rows of other stages are kept), plus:
+
+- `results/attack_summary.csv`: per attack condition, attack success rate (share of
+  images with ≥ 1 person at conf ≥ 0.25 on clean that have 0 after), mean persons per
+  image before and after, mean best-iterate index
+- `results/attack_views.csv`: recall at conf ≥ 0.25 on the original, hflip and
+  imgsz-576 views
+- `results/attack_detection.csv`: per-image AUROC of `view_disagreement` and
+  `mean_conf` for separating pgd_eps8 images (positive) from clean_100 and from
+  rand_eps8 images (raw; below 0.5 means low values indicate attacked images)
+- `results/vis/<condition>/`: 3 images each (GT green, predictions red);
+  `results/vis/pgd_eps8/perturbation_panel.png`: original | pgd_eps8 | perturbation × 10
+
+`--gradcheck N` only runs the gradient check on the first N subset images. It
+prints the loss per iteration, the best loss and its iteration, and persons ≥ 0.25
+before and after. It passes if, for every image, the best loss is ≤ 50% of the
+starting loss and the number of persons does not increase.
+
+## Layout
+
+```
+attack.py       differentiable letterbox, PGD and noise control, saved attack images
+config.py       paths, hyperparameters, shift and attack conditions
+corruptions.py  image corruptions, fisheye remap and GT warping
+data.py         annotation download, subset selection, image download
+infer.py        YOLO inference + prediction cache
+metrics.py      COCOeval mAP, greedy matching, D-ECE, recall
+reliability.py  view consistency, box/image-level signals, figures
+run.py          CLI (stages baseline, shift, reliability, attack)
+```

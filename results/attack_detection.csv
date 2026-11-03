@@ -1,0 +1,5 @@
+positive,negative,signal,n_pos,n_neg,auroc
+pgd_eps8,clean_100,view_disagreement,100,100,0.8350500000000001
+pgd_eps8,clean_100,mean_conf,100,100,0.020000000000000018
+pgd_eps8,rand_eps8,view_disagreement,100,100,0.83135
+pgd_eps8,rand_eps8,mean_conf,100,100,0.020000000000000018
