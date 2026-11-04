@@ -88,6 +88,17 @@ def box_mask(gt, shape):
     return torch.from_numpy(m)[None, None].to(attack.device())
 
 
+def measure(model, predictor, canvas, gt, adv_root, cond, stem):
+    """Measure 1 (steps-to-suppress, AUC) and Measure 2 (localized eps_min) on one canvas."""
+    m1 = steps_to_suppress(model, predictor, canvas, gt, adv_root / "steps" / cond, stem)
+    t0 = time.perf_counter()
+    m2 = phase1.min_eps(model, predictor, canvas, gt, adv_root / "local" / cond,
+                        stem, eps_list=B["local_eps_255"],
+                        censored_value=B["local_censored_eps_255"], mask=box_mask(gt, canvas.shape))
+    m2["seconds"] = time.perf_counter() - t0
+    return m1, m2
+
+
 def cache_meta(phase1_meta):
     return {"phase1": phase1_meta, "phase1b": B}
 
@@ -112,13 +123,7 @@ def run_target(target, f, get_models, force=False):
         c = p1["conditions"][cond]
         canvas = phase1.render(src, c["A"], c["s"], f)
         gt = c["gt"]
-        m1 = steps_to_suppress(model, predictor, canvas, gt,
-                               config.PHASE1B_DIR / "adv" / "steps" / cond, str(target["id"]))
-        t0 = time.perf_counter()
-        m2 = phase1.min_eps(model, predictor, canvas, gt, config.PHASE1B_DIR / "adv" / "local" / cond,
-                            str(target["id"]), eps_list=B["local_eps_255"],
-                            censored_value=B["local_censored_eps_255"], mask=box_mask(gt, canvas.shape))
-        m2["seconds"] = time.perf_counter() - t0
+        m1, m2 = measure(model, predictor, canvas, gt, config.PHASE1B_DIR / "adv", cond, str(target["id"]))
         result["conditions"][cond] = {"gt": gt, "clean_conf": c["clean_conf"], "steps": m1, "local": m2}
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as fh:
@@ -209,9 +214,10 @@ def perturbation_figure(target, result, f, path, gain=10):
 CONF_DIFF_MAX = 0.05  # (b): pairs with |clean-confidence difference| below this
 
 
-def addendum(df):
+def addendum(df, conf_diff_max=CONF_DIFF_MAX):
     """(a) paired clean-confidence differences, (b) main comparisons on pairs with similar clean
-    confidence, (c) pooled Spearman correlations (descriptive). Long format like summarize()."""
+    confidence (|difference| < conf_diff_max), (c) pooled Spearman correlations (descriptive).
+    Long format like summarize()."""
     from scipy.stats import spearmanr
 
     rows = []
@@ -224,7 +230,7 @@ def addendum(df):
         rng = np.random.default_rng(B["seed"])
         for a, b in config.PHASE1_COMPARISONS:
             name = f"{a} - {b}"
-            ids = wide.index[(wide[a] - wide[b]).abs() < CONF_DIFF_MAX]
+            ids = wide.index[(wide[a] - wide[b]).abs() < conf_diff_max]
             sub = df[df["image_id"].isin(ids)]
             res = phase1_analysis.paired(sub, metric, a, b, rng)
             d = phase1_analysis.paired_diffs(sub, metric, a, b)

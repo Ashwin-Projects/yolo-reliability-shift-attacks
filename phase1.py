@@ -32,8 +32,9 @@ def focal():
 
 # ---------- target selection
 
-def select_targets(coco):
-    """First n_targets val2017 images (by id) whose largest non-crowd person qualifies."""
+def select_targets(coco, n=None):
+    """First n (default n_targets) val2017 images (by id) whose largest non-crowd person qualifies."""
+    n = P["n_targets"] if n is None else n
     targets = []
     for img_id in sorted(coco.getImgIds()):
         anns = coco.loadAnns(coco.getAnnIds(imgIds=[img_id], catIds=[config.PERSON_CAT_ID]))
@@ -55,7 +56,7 @@ def select_targets(coco):
         targets.append({"id": img_id, "file_name": img["file_name"], "width": img["width"],
                         "height": img["height"], "coco_url": img["coco_url"],
                         "target_ann_id": target["id"], "target_bbox": target["bbox"]})
-        if len(targets) == P["n_targets"]:
+        if len(targets) == n:
             break
     return targets
 
@@ -280,6 +281,22 @@ def raw_vs_nms_iou(model, canvas_bgr, dets):
     return float(iou_xywh(np.array([cx - w / 2, cy - h / 2, w, h]), np.array([top[:4]]))[0])
 
 
+def clean_conditions(predictor, src, bbox, f):
+    """Render the three conditions and detect the target on each clean canvas."""
+    conds, canvases = {}, {}
+    for cond, (A, s) in placements(bbox, f).items():
+        canvas = render(src, A, s, f)
+        gt = canvas_box(bbox, A, s, f)
+        dets = detect(predictor, canvas)
+        conf = target_conf(dets, gt)
+        canvases[cond] = canvas
+        conds[cond] = {"A": list(A), "s": list(s), "gt": gt, "box_w": gt[2], "box_h": gt[3],
+                       "box_area": gt[2] * gt[3], "touches_border": touches_border(gt),
+                       "clean_conf": conf, "detected": conf is not None,
+                       "dets_025": [d for d in dets if d[4] >= P["match_conf"]]}
+    return conds, canvases
+
+
 def run_target(target, f, get_models, force=False):
     """Render the three conditions, check eligibility, attack if eligible; cached per target."""
     cache_dir = config.PHASE1_DIR / "cache"
@@ -293,18 +310,7 @@ def run_target(target, f, get_models, force=False):
         print(f"Phase 1 cache for target {target['id']} is stale; recomputing")
     model, predictor = get_models()
     src = cv2.imread(str(config.IMG_DIR / target["file_name"]))
-    bbox = target["target_bbox"]
-    conds, canvases = {}, {}
-    for cond, (A, s) in placements(bbox, f).items():
-        canvas = render(src, A, s, f)
-        gt = canvas_box(bbox, A, s, f)
-        dets = detect(predictor, canvas)
-        conf = target_conf(dets, gt)
-        canvases[cond] = canvas
-        conds[cond] = {"A": list(A), "s": list(s), "gt": gt, "box_w": gt[2], "box_h": gt[3],
-                       "box_area": gt[2] * gt[3], "touches_border": touches_border(gt),
-                       "clean_conf": conf, "detected": conf is not None,
-                       "dets_025": [d for d in dets if d[4] >= P["match_conf"]]}
+    conds, canvases = clean_conditions(predictor, src, target["target_bbox"], f)
     eligible = all(c["detected"] for c in conds.values())
     result = {"id": target["id"], "eligible": eligible, "conditions": conds,
               "raw_vs_nms_iou_center": raw_vs_nms_iou(model, canvases["center"],

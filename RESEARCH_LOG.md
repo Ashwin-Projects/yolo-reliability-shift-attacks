@@ -436,3 +436,17 @@ fix or decision.
 - **Minimal proposed fix (not applied):** Describe the observed ties and limited resolution/degenerate intervals without asserting conservative coverage.
 - **Fix (applied 2026-11-04, committed with this text):** The limitation in docs/PILOT_SUMMARY.md now says that tied pairs and [0, 0] intervals reflect the limited resolution of discrete metrics, not conservative coverage. It also states that the three pilot metrics were equally weighted and that AUC was designated primary only for the confirmatory study, after the pilot results were known.
 - **Impact:** None on saved results (documentation only).
+
+## Confirmatory
+
+### --device detection crashed when --device was absent
+- **Date:** 2026-11-04
+- **What went wrong:** The first version of the pre-import check in run.py that sets `CUDA_VISIBLE_DEVICES` and `CUBLAS_WORKSPACE_CONFIG` used `sys.argv.index("--device")`, which raises `ValueError` when `--device` is not given, i.e. on every default CPU run. Found by reading the code before running it, not committed.
+- **Fix:** The check now scans the arguments for `--device cuda` or `--device=cuda` without assuming the flag exists, and takes the cuBLAS value from config. Committed in 38baa1d.
+- **Impact:** None on saved results.
+
+### Confirmatory runner had a syntax error
+- **Date:** 2026-11-04
+- **What went wrong:** Two `print(f"\n...")` lines in `run_confirmatory` were written with a literal line break inside the f-string (an escaping slip when the code was inserted by script), so `python run.py` failed with `SyntaxError: unterminated f-string literal (detected at line 611)`. A regression test run at that moment reported "identical" only because it compared stale outputs from an earlier run; nothing had executed.
+- **Fix:** Replaced the line breaks with `\n` escapes; deleted the stale test outputs and reran the regression test, which regenerated the Phase 1b CSVs from the caches identically. Not committed in the broken state.
+- **Impact:** None on saved results.

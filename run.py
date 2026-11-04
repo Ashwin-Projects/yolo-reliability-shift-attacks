@@ -538,7 +538,7 @@ def run_phase1b(limit=None, force=False):
           f"total {time.perf_counter() - t0:.1f}s")
 
 
-GPU_STAGES = ["probe"]  # stages that support --device cuda
+GPU_STAGES = ["probe", "confirmatory"]  # stages that support --device cuda
 
 
 def run_probe():
@@ -556,6 +556,63 @@ def run_probe():
     print(f"Wrote {path}")
 
 
+def run_confirmatory(limit=None, force=False, manifest=None):
+    """Confirmatory study (docs/CONFIRMATORY_DESIGN.md). Aborts unless the live environment
+    matches docs/EXECUTION_MANIFEST.json (--manifest: code tests with --limit only).
+    --limit N: the first N selected targets, written as *_smoke outputs."""
+    from pathlib import Path
+
+    import confirmatory
+    import execution
+    import phase1
+
+    t0 = time.perf_counter()
+    env = execution.check_manifest(Path(manifest) if manifest else config.MANIFEST_FILE)
+    print(f"Environment matches the execution manifest ({env['device']}, {env['gpu_name']})")
+    infer.set_seed()
+    data.ensure_annotations()
+    targets = confirmatory.load_or_create_targets(data.load_coco())
+    if limit is not None:
+        targets = targets[:limit]
+    data.ensure_images(targets)
+    f = phase1.focal()
+    smoke = "" if limit is None else "_smoke"
+    print(f"Confirmatory: {len(targets)} targets (ids {targets[0]['id']}-{targets[-1]['id']}), f = {f:.4f} px")
+
+    get_models = phase1.model_loader()
+    results, seconds = [], []
+    for t in targets:
+        t1 = time.perf_counter()
+        results.append(confirmatory.run_target(t, f, get_models, env, force=force))
+        seconds.append(time.perf_counter() - t1)
+        print(f"target {t['id']}: eligible {results[-1]['eligible']}, {seconds[-1]:.1f}s")
+
+    out = config.CONFIRM_DIR
+    out.mkdir(parents=True, exist_ok=True)
+    df, summary, control, dec, outcome = confirmatory.analyze(results)
+    pd.DataFrame([{"image_id": r["id"], "eligible": r["eligible"],
+                   **{f"clean_conf_{c}": r["conditions"][c]["clean_conf"] for c in confirmatory.CONDS}}
+                  for r in results]).to_csv(out / f"selected{smoke}.csv", index=False)
+    df.to_csv(out / f"targets{smoke}.csv", index=False)
+    summary.to_csv(out / f"summary{smoke}.csv", index=False)
+    control.to_csv(out / f"summary_confidence_control{smoke}.csv", index=False)
+    dec.to_csv(out / f"decision{smoke}.csv", index=False)
+    eligible = [r for r in results if r["eligible"]]
+    if eligible:
+        import phase1b
+
+        phase1b.fig_paired(df, summary, out / f"fig_paired{smoke}.png")
+        phase1b.fig_confidence_curves(eligible, out / f"fig_confidence_curves{smoke}.png")
+
+    pd.set_option("display.width", 250)
+    print(summary.to_string(index=False))
+    print(control.to_string(index=False))
+    print(dec.to_string(index=False))
+    print(f"\nDecision: {outcome}")
+    print(f"\nPer-target runtime (s): {', '.join(f'{s:.1f}' for s in seconds)}; "
+          f"total {time.perf_counter() - t0:.1f}s")
+
+
 def startup_info():
     import torch
 
@@ -567,7 +624,8 @@ def startup_info():
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
     parser.add_argument("--stage", required=True,
-                        choices=["baseline", "shift", "reliability", "attack", "phase1", "phase1b", "probe"])
+                        choices=["baseline", "shift", "reliability", "attack", "phase1", "phase1b", "probe",
+                                 "confirmatory"])
     parser.add_argument("--limit", type=int, default=None, help="use only the first N subset images")
     parser.add_argument("--force", action="store_true", help="recompute cached predictions")
     parser.add_argument("--only", choices=list(config.SHIFT_CONDITIONS),
@@ -578,7 +636,12 @@ def main():
                         help="cuda: one GPU (cuda:0); only for --stage probe and confirmatory")
     parser.add_argument("--out", default="results", help="results folder (relative: to this folder)")
     parser.add_argument("--data", default="data", help="data folder (relative: to this folder)")
+    parser.add_argument("--manifest", default=None,
+                        help="confirmatory code test only (requires --limit): manifest other than "
+                             "docs/EXECUTION_MANIFEST.json")
     args = parser.parse_args()
+    if args.manifest is not None and (args.stage != "confirmatory" or args.limit is None):
+        parser.error("--manifest is only for testing --stage confirmatory with --limit")
     if args.device == "cuda" and args.stage not in GPU_STAGES:
         parser.error(f"--device cuda applies only to --stage {' / '.join(GPU_STAGES)}")
     config.set_paths(args.out, args.data)
@@ -620,6 +683,10 @@ def main():
         run_phase1b(limit=args.limit, force=args.force)
     elif args.stage == "probe":
         run_probe()
+    elif args.stage == "confirmatory":
+        if args.only:
+            parser.error("--only is not supported for --stage confirmatory")
+        run_confirmatory(limit=args.limit, force=args.force, manifest=args.manifest)
 
 
 if __name__ == "__main__":
