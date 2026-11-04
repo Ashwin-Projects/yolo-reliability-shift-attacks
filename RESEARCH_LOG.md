@@ -368,3 +368,19 @@ fix or decision.
 - **What went wrong:** After the Phase 1 smoke test, comparing `sha256(git show main:<file>)` with `sha256(<file on disk>)` reported all 100 earlier result CSVs as different, while `git diff main` reported none. Cause: with `core.autocrlf=true` the stored blobs are line-ending-normalised, so each working-tree CSV is one byte per line longer than its blob (results/table.csv: 5159 bytes on disk vs 5139 in the blob, 20 lines). The comparison method was wrong, not the files.
 - **Fix:** Compared with `git hash-object <file>` against `git rev-parse main:<file>` (same normalisation as git): 100 of 100 identical. Raw on-disk SHA-256 against the hashes recorded in the 2026-11-03 reproducibility check: 100 of 100 identical.
 - **Impact:** None on saved results (verification only; no earlier result file changed).
+
+### Phase 1 cache omits active global fisheye settings
+- **Date:** 2026-11-04
+- **What is wrong:** Per-target cache metadata includes PHASE1 but omits FISHEYE_MAX_THETA_DEG, which phase1.plane_grid uses, and FISHEYE_MIN_BOX, which the reused corruptions.warp_box uses. Changing either global can change canvases or GT while cached results remain accepted. Reproduced: changing the cutoff from 89 to 45 degrees returned cached target 785 unchanged; a freshly rebuilt render changed 23,798 pixels. The in-memory plane-grid cache is keyed only by f, so it also reuses an old grid after a cutoff change. Raising the global minimum box size changed a GT box to None without changing metadata.
+- **File and line:** phase1.py:132-142, phase1.py:246-251, phase1.py:275-276; corruptions.py:109 (minimum-box rule).
+- **Found by:** found by Codex.
+- **Impact:** Only future runs after these active global settings change; current saved smoke results use the expected defaults and are unaffected. The full run can silently reuse stale geometry/results after such a change.
+- **Minimal proposed fix (not applied):** Include the effective global warp settings in per-target metadata and the angular cutoff in the plane-grid key, or make the Phase 1 warp depend exclusively on explicitly recorded Phase 1 settings.
+
+### Phase 1 summary crashes when no targets pass eligibility
+- **Date:** 2026-11-04
+- **What is wrong:** paired() pivots eligible targets and accesses wide[a] and wide[b] before testing for an empty paired sample. With no eligible targets the pivot has no condition columns, causing KeyError: 'edge' instead of an empty/NaN summary. Reproduced by setting eligibility False on every smoke row and calling phase1_analysis.summarize. The later empty-sample guard is never reached.
+- **File and line:** phase1_analysis.py:55-56, phase1_analysis.py:58-60.
+- **Found by:** found by Codex.
+- **Impact:** Only future runs with zero eligible targets, for example after changing detector or eligibility settings. Current saved smoke results and the unchanged-design full run (which includes the five eligible smoke targets) are unaffected.
+- **Minimal proposed fix (not applied):** Check for an empty eligible pivot or missing comparison columns before subtracting the paired columns, and return zero counts with undefined statistics.

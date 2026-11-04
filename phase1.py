@@ -129,7 +129,8 @@ _PLANE = {}
 def plane_grid(f):
     """Plane coordinates of every canvas pixel center (inverse equidistant map, as in
     corruptions._fisheye_maps): r_d -> theta = r_d / f -> r_u = f * tan(theta)."""
-    if f not in _PLANE:
+    key = (f, config.FISHEYE_MAX_THETA_DEG)
+    if key not in _PLANE:
         n = P["canvas"]
         dx, dy = np.meshgrid(np.arange(n) + 0.5 - C, np.arange(n) + 0.5 - C)
         r_d = np.hypot(dx, dy)
@@ -139,8 +140,8 @@ def plane_grid(f):
         scale = np.divide(r_u, r_d, out=np.ones_like(r_d), where=r_d > 0)
         px = np.where(valid, C + dx * scale, np.inf)
         py = np.where(valid, C + dy * scale, np.inf)
-        _PLANE[f] = (px, py)
-    return _PLANE[f]
+        _PLANE[key] = (px, py)
+    return _PLANE[key]
 
 
 def render(src_bgr, A, s, f):
@@ -243,8 +244,17 @@ def min_eps(model, predictor, canvas_bgr, gt, adv_dir, stem):
 
 # ---------- per-target pipeline with cache
 
+def global_settings():
+    """Global (non-Phase-1) settings that affect rendering, GT warping or detection matching."""
+    return {"fisheye_max_theta_deg": config.FISHEYE_MAX_THETA_DEG,  # render cutoff (plane_grid)
+            "fisheye_min_box": config.FISHEYE_MIN_BOX,  # warp_box drops smaller boxes
+            "fisheye_edge_points": config.FISHEYE_EDGE_POINTS,  # warp_box samples per edge
+            "yolo_person_cls": config.YOLO_PERSON_CLS, "person_cat_id": config.PERSON_CAT_ID}
+
+
 def cache_meta(target, f):
     return {"design": P, "conditions": config.PHASE1_CONDITIONS, "f": f,
+            "global": global_settings(),
             "model": config.MODEL_WEIGHTS, "weights_sha256": attack.weights_sha256(),
             "imgsz": config.IMGSZ, "eval_conf": config.EVAL_CONF,
             "letterbox": config.ATTACK_LETTERBOX,
