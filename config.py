@@ -97,3 +97,26 @@ ADV_DIR = RESULTS_DIR / "adv"  # saved (uint8 PNG) attacked images per condition
 ATTACK_DETECT_POSITIVE = "pgd_eps8"
 ATTACK_DETECT_NEGATIVES = ["clean_100", "rand_eps8"]
 ATTACK_DETECT_SIGNALS = ["view_disagreement", "mean_conf"]
+
+# Phase 1: position-dependent attack vulnerability under fisheye geometry (docs/PHASE1_DESIGN.md)
+PHASE1 = {
+    "canvas": 640,  # square canvas, optical axis at its center
+    "theta_max_deg": 80.0,  # canvas half-diagonal <-> theta
+    "gray": 114,  # canvas area outside the source image
+    "edge_radius": 0.75,  # edge condition: target center at r_d / (canvas / 2)
+    "edge_points": FISHEYE_EDGE_POINTS,  # box warp samples per edge
+    "min_box_side": 96,  # target box area >= min_box_side ** 2
+    "border_margin": 1,  # target box at least this far (px) from every image edge
+    "size_ratio": 2.0,  # target area >= size_ratio x every other person's area
+    "n_targets": 100,
+    "match_conf": CALIB_CONF, "match_iou": 0.5,  # target detected / attack success
+    "loss_top_k": 20, "loss_iou": 0.3,  # targeted loss over raw predictions
+    "steps": 20, "alpha_frac": 0.25, "random_start": False, "best_iterate": True,
+    "eps_255": [1, 2, 3, 4, 6, 8],  # tried in ascending order
+    "censored_eps_255": 16,  # stored eps_min when no eps succeeds
+    "bootstrap": 10000, "seed": SEED,
+}
+PHASE1_CONDITIONS = ["center", "edge", "center_shrunk"]
+PHASE1_COMPARISONS = [("edge", "center"), ("edge", "center_shrunk"), ("center_shrunk", "center")]
+PHASE1_TARGETS_FILE = DATA_DIR / "phase1_targets.json"
+PHASE1_DIR = RESULTS_DIR / "phase1"

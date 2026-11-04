@@ -96,8 +96,10 @@ def to_uint8_bgr(x):
     return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
 
 
-def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k):
+def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k, loss_fn=None):
     """L-inf PGD descent on the top-k person-score loss, keeping the best iterate.
+
+    `loss_fn(model, x, stride)`, if given, replaces the top-k loss (used by Phase 1).
 
     losses[i] is the loss of the iterate after i steps (losses[0] = starting image),
     each measured after projection and clipping. Returns (best_x, losses, best_iter).
@@ -108,7 +110,7 @@ def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k):
         last = i == steps
         x.requires_grad_(not last)
         with torch.set_grad_enabled(not last):
-            loss = attack_loss(model, x, stride, top_k)
+            loss = attack_loss(model, x, stride, top_k) if loss_fn is None else loss_fn(model, x, stride)
         losses.append(float(loss.detach()))
         if losses[-1] < losses[best_iter]:
             best_x, best_iter = x.detach().clone(), i
