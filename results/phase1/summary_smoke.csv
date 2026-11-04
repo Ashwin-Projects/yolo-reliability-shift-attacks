@@ -1,0 +1,90 @@
+section,name,metric,value
+overall,targets,n_selected,5
+overall,targets,n_eligible,5
+condition,center,n,5
+condition,center,mean_eps_min_255,1.2
+condition,center,median_eps_min_255,1.0
+condition,center,frac_censored,0.0
+condition,center,mean_clean_conf,0.8565800070762635
+condition,center,frac_touches_border,0.0
+condition,center,success_rate_eps1,0.8
+condition,center,success_rate_eps2,1.0
+condition,center,success_rate_eps3,1.0
+condition,center,success_rate_eps4,1.0
+condition,center,success_rate_eps6,1.0
+condition,center,success_rate_eps8,1.0
+condition,edge,n,5
+condition,edge,mean_eps_min_255,1.0
+condition,edge,median_eps_min_255,1.0
+condition,edge,frac_censored,0.0
+condition,edge,mean_clean_conf,0.7865914583206177
+condition,edge,frac_touches_border,0.0
+condition,edge,success_rate_eps1,1.0
+condition,edge,success_rate_eps2,1.0
+condition,edge,success_rate_eps3,1.0
+condition,edge,success_rate_eps4,1.0
+condition,edge,success_rate_eps6,1.0
+condition,edge,success_rate_eps8,1.0
+condition,center_shrunk,n,5
+condition,center_shrunk,mean_eps_min_255,1.2
+condition,center_shrunk,median_eps_min_255,1.0
+condition,center_shrunk,frac_censored,0.0
+condition,center_shrunk,mean_clean_conf,0.7844484329223633
+condition,center_shrunk,frac_touches_border,0.0
+condition,center_shrunk,success_rate_eps1,0.8
+condition,center_shrunk,success_rate_eps2,1.0
+condition,center_shrunk,success_rate_eps3,1.0
+condition,center_shrunk,success_rate_eps4,1.0
+condition,center_shrunk,success_rate_eps6,1.0
+condition,center_shrunk,success_rate_eps8,1.0
+paired_eps_min_255,edge - center,n,5
+paired_eps_min_255,edge - center,n_nonzero,1
+paired_eps_min_255,edge - center,median_diff,0.0
+paired_eps_min_255,edge - center,ci_low,-1.0
+paired_eps_min_255,edge - center,ci_high,0.0
+paired_eps_min_255,edge - center,wilcoxon_stat,0.0
+paired_eps_min_255,edge - center,wilcoxon_p,1.0
+paired_eps_min_255,edge - center,interpretation,edge ~ center
+paired_eps_min_255,edge - center_shrunk,n,5
+paired_eps_min_255,edge - center_shrunk,n_nonzero,1
+paired_eps_min_255,edge - center_shrunk,median_diff,0.0
+paired_eps_min_255,edge - center_shrunk,ci_low,-1.0
+paired_eps_min_255,edge - center_shrunk,ci_high,0.0
+paired_eps_min_255,edge - center_shrunk,wilcoxon_stat,0.0
+paired_eps_min_255,edge - center_shrunk,wilcoxon_p,1.0
+paired_eps_min_255,edge - center_shrunk,interpretation,edge ~ center_shrunk
+paired_eps_min_255,center_shrunk - center,n,5
+paired_eps_min_255,center_shrunk - center,n_nonzero,0
+paired_eps_min_255,center_shrunk - center,median_diff,0.0
+paired_eps_min_255,center_shrunk - center,ci_low,0.0
+paired_eps_min_255,center_shrunk - center,ci_high,0.0
+paired_eps_min_255,center_shrunk - center,wilcoxon_stat,
+paired_eps_min_255,center_shrunk - center,wilcoxon_p,
+paired_eps_min_255,center_shrunk - center,interpretation,center_shrunk ~ center
+paired_clean_conf,edge - center,n,5
+paired_clean_conf,edge - center,n_nonzero,5
+paired_clean_conf,edge - center,median_diff,-0.028744280338287354
+paired_clean_conf,edge - center,ci_low,-0.23314273357391357
+paired_clean_conf,edge - center,ci_high,-0.005682229995727539
+paired_clean_conf,edge - center,wilcoxon_stat,0.0
+paired_clean_conf,edge - center,wilcoxon_p,0.0625
+paired_clean_conf,edge - center_shrunk,n,5
+paired_clean_conf,edge - center_shrunk,n_nonzero,5
+paired_clean_conf,edge - center_shrunk,median_diff,0.00545346736907959
+paired_clean_conf,edge - center_shrunk,ci_low,-0.03904932737350464
+paired_clean_conf,edge - center_shrunk,ci_high,0.034425556659698486
+paired_clean_conf,edge - center_shrunk,wilcoxon_stat,7.0
+paired_clean_conf,edge - center_shrunk,wilcoxon_p,1.0
+paired_clean_conf,center_shrunk - center,n,5
+paired_clean_conf,center_shrunk - center,n_nonzero,5
+paired_clean_conf,center_shrunk - center,median_diff,-0.06316983699798584
+paired_clean_conf,center_shrunk - center,ci_low,-0.19409340620040894
+paired_clean_conf,center_shrunk - center,ci_high,-0.0019137859344482422
+paired_clean_conf,center_shrunk - center,wilcoxon_stat,0.0
+paired_clean_conf,center_shrunk - center,wilcoxon_p,0.0625
+size_match,edge / center_shrunk box_w,min,0.9999998754340581
+size_match,edge / center_shrunk box_w,max,0.9999999985248489
+size_match,edge / center_shrunk box_w,mean,0.999999956119785
+size_match,edge / center_shrunk box_h,min,0.9999992261160305
+size_match,edge / center_shrunk box_h,max,0.9999999243785823
+size_match,edge / center_shrunk box_h,mean,0.9999996649912453

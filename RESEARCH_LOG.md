@@ -362,3 +362,9 @@ fix or decision.
 - **What went wrong:** Of three edits to run.py, the one adding the `run_phase1` function was rejected by an editor pre-check while the two CLI edits (the `phase1` choice and its dispatch) were applied. Commit d3c5fb0 therefore contained `--stage phase1` calling a function that did not exist; `--help` still worked because the name is only resolved when the stage runs. The stage had not been run.
 - **Fix:** Added `run_phase1` and checked that `run.run_phase1` is defined before committing the fix together with this entry.
 - **Impact:** None on saved results (no Phase 1 results existed; earlier stages untouched).
+
+### Byte comparison against main reported all earlier CSVs as different
+- **Date:** 2026-11-04
+- **What went wrong:** After the Phase 1 smoke test, comparing `sha256(git show main:<file>)` with `sha256(<file on disk>)` reported all 100 earlier result CSVs as different, while `git diff main` reported none. Cause: with `core.autocrlf=true` the stored blobs are line-ending-normalised, so each working-tree CSV is one byte per line longer than its blob (results/table.csv: 5159 bytes on disk vs 5139 in the blob, 20 lines). The comparison method was wrong, not the files.
+- **Fix:** Compared with `git hash-object <file>` against `git rev-parse main:<file>` (same normalisation as git): 100 of 100 identical. Raw on-disk SHA-256 against the hashes recorded in the 2026-11-03 reproducibility check: 100 of 100 identical.
+- **Impact:** None on saved results (verification only; no earlier result file changed).
