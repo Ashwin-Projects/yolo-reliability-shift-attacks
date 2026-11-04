@@ -1,0 +1,52 @@
+{
+ "environment": {
+  "device": "cuda:0",
+  "gpu_name": "Tesla T4",
+  "gpu_count": 1,
+  "driver_version": "580.178.04",
+  "cuda_version": "13.0",
+  "cudnn_version": 92700,
+  "python": "3.13.16",
+  "torch": "2.11.0+cu130",
+  "torchvision": "0.26.0+cu130",
+  "ultralytics": "8.4.200",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "dtype": "float32",
+  "flags": {
+   "cuda_matmul_allow_tf32": false,
+   "cudnn_allow_tf32": false,
+   "cudnn_benchmark": false,
+   "cudnn_deterministic": true,
+   "deterministic_algorithms": true,
+   "deterministic_algorithms_warn_only": false
+  },
+  "env": {
+   "CUDA_VISIBLE_DEVICES": "0",
+   "CUBLAS_WORKSPACE_CONFIG": ":4096:8"
+  },
+  "model": "yolo11n.pt",
+  "weights_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+ },
+ "probe": {
+  "probe_target_ids": [
+   785,
+   2153
+  ],
+  "warm_up": true,
+  "m1_seconds_per_step": 0.06262094627333208,
+  "m2_seconds_per_step": 0.03706067424166667,
+  "m2_mean_steps_per_condition": 40.0,
+  "n_full": 852,
+  "full_range": [
+   101,
+   952
+  ],
+  "estimate_hours": 3.2755667411666223,
+  "runtime_limit_hours": 10
+ },
+ "target_range": [
+  101,
+  952
+ ]
+}
