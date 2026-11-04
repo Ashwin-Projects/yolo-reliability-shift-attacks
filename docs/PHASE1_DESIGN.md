@@ -39,6 +39,13 @@ image id are used; that person is the **target**. Saved to `data/phase1_targets.
 For every condition the target's ground-truth box on the canvas is computed with the same
 warp. Target box w, h and area are recorded per condition.
 
+*Note (added 2026-11-04, after the smoke test, before the full run):* placement is defined
+by the **mapped center of the source box**: that point lands exactly on the optical axis
+(center, center_shrunk) or at canvas (560, 320) (edge). Because the warp is nonlinear,
+the center of the enclosing warped GT box is not the same point at the edge. In the 5
+smoke targets it lies 2.81–15.54 px closer to the axis (along x). For center and
+center_shrunk the two coincide (0.00 px), since the warp is symmetric about the axis.
+
 ### 4. Eligibility
 A target is kept only if, before any attack, YOLO11n detects it (person detection with
 conf ≥ 0.25 and IoU ≥ 0.5 with the target GT box) in all three conditions. The clean
