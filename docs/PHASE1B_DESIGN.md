@@ -91,3 +91,28 @@ center comparisons are read the same way.
   ignores.
 - **Smoke test:** `--limit 5` uses the first 5 eligible targets and writes `*_smoke` outputs.
   Per-target caches are shared with the full run.
+
+## Addendum (pre-registered before full run)
+
+*Added 2026-11-04, after the 5-target smoke test and before the full 95-target run. Confirmed
+before the full run: censoring of Measure 1 at 51; the full runtime.*
+
+**Secondary analysis: clean-confidence control.** In Phase 1 the clean target confidence
+differed between conditions. This addendum checks whether that starting confidence explains
+the Phase 1b result. It does not change the main analysis: **the main conclusions follow the
+original interpretation rule above**, applied to the main paired comparisons over all
+eligible targets.
+
+a) For each paired comparison (edge vs center, edge vs center_shrunk, center_shrunk vs
+   center): the paired difference in clean target confidence (first − second), with its median,
+   95% bootstrap CI (10,000 resamples, seed 0) and Wilcoxon signed-rank test.
+b) The main paired comparisons (steps_to_suppress, AUC, local eps_min) repeated on the subset
+   of pairs whose clean-confidence difference is below 0.05 in absolute value, with the same
+   statistics and the more / less / equal counts. The subset size is reported for each
+   comparison (it differs between comparisons).
+c) Spearman correlation between clean confidence and each metric, pooled over the three
+   conditions (one row per target and condition). Descriptive only: the rows are not
+   independent (each target appears three times), so no p-value is interpreted.
+
+Clean confidence is the max confidence of a matching detection on the clean canvas (the
+Phase 1 `clean_conf`, equal to the step-0 value of Measure 1).
