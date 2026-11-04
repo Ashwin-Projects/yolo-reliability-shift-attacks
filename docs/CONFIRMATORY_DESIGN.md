@@ -5,6 +5,10 @@ This plan was written after the Phase 1b pilot results were known.
 Status: design fixed before any confirmatory code or run (branch `phase1-fisheye-position`).
 Pilot results: [PILOT_SUMMARY.md](PILOT_SUMMARY.md).
 
+**Amendment (2026-11-04):** Sample size changed from 300 to 852 before any confirmatory data
+was collected. The targets are now all remaining qualifying targets (101–952), with a
+pre-specified runtime fallback to targets 101–400 (see "Targets").
+
 ## Question
 
 Does fisheye distortion make a person at the edge of the frame more vulnerable to adversarial
@@ -18,17 +22,45 @@ attack than a person of the same apparent size at the center?
   - the target box area is at least 96²;
   - the box is at least 1 px from every image border;
   - the target's area is at least 2× every other person's area.
-- **Which targets:** qualifying targets 101 to 400 in that order (300 targets), i.e. the 300
-  that follow the pilot's 100.
+- **Which targets:** all remaining qualifying targets in COCO val2017 after the first 100
+  (targets 101-952), excluding ineligible ones without replacement.
+- **Why not train2017:** COCO train2017 images are not used because YOLO11n was trained on
+  them.
 - **No overlap with the pilot.** A read-only check of the selection rule, run before this
   document was written, gave:
   - val2017 contains 952 qualifying targets;
   - the first 100 equal the saved pilot list (`data/phase1_targets.json`);
-  - targets 101 to 400 run from image id 50811 to 250619 and share no image with the pilot.
+  - targets 101 to 952 run from image id 50811 to the last qualifying val2017 image, and share
+    no image with the pilot.
+  - The full list of targets 101-952 is saved in `data/confirmatory_targets.json`, in
+    selection order.
 - **Eligibility:** a target is eligible if it is detected (conf ≥ 0.25, IoU ≥ 0.5) on the clean
   canvas in all three conditions, as in the pilot. Ineligible targets are excluded and not
   replaced. The numbers selected and eligible are reported, and the analysis uses all eligible
   targets.
+
+### Runtime fallback (pre-specified)
+
+After the Kaggle probe, the per-step GPU time is measured on 2 targets. If the estimated total
+runtime for targets 101-952 exceeds 10 hours, the confirmatory run uses targets 101-400 instead.
+This decision is recorded in docs/EXECUTION_MANIFEST.json before the run and cannot be changed
+afterwards.
+
+- **Probe targets:** the first two targets of the pilot list (`data/phase1_targets.json`) that
+  are eligible on the probe machine. Both measures run on all three conditions, exactly as in
+  the confirmatory run. Their results and images are discarded: nothing is written next to the
+  confirmatory results.
+- **Per-step times** (means over the 2 targets × 3 conditions):
+  - t₁ = Measure 1 seconds per step (PGD step plus detection);
+  - t₂ = Measure 2 seconds per PGD step;
+  - L = mean number of Measure 2 PGD steps per condition (20 × the number of eps values
+    tried).
+- **Estimate:** N × 3 × (50 · t₁ + L · t₂) seconds, where N = 852 (targets 101-952). It ignores
+  ineligible targets (which cost less) and the clean detections.
+- **Decision:** the target range is 101-952 if the estimate is at most 10 hours, otherwise
+  101-400. The probe writes the per-step times, the estimate and the chosen range into the
+  manifest.
+- **Binding:** `--stage confirmatory` reads the target range only from the committed manifest.
 
 ## Fixed from Phase 1b
 
@@ -185,17 +217,19 @@ the matched subset are reported but do not enter the decision.
 ### Execution manifest
 
 1. **Probe.** Before any confirmatory inference, a probe run on Kaggle
-   (`run.py --stage probe --device cuda`) writes `EXECUTION_MANIFEST.json`. The probe runs no
-   attack and no inference on target images. The manifest records:
+   (`run.py --stage probe --device cuda`) writes `EXECUTION_MANIFEST.json`. The probe's only
+   attacks are the timing runs on the 2 pilot targets (see "Runtime fallback"); it runs nothing
+   on confirmatory targets. The manifest records:
    - GPU name, number of visible GPUs and driver version;
    - CUDA and cuDNN versions;
    - torch, torchvision, ultralytics, numpy and scipy versions;
    - Python version and the SHA-256 of `yolo11n.pt`;
-   - the dtype and all the flags and environment settings above.
+   - the dtype and all the flags and environment settings above;
+   - the probe's per-step times, the runtime estimate and the chosen target range.
 2. **Commit.** The manifest is copied to `docs/EXECUTION_MANIFEST.json` and committed before
    the confirmatory run.
-3. **Startup check.** At startup, `--stage confirmatory` builds the same record from the live
-   environment and compares it with `docs/EXECUTION_MANIFEST.json`. It aborts with a message if
+3. **Startup check.** At startup, `--stage confirmatory` builds the same environment record
+   from the live environment and compares it with the record in `docs/EXECUTION_MANIFEST.json`. It aborts with a message if
    the file is missing or any field differs.
 4. **Test option.** A `--manifest` option exists only for code testing. It requires `--limit`
    and is never used for the confirmatory run.
