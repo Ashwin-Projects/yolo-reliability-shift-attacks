@@ -96,10 +96,11 @@ def to_uint8_bgr(x):
     return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
 
 
-def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k, loss_fn=None):
+def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k, loss_fn=None, mask=None):
     """L-inf PGD descent on the top-k person-score loss, keeping the best iterate.
 
     `loss_fn(model, x, stride)`, if given, replaces the top-k loss (used by Phase 1).
+    `mask` (broadcastable to x, 1 = may change), if given, restricts the perturbation.
 
     losses[i] is the loss of the iterate after i steps (losses[0] = starting image),
     each measured after projection and clipping. Returns (best_x, losses, best_iter).
@@ -120,7 +121,10 @@ def pgd_vanish(model, x0, eps, alpha, steps, stride, top_k, loss_fn=None):
         if x.grad is None:
             raise RuntimeError("gradient w.r.t. the input image is None")
         x = x.detach() - alpha * x.grad.sign()
-        x = torch.min(torch.max(x, x0 - eps), x0 + eps).clamp(0.0, 1.0)
+        if mask is None:
+            x = torch.min(torch.max(x, x0 - eps), x0 + eps).clamp(0.0, 1.0)
+        else:  # perturb only where mask == 1 (Phase 1b localized attack)
+            x = (x0 + mask * (x - x0).clamp(-eps, eps)).clamp(0.0, 1.0)
     return best_x, losses, best_iter
 
 

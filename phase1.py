@@ -215,18 +215,23 @@ def targeted_loss(gt, stride, h, w):
     return loss_fn, stats
 
 
-def min_eps(model, predictor, canvas_bgr, gt, adv_dir, stem):
-    """Try eps in ascending order; stop at the first eps whose saved PNG hides the target."""
+def min_eps(model, predictor, canvas_bgr, gt, adv_dir, stem, eps_list=None, censored_value=None,
+            mask=None):
+    """Try eps in ascending order; stop at the first eps whose saved PNG hides the target.
+
+    Defaults are the Phase 1 settings; Phase 1b passes its eps list, censor value and a mask."""
+    eps_list = eps_list or P["eps_255"]
+    censored_value = censored_value or P["censored_eps_255"]
     stride = attack.model_stride(model)
     x0 = attack.to_tensor(canvas_bgr)
     loss_fn, stats = targeted_loss(gt, stride, *canvas_bgr.shape[:2])
     adv_dir.mkdir(parents=True, exist_ok=True)
     tries, success = [], False
-    for e in P["eps_255"]:
+    for e in eps_list:
         eps = e / 255.0
         t0 = time.perf_counter()
         x, losses, best_iter = attack.pgd_vanish(model, x0, eps, eps * P["alpha_frac"], P["steps"],
-                                                 stride, None, loss_fn=loss_fn)
+                                                 stride, None, loss_fn=loss_fn, mask=mask)
         pgd_s = time.perf_counter() - t0
         path = adv_dir / f"{stem}_eps{e}.png"
         cv2.imwrite(str(path), attack.to_uint8_bgr(x))
@@ -238,7 +243,7 @@ def min_eps(model, predictor, canvas_bgr, gt, adv_dir, stem):
         if success:
             break
         path.unlink()  # keep only the PNG at eps_min
-    return {"eps_min_255": tries[-1]["eps_255"] if success else P["censored_eps_255"],
+    return {"eps_min_255": tries[-1]["eps_255"] if success else censored_value,
             "censored": not success, "tries": tries, **stats}
 
 

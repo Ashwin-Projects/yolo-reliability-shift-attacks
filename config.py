@@ -120,3 +120,14 @@ PHASE1_CONDITIONS = ["center", "edge", "center_shrunk"]
 PHASE1_COMPARISONS = [("edge", "center"), ("edge", "center_shrunk"), ("center_shrunk", "center")]
 PHASE1_TARGETS_FILE = DATA_DIR / "phase1_targets.json"
 PHASE1_DIR = RESULTS_DIR / "phase1"
+
+# Phase 1b: finer measures on the Phase 1 eligible targets (docs/PHASE1B_DESIGN.md)
+PHASE1B = {
+    # Measure 1: steps-to-suppress (plain PGD, no best iterate, every step evaluated)
+    "steps_eps_255": 1, "steps_alpha_255": 0.25, "steps_max": 50,
+    "steps_censored": 51,  # stored when not suppressed within steps_max
+    # Measure 2: localized attack (mask = target GT box), Phase 1 PGD settings otherwise
+    "local_eps_255": [1, 2, 4, 8, 16], "local_censored_eps_255": 32,
+    "bootstrap": 10000, "seed": SEED,
+}
+PHASE1B_DIR = RESULTS_DIR / "phase1b"
