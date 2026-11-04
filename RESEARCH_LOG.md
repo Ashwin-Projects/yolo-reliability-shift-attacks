@@ -450,3 +450,9 @@ fix or decision.
 - **What went wrong:** Two `print(f"\n...")` lines in `run_confirmatory` were written with a literal line break inside the f-string (an escaping slip when the code was inserted by script), so `python run.py` failed with `SyntaxError: unterminated f-string literal (detected at line 611)`. A regression test run at that moment reported "identical" only because it compared stale outputs from an earlier run; nothing had executed.
 - **Fix:** Replaced the line breaks with `\n` escapes; deleted the stale test outputs and reran the regression test, which regenerated the Phase 1b CSVs from the caches identically. Not committed in the broken state.
 - **Impact:** None on saved results.
+
+### Inline edit command for the target-range change was rejected by bash
+- **Date:** 2026-11-04
+- **What went wrong:** The first attempt to apply the target-range code changes (config, confirmatory, execution, run) as an inline Python heredoc failed before running: `/usr/bin/bash: -c: line 153: unexpected EOF while looking for matching `''`. No file was modified (`git status` was clean afterwards).
+- **Fix:** The same edits were written to a one-off script in the scratchpad and run from there; it applied all edits, which were tested on CPU and committed in d64e045. The script was then deleted.
+- **Impact:** None on saved results.
