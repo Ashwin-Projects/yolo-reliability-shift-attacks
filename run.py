@@ -422,7 +422,8 @@ def run_attack(limit=None, force=False):
 
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
-    parser.add_argument("--stage", required=True, choices=["baseline", "shift", "reliability", "attack"])
+    parser.add_argument("--stage", required=True,
+                        choices=["baseline", "shift", "reliability", "attack", "phase1"])
     parser.add_argument("--limit", type=int, default=None, help="use only the first N subset images")
     parser.add_argument("--force", action="store_true", help="recompute cached predictions")
     parser.add_argument("--only", choices=list(config.SHIFT_CONDITIONS),
@@ -452,6 +453,10 @@ def main():
             print(f"Gradient check runtime: {time.perf_counter() - t0:.1f}s")
         else:
             run_attack(limit=args.limit, force=args.force)
+    elif args.stage == "phase1":
+        if args.only:
+            parser.error("--only is not supported for --stage phase1")
+        run_phase1(limit=args.limit, force=args.force)
 
 
 if __name__ == "__main__":
