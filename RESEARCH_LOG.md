@@ -388,3 +388,9 @@ fix or decision.
 - **Minimal proposed fix (not applied):** Check for an empty eligible pivot or missing comparison columns before subtracting the paired columns, and return zero counts with undefined statistics.
 - **Fix (applied 2026-11-04):** New `paired_diffs` returns an empty array when the eligible pivot is empty or a comparison column is missing; `paired` and `fig_paired` both use it. `summarize` adds the row "no eligible targets: per-condition and paired statistics are undefined". Codex's reproduction (all smoke rows ineligible) now gives n_eligible 0, the message, n = 0 and NaN statistics in all 45 paired rows, and both figures render.
 - **Impact:** None on saved results. The summary recomputed on the smoke data is identical to the saved summary_smoke.csv.
+
+### Cache-metadata fix committed without its log entry
+- **Date:** 2026-11-04
+- **What went wrong:** The edit adding the fix and impact to the Codex entry "Phase 1 cache omits active global fisheye settings" was rejected by an editor pre-check, while the commit sent in the same batch went through. Commit 6b75d3b therefore contained the code fix and the migrated caches but not the log text, contrary to the rule of committing the log with its fix.
+- **Fix:** The log text was added and committed immediately afterwards in cfe81fa, which names 6b75d3b.
+- **Impact:** None on saved results.
