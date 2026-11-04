@@ -453,6 +453,7 @@ def run_phase1(limit=None, force=False):
     summary.to_csv(out / f"summary{smoke}.csv", index=False)
     phase1_analysis.fig_success_curves(df, out / f"fig_success_curves{smoke}.png")
     phase1_analysis.fig_paired(df, summary, out / f"fig_paired{smoke}.png")
+    phase1_analysis.descriptives(df).to_csv(out / f"phase1_descriptives{smoke}.csv", index=False)
     phase1_analysis.save_visualizations(targets, results, f)
     if limit is not None:
         phase1_analysis.grid_figure(targets, results, f, out / "vis_smoke.png")

@@ -127,3 +127,27 @@ as "> 8/255", stored as 16/255 with censored = True.
   `results/phase1/adv/` (ignored by git).
 - **Smoke test:** `--limit 5` uses the first 5 targets and writes `*_smoke` outputs;
   per-target caches are shared with the full run because they do not depend on the limit.
+
+## Phase 1 outcome: floor effect
+
+*Added 2026-11-04 after the full run (100 targets selected, 95 eligible). Counts from
+`results/phase1/phase1_descriptives.csv`.*
+
+Most targets were suppressed at the smallest eps tried (1/255): 85 of 95 at center, 92 of
+95 at the edge and 83 of 95 at center_shrunk. No target needed more than 3/255, and none was
+censored. The largest eps_min values were 3/255 (1 target, center) and 2/255 (9 center,
+3 edge, 12 center_shrunk targets).
+
+Paired counts (first condition needs more / less / equal eps):
+
+| comparison | more | less | equal |
+|---|---|---|---|
+| edge vs center | 3 | 10 | 82 |
+| edge vs center_shrunk | 1 | 10 | 84 |
+| center_shrunk vs center | 9 | 7 | 79 |
+
+All non-tied pairs differ by one or two grid steps. At this attacker strength, global L∞
+PGD with eps ≥ 1/255, the eps_min measure cannot discriminate the conditions. The
+median paired difference and its bootstrap CI are 0 in all three comparisons, because most
+pairs are tied at the floor of the grid. A smaller eps is not available, because the attacked
+images are rounded to 8 bits. Phase 1b (docs/PHASE1B_DESIGN.md) uses finer measures.

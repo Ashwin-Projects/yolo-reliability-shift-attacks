@@ -122,6 +122,32 @@ def summarize(df):
     return pd.DataFrame(rows, columns=["section", "name", "metric", "value"])
 
 
+def descriptives(df, value="eps_min_255", values=None, censored_value=None):
+    """Counts per value and condition, and per comparison the more / less / equal pair counts
+    with the non-tied targets listed. Long format: section, name, image_id, metric, value."""
+    el = df[df["eligible"]]
+    values = values or P["eps_255"]
+    censored_value = censored_value or P["censored_eps_255"]
+    rows = []
+    for cond in CONDS:
+        x = el[el["condition"] == cond]
+        for v in values:
+            n = int(((x[value] == v) & ~x["censored"].astype(bool)).sum())
+            rows.append(("counts", cond, "", f"n_{value}_{v}", n))
+        rows.append(("counts", cond, "", "n_censored", int(x["censored"].astype(bool).sum())))
+    for a, b in config.PHASE1_COMPARISONS:
+        wide = el.pivot(index="image_id", columns="condition", values=value).astype(float)
+        name = f"{a} - {b}"
+        d = (wide[a] - wide[b]).dropna() if not wide.empty else pd.Series(dtype=float)
+        rows += [("pairs", name, "", f"n_{a}_more", int((d > 0).sum())),
+                 ("pairs", name, "", f"n_{a}_less", int((d < 0).sum())),
+                 ("pairs", name, "", "n_equal", int((d == 0).sum()))]
+        for img_id in d.index[d != 0]:
+            rows.append(("non_tied", name, int(img_id), f"{a}|{b}",
+                         f"{wide.at[img_id, a]:g}|{wide.at[img_id, b]:g}"))
+    return pd.DataFrame(rows, columns=["section", "name", "image_id", "metric", "value"])
+
+
 def fig_success_curves(df, path):
     el = df[df["eligible"]]
     fig, ax = plt.subplots(figsize=(6.0, 3.8), facecolor="#fcfcfb")

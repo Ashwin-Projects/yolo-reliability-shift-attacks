@@ -1,0 +1,71 @@
+section,name,image_id,metric,value
+counts,center,,n_eps_min_255_1,85
+counts,center,,n_eps_min_255_2,9
+counts,center,,n_eps_min_255_3,1
+counts,center,,n_eps_min_255_4,0
+counts,center,,n_eps_min_255_6,0
+counts,center,,n_eps_min_255_8,0
+counts,center,,n_censored,0
+counts,edge,,n_eps_min_255_1,92
+counts,edge,,n_eps_min_255_2,3
+counts,edge,,n_eps_min_255_3,0
+counts,edge,,n_eps_min_255_4,0
+counts,edge,,n_eps_min_255_6,0
+counts,edge,,n_eps_min_255_8,0
+counts,edge,,n_censored,0
+counts,center_shrunk,,n_eps_min_255_1,83
+counts,center_shrunk,,n_eps_min_255_2,12
+counts,center_shrunk,,n_eps_min_255_3,0
+counts,center_shrunk,,n_eps_min_255_4,0
+counts,center_shrunk,,n_eps_min_255_6,0
+counts,center_shrunk,,n_eps_min_255_8,0
+counts,center_shrunk,,n_censored,0
+pairs,edge - center,,n_edge_more,3
+pairs,edge - center,,n_edge_less,10
+pairs,edge - center,,n_equal,82
+non_tied,edge - center,785,edge|center,1|2
+non_tied,edge - center,5529,edge|center,1|2
+non_tied,edge - center,7511,edge|center,2|1
+non_tied,edge - center,13546,edge|center,1|2
+non_tied,edge - center,15956,edge|center,1|2
+non_tied,edge - center,19432,edge|center,2|1
+non_tied,edge - center,25057,edge|center,1|2
+non_tied,edge - center,32081,edge|center,1|2
+non_tied,edge - center,33759,edge|center,1|2
+non_tied,edge - center,34452,edge|center,1|2
+non_tied,edge - center,38118,edge|center,1|3
+non_tied,edge - center,40036,edge|center,1|2
+non_tied,edge - center,44877,edge|center,2|1
+pairs,edge - center_shrunk,,n_edge_more,1
+pairs,edge - center_shrunk,,n_edge_less,10
+pairs,edge - center_shrunk,,n_equal,84
+non_tied,edge - center_shrunk,785,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,13177,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,13546,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,14226,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,17905,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,21879,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,27972,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,32081,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,44877,edge|center_shrunk,2|1
+non_tied,edge - center_shrunk,45070,edge|center_shrunk,1|2
+non_tied,edge - center_shrunk,50638,edge|center_shrunk,1|2
+pairs,center_shrunk - center,,n_center_shrunk_more,9
+pairs,center_shrunk - center,,n_center_shrunk_less,7
+pairs,center_shrunk - center,,n_equal,79
+non_tied,center_shrunk - center,5529,center_shrunk|center,1|2
+non_tied,center_shrunk - center,7511,center_shrunk|center,2|1
+non_tied,center_shrunk - center,13177,center_shrunk|center,2|1
+non_tied,center_shrunk - center,14226,center_shrunk|center,2|1
+non_tied,center_shrunk - center,15956,center_shrunk|center,1|2
+non_tied,center_shrunk - center,17905,center_shrunk|center,2|1
+non_tied,center_shrunk - center,19432,center_shrunk|center,2|1
+non_tied,center_shrunk - center,21879,center_shrunk|center,2|1
+non_tied,center_shrunk - center,25057,center_shrunk|center,1|2
+non_tied,center_shrunk - center,27972,center_shrunk|center,2|1
+non_tied,center_shrunk - center,33759,center_shrunk|center,1|2
+non_tied,center_shrunk - center,34452,center_shrunk|center,1|2
+non_tied,center_shrunk - center,38118,center_shrunk|center,1|3
+non_tied,center_shrunk - center,40036,center_shrunk|center,1|2
+non_tied,center_shrunk - center,45070,center_shrunk|center,2|1
+non_tied,center_shrunk - center,50638,center_shrunk|center,2|1
