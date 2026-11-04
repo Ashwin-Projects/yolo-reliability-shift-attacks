@@ -45,3 +45,7 @@ results/confirmatory/adv/
 
 # Kaggle upload bundle (built with git archive from committed files)
 kaggle_code.zip
+
+# Confirmatory code-test outputs (--manifest test option); never committed
+results/confirmatory/*_test_only*
+results/confirmatory/*_test_only*/

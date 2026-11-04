@@ -93,9 +93,44 @@ def environment_record():
     }
 
 
-def check_manifest(path):
+def pinned_versions():
+    """numpy / scipy versions pinned in requirements_gpu.txt (the frozen statistics)."""
+    pins = {}
+    for line in (config.ROOT / "requirements_gpu.txt").read_text(encoding="utf-8").splitlines():
+        name, sep, version = line.strip().partition("==")
+        if sep and name in ("numpy", "scipy"):
+            pins[name] = version
+    if set(pins) != {"numpy", "scipy"}:
+        raise SystemExit(f"requirements_gpu.txt must pin numpy and scipy (found {pins})")
+    return pins
+
+
+def validate_production(record):
+    """Abort unless an environment record follows the production protocol (docs/CONFIRMATORY_DESIGN.md)."""
+    problems = []
+    if not str(record.get("device", "")).startswith("cuda"):
+        problems.append(f"device is {record.get('device')!r}, not CUDA")
+    if record.get("gpu_count") != 1 or "T4" not in str(record.get("gpu_name")):
+        problems.append(f"GPU must be one T4 (found {record.get('gpu_count')} x {record.get('gpu_name')!r})")
+    if record.get("dtype") != "float32":
+        problems.append(f"dtype is {record.get('dtype')!r}, not float32")
+    flags = record.get("flags") or {}
+    problems += [f"flag {k} is {flags.get(k)!r}, must be {v!r}" for k, v in EXPECTED_FLAGS.items()
+                 if flags.get(k) != v]
+    env = record.get("env") or {}
+    problems += [f"environment variable {k} is {env.get(k)!r}, must be {v!r}" for k, v in CUDA_ENV.items()
+                 if env.get(k) != v]
+    problems += [f"{k} is {record.get(k)!r}, pinned {v!r}" for k, v in pinned_versions().items()
+                 if record.get(k) != v]
+    if problems:
+        raise SystemExit("The execution manifest does not follow the production protocol "
+                         "(docs/CONFIRMATORY_DESIGN.md):\n" + "\n".join(f"  - {p}" for p in problems))
+
+
+def check_manifest(path, production=True):
     """Abort unless the manifest exists and the live environment matches its environment
-    record field by field. Returns the whole manifest (environment, probe, target_range)."""
+    record field by field; production=True also requires the production protocol.
+    Returns the whole manifest (environment, probe, target_range)."""
     import json
 
     if not path.exists():
@@ -109,4 +144,6 @@ def check_manifest(path):
     if diffs:
         lines = "\n".join(f"  {k}: manifest {a!r} != live {b!r}" for k, (a, b) in diffs.items())
         raise SystemExit(f"Live environment differs from the execution manifest {path}:\n{lines}")
+    if production:
+        validate_production(saved)
     return manifest

@@ -14,8 +14,10 @@ from pathlib import Path
 import cv2
 import numpy as np
 import pandas as pd
+import torch
 from scipy import stats
 
+import attack
 import config
 import data
 import execution
@@ -76,6 +78,8 @@ def select_range(targets, manifest):
     probe = manifest.get("probe") or {}
     if rng is None or "estimate_hours" not in probe:
         raise SystemExit("The execution manifest has no target range or runtime estimate; rerun --stage probe")
+    if len(probe.get("probe_target_ids", [])) != CF["probe_targets"]:
+        raise SystemExit(f"The probe record must contain exactly {CF['probe_targets']} timed targets: {probe}")
     if probe.get("n_full") != len(targets) or rng != choose_range(targets, probe["estimate_hours"]):
         raise SystemExit(f"Manifest target range {rng} does not follow from its probe record {probe}")
     return targets[:rng[1] - rng[0] + 1]
@@ -83,9 +87,21 @@ def select_range(targets, manifest):
 
 # ---------- probe: per-step timing on pilot targets (results discarded)
 
+def warm_up(model, canvas, gt):
+    """One untimed forward and backward pass of the targeted loss (CUDA context, kernels)."""
+    stride = attack.model_stride(model)
+    loss_fn, _ = phase1.targeted_loss(gt, stride, *canvas.shape[:2])
+    x = attack.to_tensor(canvas).requires_grad_(True)
+    with torch.enable_grad():
+        loss_fn(model, x, stride).backward()
+    if config.DEVICE != "cpu":
+        torch.cuda.synchronize()
+
+
 def probe_timing(pilot, f, get_models):
-    """Both measures on the first probe_targets pilot targets that are eligible here; the
-    attacked images go to a temporary folder that is deleted, and nothing else is saved."""
+    """Both measures on exactly probe_targets pilot targets: the pilot list is tried in order
+    until that many are eligible here, after one untimed warm-up pass; aborts if too few are
+    eligible. The attacked images go to a temporary folder that is deleted; nothing is saved."""
     model, predictor = get_models()
     m1_step, m2_steps, m2_seconds, used = [], [], 0.0, []
     with tempfile.TemporaryDirectory() as tmp:
@@ -94,7 +110,10 @@ def probe_timing(pilot, f, get_models):
             src = cv2.imread(str(config.IMG_DIR / t["file_name"]))
             conds, canvases = phase1.clean_conditions(predictor, src, t["target_bbox"], f)
             if not all(c["detected"] for c in conds.values()):
+                print(f"probe target {t['id']}: not eligible here; trying the next pilot target")
                 continue
+            if not used:
+                warm_up(model, canvases["center"], conds["center"]["gt"])
             for cond in CONDS:
                 m1, m2 = phase1b.measure(model, predictor, canvases[cond], conds[cond]["gt"], Path(tmp),
                                          cond, str(t["id"]))
@@ -105,9 +124,12 @@ def probe_timing(pilot, f, get_models):
             print(f"probe target {t['id']}: timed")
             if len(used) == CF["probe_targets"]:
                 break
+    if len(used) < CF["probe_targets"]:
+        raise SystemExit(f"Only {len(used)} of {len(pilot)} pilot targets are eligible here; the probe needs "
+                         f"{CF['probe_targets']}. No manifest written.")
     if config.DEVICE != "cpu":
         execution.verify_cuda_protocol()
-    return {"probe_target_ids": used, "m1_seconds_per_step": float(np.mean(m1_step)),
+    return {"probe_target_ids": used, "warm_up": True, "m1_seconds_per_step": float(np.mean(m1_step)),
             "m2_seconds_per_step": m2_seconds / sum(m2_steps),
             "m2_mean_steps_per_condition": float(np.mean(m2_steps))}
 
@@ -121,14 +143,31 @@ def estimate_hours(timing, n_targets):
 
 # ---------- per-target pipeline with cache
 
-def cache_meta(target, f, env):
-    return {"phase1": phase1.cache_meta(target, f), "phase1b": B, "confirm": CF, "environment": env}
+TEST_LABEL = "TEST ONLY"
 
 
-def run_target(target, f, get_models, env, force=False):
+def provenance(manifest_path, test):
+    """Run label with the manifest's path and SHA-256; test runs are labelled TEST ONLY."""
+    import hashlib
+
+    return {"run_label": TEST_LABEL if test else "PRODUCTION", "manifest_path": str(manifest_path),
+            "manifest_sha256": hashlib.sha256(Path(manifest_path).read_bytes()).hexdigest()}
+
+
+def namespace(prov):
+    """Test runs keep caches and images apart, so a production run can never reuse them."""
+    return "_test_only" if prov["run_label"] == TEST_LABEL else ""
+
+
+def cache_meta(target, f, env, prov):
+    return {"phase1": phase1.cache_meta(target, f), "phase1b": B, "confirm": CF, "environment": env,
+            "provenance": prov}
+
+
+def run_target(target, f, get_models, env, prov, force=False):
     """Clean detection in the three conditions; both Phase 1b measures if eligible."""
-    path = config.CONFIRM_DIR / "cache" / f"{target['id']}.json"
-    meta = json.loads(json.dumps(cache_meta(target, f, env)))  # tuples -> lists, as stored
+    path = config.CONFIRM_DIR / f"cache{namespace(prov)}" / f"{target['id']}.json"
+    meta = json.loads(json.dumps(cache_meta(target, f, env, prov)))  # tuples -> lists, as stored
     if path.exists() and not force:
         with open(path) as fh:
             cached = json.load(fh)
@@ -142,7 +181,7 @@ def run_target(target, f, get_models, env, force=False):
     if eligible:
         for cond in CONDS:
             conds[cond]["steps"], conds[cond]["local"] = phase1b.measure(
-                model, predictor, canvases[cond], conds[cond]["gt"], config.CONFIRM_DIR / "adv", cond,
+                model, predictor, canvases[cond], conds[cond]["gt"], config.CONFIRM_DIR / f"adv{namespace(prov)}", cond,
                 str(target["id"]))
     if config.DEVICE != "cpu":
         execution.verify_cuda_protocol()
@@ -246,10 +285,52 @@ def decision(summary, control):
     return pd.DataFrame(rows, columns=["section", "name", "statistic", "value"]), outcome
 
 
+SUMMARY_COLUMNS = ["metric_or_section", "name", "statistic", "value"]
+LONG_COLUMNS = ["section", "name", "statistic", "value"]
+NO_ELIGIBLE = "no eligible targets: all statistics are undefined, so no decision criterion can be met"
+
+
 def analyze(selected):
     df = phase1b.table([r for r in selected if r["eligible"]])
-    summary = add_holm(phase1b.summarize(df), "metric_or_section", METRICS)
-    summary = pd.concat([summary, descriptives(df, selected)], ignore_index=True)
-    control = confidence_control(df)
+    if df.empty:
+        summary = pd.concat([descriptives(df, selected),
+                             pd.DataFrame([("overall", "message", "note", NO_ELIGIBLE)], columns=SUMMARY_COLUMNS)],
+                            ignore_index=True)
+        control = pd.DataFrame([("message", "all", "note", NO_ELIGIBLE)], columns=LONG_COLUMNS)
+    else:
+        summary = add_holm(phase1b.summarize(df), "metric_or_section", METRICS)
+        summary = pd.concat([summary, descriptives(df, selected)], ignore_index=True)
+        control = confidence_control(df)
     dec, outcome = decision(summary, control)
+    if df.empty:
+        dec = pd.concat([dec, pd.DataFrame([("message", "all", "note", NO_ELIGIBLE)], columns=LONG_COLUMNS)],
+                        ignore_index=True)
     return df, summary, control, dec, outcome
+
+
+def selection_report(selected):
+    """Exclusion report: every selected target, its eligibility and clean confidences."""
+    return pd.DataFrame([{"image_id": r["id"], "eligible": r["eligible"],
+                          **{f"clean_conf_{c}": r["conditions"][c]["clean_conf"] for c in CONDS}}
+                         for r in selected])
+
+
+def with_provenance(df, prov):
+    """Long tables get provenance rows; wide tables get provenance columns."""
+    if "statistic" in df.columns:
+        rows = [("provenance", "run", k, v) for k, v in prov.items()]
+        return pd.concat([df, pd.DataFrame(rows, columns=df.columns)], ignore_index=True)
+    return df.assign(**prov)
+
+
+def label_png(path, prov):
+    """Write the provenance into the PNG's text fields."""
+    from PIL import Image
+    from PIL.PngImagePlugin import PngInfo
+
+    info = PngInfo()
+    for k, v in prov.items():
+        info.add_text(k, v)
+    with Image.open(path) as im:
+        im.load()
+        im.save(path, pnginfo=info)

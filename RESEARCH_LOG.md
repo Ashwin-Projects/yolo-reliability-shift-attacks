@@ -456,3 +456,54 @@ fix or decision.
 - **What went wrong:** The first attempt to apply the target-range code changes (config, confirmatory, execution, run) as an inline Python heredoc failed before running: `/usr/bin/bash: -c: line 153: unexpected EOF while looking for matching `''`. No file was modified (`git status` was clean afterwards).
 - **Fix:** The same edits were written to a one-off script in the scratchpad and run from there; it applied all edits, which were tested on CPU and committed in d64e045. The script was then deleted.
 - **Impact:** None on saved results.
+
+
+### Production manifest validation accepts a self-consistent but non-protocol environment
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup.
+- **What is wrong:** check_manifest checks equality between the saved and live environment, but never checks either against the frozen production protocol. A complete environment record from this actual CPU environment was accepted for the default docs/EXECUTION_MANIFEST.json path, including device=cpu, gpu_name=None, cudnn_deterministic=False and deterministic_algorithms=False. Matching records with wrong numpy/scipy versions or dtype are likewise accepted. The normal probe permits CPU execution and can create such a record. Thus a committed, matching manifest does not enforce the required T4/cuda:0, float32, deterministic flags and pinned statistical versions for a production run.
+- **File and line:** execution.py:106-112; run.py:590-592.
+- **Found by:** found by Codex.
+- **Impact:** Only future confirmatory runs; no saved confirmatory results exist and earlier results are unaffected.
+- **Minimal proposed fix (not applied):** Validate the default production manifest and live environment against the normative device/precision/flag/version requirements as well as against each other. Keep any deliberately relaxed CPU test profile limited to the explicitly marked test-manifest path.
+- **Fix (applied 2026-11-04, committed with this text):** `execution.validate_production()` runs at confirmatory startup on the default manifest. It aborts with a list of every violation unless: the device is CUDA; there is exactly one T4; the dtype is float32; all determinism and TF32 flags and the CUDA environment variables have the values in docs/CONFIRMATORY_DESIGN.md; numpy and scipy equal the versions pinned in requirements_gpu.txt. Tested: a manifest recorded on this CPU, used on the default production path, is refused with 6 violations. Only the `--manifest` test path (which requires `--limit`) skips the check.
+- **Impact:** None on saved results.
+
+### Alternate test manifest is not recorded in outputs or distinguished in shared caches
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup.
+- **What is wrong:** The CLI correctly rejects --manifest without --limit, but the override path or a test-only flag is never saved in the five CSV outputs or the per-target cache metadata. Reproduced run_confirmatory(limit=1, manifest='alternate.json') with all output writes captured in memory: no output records the override. Only the environment block is passed to run_target/cache_meta, so an override test and a production run with the same environment share indistinguishable cache keys. The *_smoke CSV suffix records a limit, not the use or identity of an alternate manifest, and a later full run can silently reuse those test caches.
+- **File and line:** run.py:590-608 and run.py:615-621; confirmatory.py:124-125.
+- **Found by:** found by Codex.
+- **Impact:** Only future test/confirmatory outputs and cache provenance; saved pilot results are unaffected.
+- **Minimal proposed fix (not applied):** Persist the manifest path/hash, full manifest record and explicit test-only status in run outputs and cache metadata, and prevent production cache reuse from an alternate-manifest test unless its production provenance is explicitly validated.
+- **Fix (applied 2026-11-04, committed with this text):** Every confirmatory output records the run label ("TEST ONLY" with `--manifest`, otherwise "PRODUCTION") with the manifest path and SHA-256: as provenance rows in the long CSVs, as columns in the wide CSVs, and as PNG text fields in the figures. Every cache's metadata includes it too. Test runs use their own cache and image folders (`cache_test_only/`, `adv_test_only/`) and `_test_only` file names, so a production run cannot reuse them. Tested with a CPU test run (--limit 2): the label is in all 5 CSVs, both PNGs and both caches, and no production cache folder was created.
+- **Impact:** None on saved results.
+
+### Probe accepts fewer than the required two eligible pilot targets
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup / runtime fallback.
+- **What is wrong:** probe_timing stops after two eligible targets when available but does not require that two were found before returning timing estimates. Reproduced with the full 100-target pilot list and mocked clean detections in which only target 785 is eligible: it returns a finite estimate from one target, and select_range accepts the resulting manifest and binds targets 101-952. The pre-registered fallback requires timing two eligible pilot targets. With zero eligible targets the same path divides by zero.
+- **File and line:** confirmatory.py:104-112; confirmatory.py:75-80.
+- **Found by:** found by Codex.
+- **Impact:** Only future probes/runs where fewer than two pilot targets pass eligibility; no current saved results are affected.
+- **Minimal proposed fix (not applied):** Abort with a clear insufficient-eligibility message unless exactly two targets were timed, and validate this required probe sample in the manifest before accepting its binding range.
+- **Fix (applied 2026-11-04, committed with this text):** `probe_timing` tries the pilot list in order until exactly 2 targets are eligible; with fewer it aborts before any division and no manifest is written. `select_range` also rejects a manifest whose probe record does not hold exactly 2 timed targets. Tested with mocked detections: 0 and 1 eligible targets abort with a message, and a manifest with 1 probe target is rejected.
+- **Impact:** None on saved results.
+
+### Zero eligible confirmatory targets crash analysis before reporting exclusions
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup / analysis.
+- **What is wrong:** analyze filters out ineligible records, then passes phase1b.table([]), a DataFrame with no columns, into phase1b.summarize. An otherwise valid selected record with eligible=False reproduces KeyError: 'image_id'. run_confirmatory calls analyze before writing selected_smoke.csv/selected.csv, so a limited run whose selected targets are all ineligible produces no exclusion summary or undefined-statistics decision despite having finished its eligibility checks.
+- **File and line:** confirmatory.py:249-253; phase1b.py:153 and phase1b.py:158; run.py:614-617.
+- **Found by:** found by Codex.
+- **Impact:** Only future zero-eligible runs, including limited smoke runs; saved pilot results are unaffected.
+- **Minimal proposed fix (not applied):** Preserve the expected empty-table schema and handle zero eligible targets explicitly, reporting selection/exclusion counts and undefined statistics with a non-support conclusion.
+- **Fix (applied 2026-11-04, committed with this text):** `phase1b.table` now always returns the 14 named columns (pilot CSVs regenerated from the caches are identical). `confirmatory.analyze` handles zero eligible targets: the summary holds the selected and eligible counts, the censoring and eps counts (all 0) and the message "no eligible targets: all statistics are undefined, so no decision criterion can be met". The control file holds the message, and the decision is "does not support either direction" with the message. The exclusion report (selected CSV) is written before the analysis. Tested with 2 ineligible records.
+- **Impact:** None on saved results.
+
+### Inspection command for the test labels failed to parse
+- **Date:** 2026-11-04
+- **What went wrong:** While checking the test-run outputs, the one-line Python command that reads the PNG text fields failed with `SyntaxError: unterminated string literal` (a backslash in a path split was mangled by the shell quoting). The test run itself had finished with exit 0.
+- **Fix:** Reran the check with `os.path.basename` and the folder passed through an environment variable; it showed "TEST ONLY" in both PNGs and both caches.
+- **Impact:** None on saved results.

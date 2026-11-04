@@ -587,7 +587,10 @@ def run_confirmatory(limit=None, force=False, manifest=None):
     import phase1
 
     t0 = time.perf_counter()
-    man = execution.check_manifest(Path(manifest) if manifest else config.MANIFEST_FILE)
+    manifest_path = Path(manifest) if manifest else config.MANIFEST_FILE
+    man = execution.check_manifest(manifest_path, production=manifest is None)
+    prov = confirmatory.provenance(manifest_path, test=manifest is not None)
+    print(f"Run label: {prov['run_label']}; manifest {prov['manifest_path']} (sha256 {prov['manifest_sha256']})")
     env = man["environment"]
     print(f"Environment matches the execution manifest ({env['device']}, {env['gpu_name']})")
     infer.set_seed()
@@ -598,33 +601,35 @@ def run_confirmatory(limit=None, force=False, manifest=None):
         targets = targets[:limit]
     data.ensure_images(targets)
     f = phase1.focal()
-    smoke = "" if limit is None else "_smoke"
+    smoke = confirmatory.namespace(prov) or ("" if limit is None else "_smoke")
     print(f"Confirmatory: {len(targets)} targets (ids {targets[0]['id']}-{targets[-1]['id']}), f = {f:.4f} px")
 
     get_models = phase1.model_loader()
     results, seconds = [], []
     for t in targets:
         t1 = time.perf_counter()
-        results.append(confirmatory.run_target(t, f, get_models, env, force=force))
+        results.append(confirmatory.run_target(t, f, get_models, env, prov, force=force))
         seconds.append(time.perf_counter() - t1)
         print(f"target {t['id']}: eligible {results[-1]['eligible']}, {seconds[-1]:.1f}s")
 
     out = config.CONFIRM_DIR
     out.mkdir(parents=True, exist_ok=True)
+    tag = partial(confirmatory.with_provenance, prov=prov)
+    tag(confirmatory.selection_report(results)).to_csv(out / f"selected{smoke}.csv", index=False)
     df, summary, control, dec, outcome = confirmatory.analyze(results)
-    pd.DataFrame([{"image_id": r["id"], "eligible": r["eligible"],
-                   **{f"clean_conf_{c}": r["conditions"][c]["clean_conf"] for c in confirmatory.CONDS}}
-                  for r in results]).to_csv(out / f"selected{smoke}.csv", index=False)
-    df.to_csv(out / f"targets{smoke}.csv", index=False)
-    summary.to_csv(out / f"summary{smoke}.csv", index=False)
-    control.to_csv(out / f"summary_confidence_control{smoke}.csv", index=False)
-    dec.to_csv(out / f"decision{smoke}.csv", index=False)
+    tag(df).to_csv(out / f"targets{smoke}.csv", index=False)
+    tag(summary).to_csv(out / f"summary{smoke}.csv", index=False)
+    tag(control).to_csv(out / f"summary_confidence_control{smoke}.csv", index=False)
+    tag(dec).to_csv(out / f"decision{smoke}.csv", index=False)
     eligible = [r for r in results if r["eligible"]]
     if eligible:
         import phase1b
 
-        phase1b.fig_paired(df, summary, out / f"fig_paired{smoke}.png")
-        phase1b.fig_confidence_curves(eligible, out / f"fig_confidence_curves{smoke}.png")
+        for name, draw in ((f"fig_paired{smoke}.png", lambda p: phase1b.fig_paired(df, summary, p)),
+                           (f"fig_confidence_curves{smoke}.png",
+                            lambda p: phase1b.fig_confidence_curves(eligible, p))):
+            draw(out / name)
+            confirmatory.label_png(out / name, prov)
 
     pd.set_option("display.width", 250)
     print(summary.to_string(index=False))

@@ -133,6 +133,11 @@ def run_target(target, f, get_models, force=False):
 
 # ---------- analysis
 
+TABLE_COLUMNS = ["image_id", "condition", "eligible", "clean_conf", "steps_to_suppress", "steps_censored",
+                 "auc", "saved_png_confirms", "local_eps_min_255", "local_censored", "local_n_eps_tried",
+                 "steps_pgd_seconds_per_step", "steps_detect_seconds_per_step", "local_pgd_seconds_per_step"]
+
+
 def table(results):
     rows = []
     for r in results:
@@ -150,7 +155,7 @@ def table(results):
                 "steps_detect_seconds_per_step": s["detect_seconds_per_step"],
                 "local_pgd_seconds_per_step": sum(t["pgd_seconds"] for t in loc["tries"]) / local_steps,
             })
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=TABLE_COLUMNS)
 
 
 def summarize(df):
