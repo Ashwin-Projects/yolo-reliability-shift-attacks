@@ -538,7 +538,22 @@ def run_phase1b(limit=None, force=False):
           f"total {time.perf_counter() - t0:.1f}s")
 
 
-GPU_STAGES = []  # stages that support --device cuda
+GPU_STAGES = ["probe"]  # stages that support --device cuda
+
+
+def run_probe():
+    """Write EXECUTION_MANIFEST.json to --out (docs/CONFIRMATORY_DESIGN.md); no attack, no images."""
+    import json
+
+    import execution
+
+    record = execution.environment_record()
+    config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    path = config.RESULTS_DIR / "EXECUTION_MANIFEST.json"
+    with open(path, "w") as fh:
+        json.dump(record, fh, indent=1)
+    print(json.dumps(record, indent=1))
+    print(f"Wrote {path}")
 
 
 def startup_info():
@@ -552,7 +567,7 @@ def startup_info():
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
     parser.add_argument("--stage", required=True,
-                        choices=["baseline", "shift", "reliability", "attack", "phase1", "phase1b"])
+                        choices=["baseline", "shift", "reliability", "attack", "phase1", "phase1b", "probe"])
     parser.add_argument("--limit", type=int, default=None, help="use only the first N subset images")
     parser.add_argument("--force", action="store_true", help="recompute cached predictions")
     parser.add_argument("--only", choices=list(config.SHIFT_CONDITIONS),
@@ -603,6 +618,8 @@ def main():
         if args.only:
             parser.error("--only is not supported for --stage phase1b")
         run_phase1b(limit=args.limit, force=args.force)
+    elif args.stage == "probe":
+        run_probe()
 
 
 if __name__ == "__main__":
