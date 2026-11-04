@@ -402,3 +402,37 @@ fix or decision.
 - **What went wrong:** The first attempt to start `python run.py --stage phase1b` (95 targets) was rejected by the auto-mode permission check before it started, because another call in the same batch had been rewritten by a hook. Nothing ran and no file was written.
 - **Fix:** The run command was reissued on its own. It completed with exit 0 in 10172 s wall time (10155.6 s summed per-target runtime; the 5 smoke targets were reused from cache).
 - **Impact:** None on saved results.
+
+
+### Confirmatory statistical implementation leaves outcome-relevant choices open
+- **Date:** 2026-11-04
+- **Stage:** Phase 1b documentation / confirmatory pre-registration.
+- **What is wrong:** The design specifies a percentile bootstrap with 10,000 resamples and seed 0, and a two-sided Wilcoxon test with zero differences dropped, but does not fix the bootstrap generator and stream/reseeding order or the Wilcoxon p-value method and continuity correction. The confirmatory decision directly uses the resulting CI and corrected p-value. Legitimate implementations can therefore differ while satisfying the text. Reproduced on the pilot primary AUC contrast: exact Wilcoxon p = 0.0011148863314869735; asymptotic without continuity correction = 0.001273462545278989; asymptotic with correction = 0.0012817358997447585. Seed-0 Generator and RandomState bootstraps also give different endpoints on pilot confidence-matched subsets. These demonstrations do not change any pilot conclusion.
+- **File and line:** docs/CONFIRMATORY_DESIGN.md:69-72 (decision uses these quantities at lines 101-105).
+- **Found by:** found by Codex.
+- **Impact:** Only future confirmatory runs; saved pilot CSVs and their reported rule outcomes are unaffected.
+- **Minimal proposed fix (not applied):** Freeze the statistical implementation/version, bootstrap generator, reset policy and comparison order, and Wilcoxon method, zero handling and continuity correction before confirmatory results exist.
+- **Fix (applied 2026-11-04, committed with this text):** docs/CONFIRMATORY_DESIGN.md now has "Statistics frozen: identical behaviour to the pilot code". It describes the pilot code as it is: `default_rng(0)` (PCG64) created once per metric and shared across the three comparisons in a fixed order, one `rng.integers(0, n, size=(10000, n))` call per comparison over targets in ascending image-id order, `numpy.percentile` with the default linear method, and `scipy.stats.wilcoxon(d)` with all defaults (`zero_method="wilcox"`, `correction=False`, `alternative="two-sided"`, `method="auto"`), including how `auto` resolves in scipy 1.18.1. numpy 2.5.4 and scipy 1.18.1 are pinned. It also fixes the Holm procedure and the regression CI method. The pilot code is unchanged.
+- **Impact:** None on saved results.
+
+### Confirmatory GPU execution protocol is not fixed before results
+- **Date:** 2026-11-04
+- **Stage:** Phase 1b documentation / confirmatory pre-registration.
+- **What is wrong:** The design requires one GPU type within a run and records device and torch/CUDA versions in caches, but does not fix the GPU type or require an execution manifest to be committed before any confirmatory inference. Precision/math settings, TF32 and deterministic execution settings are also unspecified. Recording these after execution does not close the opportunity to choose a GPU/runtime configuration after inspecting outcomes; the text does not bind which configuration defines the confirmatory run.
+- **File and line:** docs/CONFIRMATORY_DESIGN.md:114-119.
+- **Found by:** found by Codex.
+- **Impact:** Only future confirmatory runs; no confirmatory code or results currently exist, and saved pilot results are unaffected.
+- **Minimal proposed fix (not applied):** Commit the GPU/software/precision/seed/determinism configuration, or require a binding manifest before the first confirmatory inference, and specify which completed run determines the decision.
+- **Fix (applied 2026-11-04, committed with this text):** docs/CONFIRMATORY_DESIGN.md now fixes the protocol: a Kaggle GPU T4 with one GPU only, float32, TF32 off, cuDNN benchmark off and deterministic on, `torch.use_deterministic_algorithms(True)` with `CUBLAS_WORKSPACE_CONFIG=":4096:8"`, and a stop rather than a fallback when an operation fails under determinism. A probe run writes an execution manifest, which is committed as docs/EXECUTION_MANIFEST.json before any confirmatory inference; the confirmatory run aborts if the manifest is missing or the live environment differs from it.
+- **Impact:** None on saved results.
+
+### Pilot limitation overstates bootstrap coverage as conservative
+- **Date:** 2026-11-04
+- **Stage:** Phase 1b documentation / pilot summary.
+- **What is wrong:** The summary says discreteness and ties make the median bootstrap CIs conservative. The CSVs establish many ties and degenerate [0,0] intervals, but do not establish conservative confidence coverage. Ties alone do not guarantee that property. This is an unsupported statistical assurance, not a numerical mismatch or a failure of the registered interpretation rule.
+- **File and line:** docs/PILOT_SUMMARY.md:164-166.
+- **Found by:** found by Codex.
+- **Impact:** Affects the current saved pilot documentation only; saved numerical results are unchanged. It is not a future-run-only issue.
+- **Minimal proposed fix (not applied):** Describe the observed ties and limited resolution/degenerate intervals without asserting conservative coverage.
+- **Fix (applied 2026-11-04, committed with this text):** The limitation in docs/PILOT_SUMMARY.md now says that tied pairs and [0, 0] intervals reflect the limited resolution of discrete metrics, not conservative coverage. It also states that the three pilot metrics were equally weighted and that AUC was designated primary only for the confirmatory study, after the pilot results were known.
+- **Impact:** None on saved results (documentation only).

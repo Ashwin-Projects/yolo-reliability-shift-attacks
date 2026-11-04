@@ -161,6 +161,12 @@ On the subset, every rule outcome is the same as on all 95 pairs.
 - **White-box attacks:** full gradient access through the model and letterbox.
 - **Clean confidence:** it differs between conditions (addendum a). Phase 1b controls for it
   only by the |Δ| < 0.05 subset and a pooled correlation.
-- **Discrete metrics:** steps-to-suppress and localized eps_min are discrete and often tied, so
-  their median-based bootstrap CIs are conservative. This is most visible for localized eps_min,
-  whose CI is [0, 0] even where most nonzero pairs favour one condition.
+- **Discrete metrics:** steps-to-suppress and localized eps_min take few distinct values and
+  many pairs are tied. Their median paired differences and bootstrap CI endpoints therefore
+  fall on a coarse grid (whole steps; 0 or one eps level), and intervals such as [0, 0] arise.
+  This reflects the limited resolution of these metrics, not conservative coverage: the
+  intervals make no coverage guarantee beyond that of the percentile bootstrap. The [0, 0]
+  intervals of localized eps_min occur even where most nonzero pairs favour one condition.
+- **Metric weighting:** In the pilot, AUC, steps-to-suppress and localized eps_min were three
+  equally weighted metrics; AUC was designated primary only for the confirmatory study, after
+  the pilot results were known.
