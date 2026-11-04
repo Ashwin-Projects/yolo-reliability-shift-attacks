@@ -1,4 +1,16 @@
 """Entry point: python run.py --stage {baseline,shift,reliability} [--limit N] [--force] [--only CONDITION]"""
+import os
+import sys
+
+import config
+
+_argv = sys.argv[1:]
+if "--device=cuda" in _argv or any(a == "--device" and b == "cuda" for a, b in zip(_argv, _argv[1:])):
+    # one GPU and deterministic cuBLAS: set before torch (or ultralytics) can initialize CUDA;
+    # execution.apply_cuda_protocol() aborts if a pre-set value differs
+    os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0")
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", config.CUBLAS_WORKSPACE_CONFIG)
+
 import argparse
 import math
 import re
@@ -10,7 +22,6 @@ import numpy as np
 import pandas as pd
 
 import attack
-import config
 import corruptions
 import data
 import infer
@@ -557,7 +568,10 @@ def main():
         parser.error(f"--device cuda applies only to --stage {' / '.join(GPU_STAGES)}")
     config.set_paths(args.out, args.data)
     if args.device == "cuda":
+        import execution
+
         config.DEVICE = config.CUDA_DEVICE
+        execution.apply_cuda_protocol()
     startup_info()
     if args.gradcheck is not None and args.stage != "attack":
         parser.error("--gradcheck applies to --stage attack")
