@@ -1,0 +1,136 @@
+section,name,statistic,value
+a_clean_conf,edge - center,n,95
+a_clean_conf,edge - center,n_nonzero,95
+a_clean_conf,edge - center,median_diff,-0.045469045639038086
+a_clean_conf,edge - center,ci_low,-0.0650404691696167
+a_clean_conf,edge - center,ci_high,-0.03171741962432861
+a_clean_conf,edge - center,wilcoxon_stat,573.0
+a_clean_conf,edge - center,wilcoxon_p,2.3558661200652697e-10
+a_clean_conf,edge - center_shrunk,n,95
+a_clean_conf,edge - center_shrunk,n_nonzero,95
+a_clean_conf,edge - center_shrunk,median_diff,-0.023669302463531494
+a_clean_conf,edge - center_shrunk,ci_low,-0.03276306390762329
+a_clean_conf,edge - center_shrunk,ci_high,-0.014622211456298828
+a_clean_conf,edge - center_shrunk,wilcoxon_stat,1046.0
+a_clean_conf,edge - center_shrunk,wilcoxon_p,4.6401090831429324e-06
+a_clean_conf,center_shrunk - center,n,95
+a_clean_conf,center_shrunk - center,n_nonzero,95
+a_clean_conf,center_shrunk - center,median_diff,-0.02219867706298828
+a_clean_conf,center_shrunk - center,ci_low,-0.02855241298675537
+a_clean_conf,center_shrunk - center,ci_high,-0.016710221767425537
+a_clean_conf,center_shrunk - center,wilcoxon_stat,821.0
+a_clean_conf,center_shrunk - center,wilcoxon_p,6.108253996200171e-08
+b_steps_to_suppress,edge - center,n_subset,43
+b_steps_to_suppress,edge - center,n,43
+b_steps_to_suppress,edge - center,n_nonzero,40
+b_steps_to_suppress,edge - center,median_diff,-2.0
+b_steps_to_suppress,edge - center,ci_low,-4.0
+b_steps_to_suppress,edge - center,ci_high,-1.0
+b_steps_to_suppress,edge - center,wilcoxon_stat,156.0
+b_steps_to_suppress,edge - center,wilcoxon_p,0.0006248669789512054
+b_steps_to_suppress,edge - center,n_edge_more,8
+b_steps_to_suppress,edge - center,n_edge_less,32
+b_steps_to_suppress,edge - center,n_equal,3
+b_steps_to_suppress,edge - center,rule_on_subset,edge more vulnerable than center
+b_steps_to_suppress,edge - center_shrunk,n_subset,64
+b_steps_to_suppress,edge - center_shrunk,n,64
+b_steps_to_suppress,edge - center_shrunk,n_nonzero,54
+b_steps_to_suppress,edge - center_shrunk,median_diff,-1.0
+b_steps_to_suppress,edge - center_shrunk,ci_low,-3.0
+b_steps_to_suppress,edge - center_shrunk,ci_high,0.0
+b_steps_to_suppress,edge - center_shrunk,wilcoxon_stat,388.5
+b_steps_to_suppress,edge - center_shrunk,wilcoxon_p,0.0022244217549798576
+b_steps_to_suppress,edge - center_shrunk,n_edge_more,19
+b_steps_to_suppress,edge - center_shrunk,n_edge_less,35
+b_steps_to_suppress,edge - center_shrunk,n_equal,10
+b_steps_to_suppress,edge - center_shrunk,rule_on_subset,edge ~ center_shrunk
+b_steps_to_suppress,center_shrunk - center,n_subset,62
+b_steps_to_suppress,center_shrunk - center,n,62
+b_steps_to_suppress,center_shrunk - center,n_nonzero,53
+b_steps_to_suppress,center_shrunk - center,median_diff,0.0
+b_steps_to_suppress,center_shrunk - center,ci_low,-1.0
+b_steps_to_suppress,center_shrunk - center,ci_high,0.5
+b_steps_to_suppress,center_shrunk - center,wilcoxon_stat,608.0
+b_steps_to_suppress,center_shrunk - center,wilcoxon_p,0.3397162126283837
+b_steps_to_suppress,center_shrunk - center,n_center_shrunk_more,23
+b_steps_to_suppress,center_shrunk - center,n_center_shrunk_less,30
+b_steps_to_suppress,center_shrunk - center,n_equal,9
+b_steps_to_suppress,center_shrunk - center,rule_on_subset,center_shrunk ~ center
+b_auc,edge - center,n_subset,43
+b_auc,edge - center,n,43
+b_auc,edge - center,n_nonzero,43
+b_auc,edge - center,median_diff,-0.04977546905400232
+b_auc,edge - center,ci_low,-0.08623202631250024
+b_auc,edge - center,ci_high,-0.022826693654060363
+b_auc,edge - center,wilcoxon_stat,132.0
+b_auc,edge - center,wilcoxon_p,1.2367064300633501e-05
+b_auc,edge - center,n_edge_more,6
+b_auc,edge - center,n_edge_less,37
+b_auc,edge - center,n_equal,0
+b_auc,edge - center,rule_on_subset,edge more vulnerable than center
+b_auc,edge - center_shrunk,n_subset,64
+b_auc,edge - center_shrunk,n,64
+b_auc,edge - center_shrunk,n_nonzero,64
+b_auc,edge - center_shrunk,median_diff,-0.012528296373784541
+b_auc,edge - center_shrunk,ci_low,-0.032987475602421906
+b_auc,edge - center_shrunk,ci_high,-0.0022356067039072496
+b_auc,edge - center_shrunk,wilcoxon_stat,663.0
+b_auc,edge - center_shrunk,wilcoxon_p,0.011695892204383516
+b_auc,edge - center_shrunk,n_edge_more,22
+b_auc,edge - center_shrunk,n_edge_less,42
+b_auc,edge - center_shrunk,n_equal,0
+b_auc,edge - center_shrunk,rule_on_subset,edge more vulnerable than center_shrunk
+b_auc,center_shrunk - center,n_subset,62
+b_auc,center_shrunk - center,n,62
+b_auc,center_shrunk - center,n_nonzero,62
+b_auc,center_shrunk - center,median_diff,-0.019386512180790266
+b_auc,center_shrunk - center,ci_low,-0.054253995141931195
+b_auc,center_shrunk - center,ci_high,-0.004986907553393399
+b_auc,center_shrunk - center,wilcoxon_stat,588.0
+b_auc,center_shrunk - center,wilcoxon_p,0.006453520351069897
+b_auc,center_shrunk - center,n_center_shrunk_more,19
+b_auc,center_shrunk - center,n_center_shrunk_less,43
+b_auc,center_shrunk - center,n_equal,0
+b_auc,center_shrunk - center,rule_on_subset,center_shrunk more vulnerable than center
+b_local_eps_min_255,edge - center,n_subset,43
+b_local_eps_min_255,edge - center,n,43
+b_local_eps_min_255,edge - center,n_nonzero,23
+b_local_eps_min_255,edge - center,median_diff,0.0
+b_local_eps_min_255,edge - center,ci_low,-1.0
+b_local_eps_min_255,edge - center,ci_high,0.0
+b_local_eps_min_255,edge - center,wilcoxon_stat,68.0
+b_local_eps_min_255,edge - center,wilcoxon_p,0.031813633692060604
+b_local_eps_min_255,edge - center,n_edge_more,6
+b_local_eps_min_255,edge - center,n_edge_less,17
+b_local_eps_min_255,edge - center,n_equal,20
+b_local_eps_min_255,edge - center,rule_on_subset,edge ~ center
+b_local_eps_min_255,edge - center_shrunk,n_subset,64
+b_local_eps_min_255,edge - center_shrunk,n,64
+b_local_eps_min_255,edge - center_shrunk,n_nonzero,23
+b_local_eps_min_255,edge - center_shrunk,median_diff,0.0
+b_local_eps_min_255,edge - center_shrunk,ci_low,0.0
+b_local_eps_min_255,edge - center_shrunk,ci_high,0.0
+b_local_eps_min_255,edge - center_shrunk,wilcoxon_stat,43.0
+b_local_eps_min_255,edge - center_shrunk,wilcoxon_p,0.003347751599675827
+b_local_eps_min_255,edge - center_shrunk,n_edge_more,3
+b_local_eps_min_255,edge - center_shrunk,n_edge_less,20
+b_local_eps_min_255,edge - center_shrunk,n_equal,41
+b_local_eps_min_255,edge - center_shrunk,rule_on_subset,edge ~ center_shrunk
+b_local_eps_min_255,center_shrunk - center,n_subset,62
+b_local_eps_min_255,center_shrunk - center,n,62
+b_local_eps_min_255,center_shrunk - center,n_nonzero,37
+b_local_eps_min_255,center_shrunk - center,median_diff,0.0
+b_local_eps_min_255,center_shrunk - center,ci_low,0.0
+b_local_eps_min_255,center_shrunk - center,ci_high,0.0
+b_local_eps_min_255,center_shrunk - center,wilcoxon_stat,287.0
+b_local_eps_min_255,center_shrunk - center,wilcoxon_p,0.3245437800260187
+b_local_eps_min_255,center_shrunk - center,n_center_shrunk_more,18
+b_local_eps_min_255,center_shrunk - center,n_center_shrunk_less,19
+b_local_eps_min_255,center_shrunk - center,n_equal,25
+b_local_eps_min_255,center_shrunk - center,rule_on_subset,center_shrunk ~ center
+c_spearman,steps_to_suppress,rho_clean_conf,0.4563359994566692
+c_spearman,steps_to_suppress,n_rows,285
+c_spearman,auc,rho_clean_conf,0.475384511707714
+c_spearman,auc,n_rows,285
+c_spearman,local_eps_min_255,rho_clean_conf,0.15144319708311216
+c_spearman,local_eps_min_255,n_rows,285

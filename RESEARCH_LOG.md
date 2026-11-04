@@ -394,3 +394,11 @@ fix or decision.
 - **What went wrong:** The edit adding the fix and impact to the Codex entry "Phase 1 cache omits active global fisheye settings" was rejected by an editor pre-check, while the commit sent in the same batch went through. Commit 6b75d3b therefore contained the code fix and the migrated caches but not the log text, contrary to the rule of committing the log with its fix.
 - **Fix:** The log text was added and committed immediately afterwards in cfe81fa, which names 6b75d3b.
 - **Impact:** None on saved results.
+
+## Phase 1b
+
+### First launch of the full Phase 1b run was blocked
+- **Date:** 2026-11-04
+- **What went wrong:** The first attempt to start `python run.py --stage phase1b` (95 targets) was rejected by the auto-mode permission check before it started, because another call in the same batch had been rewritten by a hook. Nothing ran and no file was written.
+- **Fix:** The run command was reissued on its own. It completed with exit 0 in 10172 s wall time (10155.6 s summed per-target runtime; the 5 smoke targets were reused from cache).
+- **Impact:** None on saved results.
