@@ -354,3 +354,11 @@ fix or decision.
 - **What went wrong:** The first before/after comparison of the PDF text reported 174 changed lines, 170 of them blank. The "before" text had been saved with Windows newline translation, so its line endings did not match the freshly extracted text.
 - **Fix:** Compared again with line endings normalised and blank lines dropped: 174 → 174 text lines, exactly 2 changed (the two commit-hash mentions, 8ad4f20 → a4e3e1d), and all 382 other numbers in the PDF identical. report.md is byte-identical to the previous version apart from the hash.
 - **Impact:** None on saved results (verification step only).
+
+## Phase 1
+
+### Commit d3c5fb0 dispatched to an undefined run_phase1
+- **Date:** 2026-11-04
+- **What went wrong:** Of three edits to run.py, the one adding the `run_phase1` function was rejected by an editor pre-check while the two CLI edits (the `phase1` choice and its dispatch) were applied. Commit d3c5fb0 therefore contained `--stage phase1` calling a function that did not exist; `--help` still worked because the name is only resolved when the stage runs. The stage had not been run.
+- **Fix:** Added `run_phase1` and checked that `run.run_phase1` is defined before committing the fix together with this entry.
+- **Impact:** None on saved results (no Phase 1 results existed; earlier stages untouched).

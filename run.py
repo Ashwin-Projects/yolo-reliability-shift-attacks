@@ -420,6 +420,64 @@ def run_attack(limit=None, force=False):
     print(f"Total runtime: {time.perf_counter() - t0:.1f}s")
 
 
+def run_phase1(limit=None, force=False):
+    """Phase 1 (docs/PHASE1_DESIGN.md): minimum eps to hide a target person at the fisheye
+    center, at the edge, and at the center shrunk to the edge size. --limit N: first N targets."""
+    import phase1
+    import phase1_analysis
+
+    t0 = time.perf_counter()
+    infer.set_seed()
+    data.ensure_annotations()
+    targets = phase1.load_or_create_targets(data.load_coco())
+    if limit is not None:
+        targets = targets[:limit]
+    data.ensure_images(targets)
+    smoke = "" if limit is None else "_smoke"
+    f = phase1.focal()
+    print(f"Phase 1: {len(targets)} targets, canvas {config.PHASE1['canvas']} px, f = {f:.4f} px "
+          f"(half-diagonal at {config.PHASE1['theta_max_deg']} deg)")
+
+    get_models = phase1.model_loader()
+    results, seconds = [], []
+    for t in targets:
+        t1 = time.perf_counter()
+        results.append(phase1.run_target(t, f, get_models, force=force))
+        seconds.append(time.perf_counter() - t1)
+        print(f"target {t['id']}: {seconds[-1]:.1f}s")
+
+    out = config.PHASE1_DIR
+    df = phase1_analysis.targets_table(results)
+    df.to_csv(out / f"targets{smoke}.csv", index=False)
+    summary = phase1_analysis.summarize(df)
+    summary.to_csv(out / f"summary{smoke}.csv", index=False)
+    phase1_analysis.fig_success_curves(df, out / f"fig_success_curves{smoke}.png")
+    phase1_analysis.fig_paired(df, summary, out / f"fig_paired{smoke}.png")
+    phase1_analysis.save_visualizations(targets, results, f)
+    if limit is not None:
+        phase1_analysis.grid_figure(targets, results, f, out / "vis_smoke.png")
+
+    pd.set_option("display.width", 250)
+    for t, r in zip(targets, results):
+        c = r["conditions"]
+        print(f"\ntarget {t['id']} eligible={r['eligible']} "
+              f"raw-vs-NMS top-box IoU (center) = {r['raw_vs_nms_iou_center']:.4f}")
+        for cond in config.PHASE1_CONDITIONS:
+            x = c[cond]
+            a = x.get("attack") or {}
+            tries = ", ".join(f"{tr['eps_255']}:{'ok' if tr['success'] else 'no'}" for tr in a.get("tries", []))
+            conf = "none" if x["clean_conf"] is None else f"{x['clean_conf']:.4f}"
+            print(f"  {cond:14s} box {x['box_w']:.1f} x {x['box_h']:.1f} (area {x['box_area']:.0f}), "
+                  f"border={x['touches_border']}, clean conf {conf}, eps_min "
+                  f"{a.get('eps_min_255', '-')}{' (censored)' if a.get('censored') else ''} [{tries}]")
+        print(f"  edge / center_shrunk: w {c['edge']['box_w'] / c['center_shrunk']['box_w']:.6f}, "
+              f"h {c['edge']['box_h'] / c['center_shrunk']['box_h']:.6f}")
+    print(f"\n{out / f'summary{smoke}.csv'}:")
+    print(summary.to_string(index=False))
+    print(f"\nPer-target runtime (s): {', '.join(f'{s:.1f}' for s in seconds)}; "
+          f"total {time.perf_counter() - t0:.1f}s")
+
+
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
     parser.add_argument("--stage", required=True,
