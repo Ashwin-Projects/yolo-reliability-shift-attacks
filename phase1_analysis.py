@@ -50,10 +50,17 @@ def bootstrap_median_ci(d, rng):
     return float(np.percentile(meds, 2.5)), float(np.percentile(meds, 97.5))
 
 
+def paired_diffs(df, column, a, b):
+    """Per-target a - b over eligible targets; empty when no eligible target has both."""
+    wide = df[df["eligible"]].pivot(index="image_id", columns="condition", values=column)
+    if wide.empty or a not in wide.columns or b not in wide.columns:
+        return np.array([], dtype=float)
+    return (wide[a] - wide[b]).dropna().to_numpy(dtype=float)
+
+
 def paired(df, column, a, b, rng):
     """Median of (a - b) over eligible targets, bootstrap CI, Wilcoxon signed-rank."""
-    wide = df[df["eligible"]].pivot(index="image_id", columns="condition", values=column)
-    d = (wide[a] - wide[b]).dropna().to_numpy(dtype=float)
+    d = paired_diffs(df, column, a, b)
     out = {"n": len(d), "n_nonzero": int((d != 0).sum())}
     if not len(d):
         return {**out, "median_diff": math.nan, "ci_low": math.nan, "ci_high": math.nan,
@@ -85,6 +92,9 @@ def summarize(df):
     n_targets = df["image_id"].nunique()
     rows.append(("overall", "targets", "n_selected", n_targets))
     rows.append(("overall", "targets", "n_eligible", el["image_id"].nunique()))
+    if el.empty:
+        rows.append(("overall", "message", "note",
+                     "no eligible targets: per-condition and paired statistics are undefined"))
     for cond in CONDS:
         x = el[el["condition"] == cond]
         e = x["eps_min_255"].astype(float)
@@ -133,14 +143,12 @@ def fig_success_curves(df, path):
 
 
 def fig_paired(df, summary, path):
-    el = df[df["eligible"]]
-    wide = el.pivot(index="image_id", columns="condition", values="eps_min_255").astype(float)
     fig, ax = plt.subplots(figsize=(6.0, 3.8), facecolor="#fcfcfb")
     _style(ax)
     rng = np.random.default_rng(P["seed"])  # jitter only
     s = summary[summary["section"] == "paired_eps_min_255"].set_index(["name", "metric"])["value"]
     for i, (a, b) in enumerate(config.PHASE1_COMPARISONS):
-        d = (wide[a] - wide[b]).dropna().to_numpy() if len(wide) else np.array([])
+        d = paired_diffs(df, "eps_min_255", a, b)
         ax.scatter(i + rng.uniform(-0.12, 0.12, len(d)), d, s=16, color=MUTED, alpha=0.7, zorder=2)
         name = f"{a} - {b}"
         med, lo, hi = (float(s.get((name, k), math.nan)) for k in ("median_diff", "ci_low", "ci_high"))

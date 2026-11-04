@@ -386,3 +386,5 @@ fix or decision.
 - **Found by:** found by Codex.
 - **Impact:** Only future runs with zero eligible targets, for example after changing detector or eligibility settings. Current saved smoke results and the unchanged-design full run (which includes the five eligible smoke targets) are unaffected.
 - **Minimal proposed fix (not applied):** Check for an empty eligible pivot or missing comparison columns before subtracting the paired columns, and return zero counts with undefined statistics.
+- **Fix (applied 2026-11-04):** New `paired_diffs` returns an empty array when the eligible pivot is empty or a comparison column is missing; `paired` and `fig_paired` both use it. `summarize` adds the row "no eligible targets: per-condition and paired statistics are undefined". Codex's reproduction (all smoke rows ineligible) now gives n_eligible 0, the message, n = 0 and NaN statistics in all 45 paired rows, and both figures render.
+- **Impact:** None on saved results. The summary recomputed on the smoke data is identical to the saved summary_smoke.csv.
