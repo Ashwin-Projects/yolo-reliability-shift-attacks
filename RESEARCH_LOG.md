@@ -376,6 +376,8 @@ fix or decision.
 - **Found by:** found by Codex.
 - **Impact:** Only future runs after these active global settings change; current saved smoke results use the expected defaults and are unaffected. The full run can silently reuse stale geometry/results after such a change.
 - **Minimal proposed fix (not applied):** Include the effective global warp settings in per-target metadata and the angular cutoff in the plane-grid key, or make the Phase 1 warp depend exclusively on explicitly recorded Phase 1 settings.
+- **Fix (applied 2026-11-04, commit 6b75d3b):** `phase1.cache_meta` now includes a `global` block (`FISHEYE_MAX_THETA_DEG`, `FISHEYE_MIN_BOX`, `FISHEYE_EDGE_POINTS`, `YOLO_PERSON_CLS`, `PERSON_CAT_ID`), and the plane-grid cache key is `(f, FISHEYE_MAX_THETA_DEG)`. The 5 existing smoke caches were migrated by writing the values they were generated with (89.0, 4, 20, 0, 1; asserted equal to the current config); no image or attack was regenerated. Each migrated cache matches the new metadata, and its result block is identical to the backup.
+- **Impact:** None on saved results.
 
 ### Phase 1 summary crashes when no targets pass eligibility
 - **Date:** 2026-11-04
