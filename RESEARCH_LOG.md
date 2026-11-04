@@ -507,3 +507,26 @@ fix or decision.
 - **What went wrong:** While checking the test-run outputs, the one-line Python command that reads the PNG text fields failed with `SyntaxError: unterminated string literal` (a backslash in a path split was mangled by the shell quoting). The test run itself had finished with exit 0.
 - **Fix:** Reran the check with `os.path.basename` and the folder passed through an environment variable; it showed "TEST ONLY" in both PNGs and both caches.
 - **Impact:** None on saved results.
+
+
+### Production startup accepts a cold or pre-warm-up probe manifest
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup / probe protocol validation.
+- **What is wrong:** The new probe records warm_up=True after the documented untimed pass, but production startup never requires that field. select_range validates the number of timed targets, full target count and range versus the estimate only. Reproduced production check_manifest followed by select_range with a matching valid T4/float32/deterministic/pinned-version environment and otherwise consistent timing records: both warm_up=False and a missing warm_up field were accepted and selected all 852 targets. A manifest from the pre-warm-up probe implementation can therefore remain accepted after the timing protocol changed, allowing a cold-start estimate to determine the binding sample-size fallback.
+- **File and line:** confirmatory.py:75-85; execution.py:145-147.
+- **Found by:** found by Codex.
+- **Impact:** Only future confirmatory runs that reuse a cold or pre-warm-up probe manifest; no saved confirmatory results exist and earlier results are unchanged.
+- **Minimal proposed fix (not applied):** Require probe.warm_up to be True before accepting the manifest's timing estimate and target range; reject older/cold records with a request to rerun the probe.
+- **Fix (applied 2026-11-04, committed with this text):** `confirmatory.select_range`, which every confirmatory run (production and test) passes before any target is touched, now requires `probe.warm_up` to be exactly `True`; a missing field, `False` or any other value aborts with a message naming the field. docs/CONFIRMATORY_DESIGN.md states the requirement. Unit tests: missing, `False` and `1` are rejected; `True` is accepted.
+- **Impact:** None on saved results.
+
+### Empty targets CSV still drops test-manifest provenance values
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup / alternate-manifest output provenance.
+- **What is wrong:** with_provenance assigns provenance columns to a wide DataFrame, but when the zero-eligible targets table has no rows, CSV serialization contains only column names. The TEST ONLY label, manifest path and SHA-256 values are all absent. Reproduced an end-to-end limited alternate-manifest run with one ineligible selected target and all file writes captured in memory: selected, summary, confidence-control and decision CSVs contain provenance, while targets_test_only.csv has none of the three values. This leaves the requirement that every test output record its manifest identity incomplete even though the zero-eligible analysis and cache isolation now work.
+- **File and line:** confirmatory.py:317-323; run.py:620-621.
+- **Found by:** found by Codex.
+- **Impact:** Only future zero-eligible test outputs (and empty production target tables lack their production provenance values too); saved pilot results are unaffected.
+- **Minimal proposed fix (not applied):** Handle the empty-table output explicitly so the file retains the provenance values while still representing zero target observations.
+- **Fix (applied 2026-11-04, committed with this text):** `confirmatory.with_provenance` turns an empty wide table into one row that holds only the provenance (run label, manifest path, manifest SHA-256), marked `row_type = "metadata: provenance only, no data rows"`, with the table's columns kept empty. Long tables already append provenance rows, so they carry it even with no data rows. Unit tests write each output to CSV and read it back: the empty targets table, an empty selection report, and all five outputs of a zero-eligible analysis contain "TEST ONLY", the path and the SHA-256. Non-empty tables are unchanged apart from the provenance columns.
+- **Impact:** None on saved results.

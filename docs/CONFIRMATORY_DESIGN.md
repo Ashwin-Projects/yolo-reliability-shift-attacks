@@ -241,12 +241,14 @@ the matched subset are reported but do not enter the decision.
      one T4, a determinism or TF32 flag or CUDA environment setting different from the values
      above, a dtype other than float32, or numpy / scipy versions different from those pinned in
      `requirements_gpu.txt`;
-   - the probe record does not contain exactly 2 timed targets, or its target range does not
-     follow from its estimate.
+   - the probe record does not contain exactly 2 timed targets, does not have `warm_up` exactly
+     `true` (a missing field or `false` is rejected), or its target range does not follow from
+     its estimate.
 4. **Test option.** A `--manifest` option exists only for code testing. It requires `--limit`
    and is never used for the confirmatory run. A test run skips the protocol check, and:
    - every output file records "TEST ONLY" with the test manifest's path and SHA-256 (CSV
-     columns or rows; text fields in the PNG figures);
+     columns or rows; text fields in the PNG figures). An output with no data rows still
+     carries them in one row marked `row_type = "metadata: provenance only, no data rows"`;
    - its caches and images go in a separate namespace (`cache_test_only/`, `adv_test_only/`), so
      a production run never reuses them.
 5. **Caches.** Every per-target cache stores the manifest record, so a cache made in another

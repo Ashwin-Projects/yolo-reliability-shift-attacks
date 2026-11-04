@@ -80,6 +80,9 @@ def select_range(targets, manifest):
         raise SystemExit("The execution manifest has no target range or runtime estimate; rerun --stage probe")
     if len(probe.get("probe_target_ids", [])) != CF["probe_targets"]:
         raise SystemExit(f"The probe record must contain exactly {CF['probe_targets']} timed targets: {probe}")
+    if probe.get("warm_up") is not True:
+        raise SystemExit(f"The probe record must show the untimed warm-up pass (warm_up = true), found "
+                         f"{probe.get('warm_up', 'no warm_up field')!r}; rerun --stage probe")
     if probe.get("n_full") != len(targets) or rng != choose_range(targets, probe["estimate_hours"]):
         raise SystemExit(f"Manifest target range {rng} does not follow from its probe record {probe}")
     return targets[:rng[1] - rng[0] + 1]
@@ -315,11 +318,17 @@ def selection_report(selected):
                          for r in selected])
 
 
+METADATA_ROW = "metadata: provenance only, no data rows"
+
+
 def with_provenance(df, prov):
-    """Long tables get provenance rows; wide tables get provenance columns."""
+    """Long tables get provenance rows; wide tables get provenance columns. An empty wide table
+    gets one row holding only the provenance, marked in a row_type column as metadata."""
     if "statistic" in df.columns:
         rows = [("provenance", "run", k, v) for k, v in prov.items()]
         return pd.concat([df, pd.DataFrame(rows, columns=df.columns)], ignore_index=True)
+    if df.empty:
+        return pd.DataFrame([{"row_type": METADATA_ROW, **{c: None for c in df.columns}, **prov}])
     return df.assign(**prov)
 
 
