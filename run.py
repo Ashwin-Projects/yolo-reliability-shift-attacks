@@ -511,6 +511,9 @@ def run_phase1b(limit=None, force=False):
     df.to_csv(out / f"targets{smoke}.csv", index=False)
     summary = phase1b.summarize(df)
     summary.to_csv(out / f"summary{smoke}.csv", index=False)
+    phase1b.addendum(df).to_csv(out / f"summary_addendum{smoke}.csv", index=False)
+    phase1b.fig_paired(df, summary, out / f"fig_paired{smoke}.png")
+    phase1b.fig_confidence_curves(results, out / f"fig_confidence_curves{smoke}.png")
     if limit is not None:
         phase1b.perturbation_figure(eligible[0], results[0], f, out / "vis_smoke.png")
 

@@ -202,3 +202,104 @@ def perturbation_figure(target, result, f, path, gain=10):
         cols.append(np.vstack(tiles))
     path.parent.mkdir(parents=True, exist_ok=True)
     cv2.imwrite(str(path), np.hstack(cols))
+
+
+# ---------- pre-registered addendum: clean-confidence control (docs/PHASE1B_DESIGN.md)
+
+CONF_DIFF_MAX = 0.05  # (b): pairs with |clean-confidence difference| below this
+
+
+def addendum(df):
+    """(a) paired clean-confidence differences, (b) main comparisons on pairs with similar clean
+    confidence, (c) pooled Spearman correlations (descriptive). Long format like summarize()."""
+    from scipy.stats import spearmanr
+
+    rows = []
+    rng = np.random.default_rng(B["seed"])
+    for a, b in config.PHASE1_COMPARISONS:
+        res = phase1_analysis.paired(df, "clean_conf", a, b, rng)
+        rows += [("a_clean_conf", f"{a} - {b}", k, v) for k, v in res.items()]
+    wide = df.pivot(index="image_id", columns="condition", values="clean_conf")
+    for metric in METRICS:
+        rng = np.random.default_rng(B["seed"])
+        for a, b in config.PHASE1_COMPARISONS:
+            name = f"{a} - {b}"
+            ids = wide.index[(wide[a] - wide[b]).abs() < CONF_DIFF_MAX]
+            sub = df[df["image_id"].isin(ids)]
+            res = phase1_analysis.paired(sub, metric, a, b, rng)
+            d = phase1_analysis.paired_diffs(sub, metric, a, b)
+            rows += [(f"b_{metric}", name, "n_subset", len(ids))]
+            rows += [(f"b_{metric}", name, k, v) for k, v in res.items()]
+            rows += [(f"b_{metric}", name, f"n_{a}_more", int((d > 0).sum())),
+                     (f"b_{metric}", name, f"n_{a}_less", int((d < 0).sum())),
+                     (f"b_{metric}", name, "n_equal", int((d == 0).sum())),
+                     (f"b_{metric}", name, "rule_on_subset",
+                      phase1_analysis.interpret(res["ci_low"], res["ci_high"], a, b))]
+    for metric in METRICS:
+        rho = spearmanr(df["clean_conf"], df[metric].astype(float)).statistic
+        rows += [("c_spearman", metric, "rho_clean_conf", float(rho)), ("c_spearman", metric, "n_rows", len(df))]
+    return pd.DataFrame(rows, columns=["section", "name", "statistic", "value"])
+
+
+# ---------- figures (descriptive)
+
+def fig_paired(df, summary, path):
+    """One panel per metric: per-target paired differences and median with 95% bootstrap CI."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from reliability import BLUE, INK, INK_2, MUTED, _style
+
+    fig, axes = plt.subplots(1, len(METRICS), figsize=(13.5, 4.0), facecolor="#fcfcfb")
+    rng = np.random.default_rng(B["seed"])  # jitter only
+    labels = {"steps_to_suppress": "Steps to suppress", "auc": "Confidence AUC",
+              "local_eps_min_255": "Localized eps_min (1/255)"}
+    s = summary.set_index(["metric_or_section", "name", "statistic"])["value"]
+    for ax, metric in zip(axes, METRICS):
+        _style(ax)
+        for i, (a, b) in enumerate(config.PHASE1_COMPARISONS):
+            d = phase1_analysis.paired_diffs(df, metric, a, b)
+            ax.scatter(i + rng.uniform(-0.12, 0.12, len(d)), d, s=12, color=MUTED, alpha=0.6, zorder=2)
+            name = f"{a} - {b}"
+            med, lo, hi = (float(s.get((metric, name, k), np.nan)) for k in ("median_diff", "ci_low", "ci_high"))
+            if not np.isnan(med):
+                ax.errorbar(i + 0.28, med, yerr=[[med - lo], [hi - med]], fmt="o", color=BLUE,
+                            markersize=6, capsize=4, linewidth=2, zorder=3)
+        ax.axhline(0, color=INK_2, linewidth=0.8, zorder=1)
+        ax.set_xticks(range(3), [f"{a}\n- {b}" for a, b in config.PHASE1_COMPARISONS], fontsize=8)
+        ax.set_title(f"{labels[metric]}: paired difference", loc="left", fontsize=10, color=INK)
+    fig.suptitle("Per-target differences (grey); median with 95% bootstrap CI (blue). Below 0: first "
+                 "condition more vulnerable", x=0.01, ha="left", fontsize=10, color=INK)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def fig_confidence_curves(results, path):
+    """Median (and interquartile range) of the target's matching confidence per PGD step."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from phase1_analysis import COLORS
+    from reliability import INK, INK_2, _style
+
+    fig, ax = plt.subplots(figsize=(6.5, 3.9), facecolor="#fcfcfb")
+    _style(ax)
+    for cond in CONDS:
+        curves = np.array([r["conditions"][cond]["steps"]["confs"] for r in results])
+        k = np.arange(curves.shape[1])
+        q1, med, q3 = np.percentile(curves, [25, 50, 75], axis=0)
+        ax.fill_between(k, q1, q3, color=COLORS[cond], alpha=0.15, linewidth=0)
+        ax.plot(k, med, color=COLORS[cond], linewidth=2, label=f"{cond} (n = {len(curves)})")
+    ax.axhline(P["match_conf"], color=INK_2, linewidth=0.8, linestyle="--")
+    ax.set_xlabel("PGD step (eps 1/255, alpha 0.25/255)")
+    ax.set_ylabel("Target's matching confidence")
+    ax.set_title("Median and interquartile range per step; dashed: 0.25", loc="left", fontsize=10, color=INK)
+    ax.legend(frameon=False, fontsize=9, labelcolor=INK_2)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
