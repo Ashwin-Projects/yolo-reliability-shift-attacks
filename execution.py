@@ -94,17 +94,19 @@ def environment_record():
 
 
 def check_manifest(path):
-    """Abort unless the manifest exists and the live environment matches it field by field."""
+    """Abort unless the manifest exists and the live environment matches its environment
+    record field by field. Returns the whole manifest (environment, probe, target_range)."""
     import json
 
     if not path.exists():
         raise SystemExit(f"Execution manifest {path} is missing. Run --stage probe on the target machine, "
                          f"commit the manifest as docs/EXECUTION_MANIFEST.json, then rerun.")
     with open(path) as fh:
-        saved = json.load(fh)
+        manifest = json.load(fh)
+    saved = manifest.get("environment", {})
     live = json.loads(json.dumps(environment_record()))  # same types as the saved JSON
     diffs = {k: (saved.get(k), live.get(k)) for k in sorted(set(saved) | set(live)) if saved.get(k) != live.get(k)}
     if diffs:
         lines = "\n".join(f"  {k}: manifest {a!r} != live {b!r}" for k, (a, b) in diffs.items())
         raise SystemExit(f"Live environment differs from the execution manifest {path}:\n{lines}")
-    return live
+    return manifest

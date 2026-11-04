@@ -115,9 +115,11 @@ PHASE1B = {
     "bootstrap": 10000, "seed": SEED,
 }
 
-# Confirmatory study (docs/CONFIRMATORY_DESIGN.md): qualifying targets first..last (1-based)
-# in the Phase 1 selection order; Phase 1b measures and frozen statistics
-CONFIRM = {"first_target": 101, "last_target": 400, "conf_diff_max": 0.02, "alpha": 0.05,
+# Confirmatory study (docs/CONFIRMATORY_DESIGN.md): all qualifying targets from first_target on
+# (1-based, Phase 1 selection order), or first_target..fallback_last_target when the probe's
+# runtime estimate exceeds runtime_limit_hours; Phase 1b measures and frozen statistics
+CONFIRM = {"first_target": 101, "fallback_last_target": 400, "runtime_limit_hours": 10,
+           "probe_targets": 2, "conf_diff_max": 0.02, "alpha": 0.05,
            "primary_metric": "auc", "primary_comparison": ("edge", "center_shrunk")}
 MANIFEST_FILE = ROOT / "docs" / "EXECUTION_MANIFEST.json"
 # GPU execution protocol (applied by run.py --device cuda)

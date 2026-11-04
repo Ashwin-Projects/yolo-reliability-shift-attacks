@@ -30,8 +30,8 @@ attack than a person of the same apparent size at the center?
   document was written, gave:
   - val2017 contains 952 qualifying targets;
   - the first 100 equal the saved pilot list (`data/phase1_targets.json`);
-  - targets 101 to 952 run from image id 50811 to the last qualifying val2017 image, and share
-    no image with the pilot.
+  - targets 101 to 952 run from image id 50811 to 581357 (target 400 is image 250619), and
+    share no image with the pilot.
   - The full list of targets 101-952 is saved in `data/confirmatory_targets.json`, in
     selection order.
 - **Eligibility:** a target is eligible if it is detected (conf ≥ 0.25, IoU ≥ 0.5) on the clean

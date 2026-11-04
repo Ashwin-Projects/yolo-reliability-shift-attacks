@@ -1,18 +1,23 @@
 """Confirmatory study (docs/CONFIRMATORY_DESIGN.md).
 
-Qualifying targets 101-400 of the Phase 1 selection order, the Phase 1 rendering and
+Qualifying targets 101-952 (or 101-400, chosen by the probe and fixed in the execution
+manifest) of the Phase 1 selection order, the Phase 1 rendering and
 eligibility check, the Phase 1b measures, the pilot statistics unchanged (phase1_analysis,
 phase1b.summarize / addendum), Holm correction, the clean-confidence regression, the matched
 subset and the pre-registered decision rule.
 """
 import json
 import math
+import tempfile
+from pathlib import Path
 
 import cv2
+import numpy as np
 import pandas as pd
 from scipy import stats
 
 import config
+import data
 import execution
 import phase1
 import phase1_analysis
@@ -20,6 +25,7 @@ import phase1b
 
 CF = config.CONFIRM
 B = config.PHASE1B
+P = config.PHASE1
 CONDS = config.PHASE1_CONDITIONS
 COMPARISONS = config.PHASE1_COMPARISONS
 METRICS = phase1b.METRICS
@@ -28,14 +34,15 @@ METRICS = phase1b.METRICS
 # ---------- targets
 
 def load_or_create_targets(coco):
-    """Targets first..last of the selection order; must match data/confirmatory_targets.json."""
+    """All qualifying targets from first_target on, in selection order; must match
+    data/confirmatory_targets.json. The run uses the leading part given by the manifest."""
     pilot = phase1.load_or_create_targets(coco)  # validates the saved pilot list
-    ranked = phase1.select_targets(coco, n=CF["last_target"])
-    if len(ranked) < CF["last_target"]:
-        raise ValueError(f"only {len(ranked)} qualifying targets; {CF['last_target']} needed")
+    ranked = phase1.select_targets(coco, n=math.inf)
+    if len(ranked) < CF["fallback_last_target"]:
+        raise ValueError(f"only {len(ranked)} qualifying targets; {CF['fallback_last_target']} needed")
     if ranked[:len(pilot)] != pilot:
         raise ValueError("selection order no longer starts with the pilot targets")
-    targets = ranked[CF["first_target"] - 1:CF["last_target"]]
+    targets = ranked[CF["first_target"] - 1:]
     overlap = {t["id"] for t in targets} & {t["id"] for t in pilot}
     if overlap:
         raise ValueError(f"confirmatory targets overlap the pilot: {sorted(overlap)}")
@@ -50,6 +57,66 @@ def load_or_create_targets(coco):
             json.dump(targets, fh, indent=1)
         print(f"Saved {len(targets)} confirmatory targets to {path}")
     return targets
+
+
+def full_last_target(targets):
+    return CF["first_target"] - 1 + len(targets)
+
+
+def choose_range(targets, estimate_hours):
+    """Pre-specified fallback: all targets unless the runtime estimate exceeds the limit."""
+    last = (full_last_target(targets) if estimate_hours <= CF["runtime_limit_hours"]
+            else CF["fallback_last_target"])
+    return [CF["first_target"], last]
+
+
+def select_range(targets, manifest):
+    """The targets of the manifest's range; the range must follow from the recorded estimate."""
+    rng = manifest.get("target_range")
+    probe = manifest.get("probe") or {}
+    if rng is None or "estimate_hours" not in probe:
+        raise SystemExit("The execution manifest has no target range or runtime estimate; rerun --stage probe")
+    if probe.get("n_full") != len(targets) or rng != choose_range(targets, probe["estimate_hours"]):
+        raise SystemExit(f"Manifest target range {rng} does not follow from its probe record {probe}")
+    return targets[:rng[1] - rng[0] + 1]
+
+
+# ---------- probe: per-step timing on pilot targets (results discarded)
+
+def probe_timing(pilot, f, get_models):
+    """Both measures on the first probe_targets pilot targets that are eligible here; the
+    attacked images go to a temporary folder that is deleted, and nothing else is saved."""
+    model, predictor = get_models()
+    m1_step, m2_steps, m2_seconds, used = [], [], 0.0, []
+    with tempfile.TemporaryDirectory() as tmp:
+        for t in pilot:
+            data.ensure_images([t])
+            src = cv2.imread(str(config.IMG_DIR / t["file_name"]))
+            conds, canvases = phase1.clean_conditions(predictor, src, t["target_bbox"], f)
+            if not all(c["detected"] for c in conds.values()):
+                continue
+            for cond in CONDS:
+                m1, m2 = phase1b.measure(model, predictor, canvases[cond], conds[cond]["gt"], Path(tmp),
+                                         cond, str(t["id"]))
+                m1_step.append(m1["pgd_seconds_per_step"] + m1["detect_seconds_per_step"])
+                m2_steps.append(len(m2["tries"]) * P["steps"])
+                m2_seconds += sum(tr["pgd_seconds"] for tr in m2["tries"])
+            used.append(t["id"])
+            print(f"probe target {t['id']}: timed")
+            if len(used) == CF["probe_targets"]:
+                break
+    if config.DEVICE != "cpu":
+        execution.verify_cuda_protocol()
+    return {"probe_target_ids": used, "m1_seconds_per_step": float(np.mean(m1_step)),
+            "m2_seconds_per_step": m2_seconds / sum(m2_steps),
+            "m2_mean_steps_per_condition": float(np.mean(m2_steps))}
+
+
+def estimate_hours(timing, n_targets):
+    """N x 3 x (50 t1 + L t2) seconds, in hours (docs/CONFIRMATORY_DESIGN.md, runtime fallback)."""
+    per_condition = (B["steps_max"] * timing["m1_seconds_per_step"]
+                     + timing["m2_mean_steps_per_condition"] * timing["m2_seconds_per_step"])
+    return n_targets * len(CONDS) * per_condition / 3600
 
 
 # ---------- per-target pipeline with cache

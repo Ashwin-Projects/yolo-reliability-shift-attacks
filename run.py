@@ -542,18 +542,38 @@ GPU_STAGES = ["probe", "confirmatory"]  # stages that support --device cuda
 
 
 def run_probe():
-    """Write EXECUTION_MANIFEST.json to --out (docs/CONFIRMATORY_DESIGN.md); no attack, no images."""
+    """Write EXECUTION_MANIFEST.json to --out (docs/CONFIRMATORY_DESIGN.md): the environment
+    record, per-step times of both measures on 2 pilot targets (results discarded), the runtime
+    estimate for all confirmatory targets and the target range chosen by the fallback rule."""
     import json
 
+    import confirmatory
     import execution
+    import phase1
 
+    t0 = time.perf_counter()
     record = execution.environment_record()
+    infer.set_seed()
+    data.ensure_annotations()
+    coco = data.load_coco()
+    pilot = phase1.load_or_create_targets(coco)
+    targets = confirmatory.load_or_create_targets(coco)
+    timing = confirmatory.probe_timing(pilot, phase1.focal(), phase1.model_loader())
+    hours = confirmatory.estimate_hours(timing, len(targets))
+    target_range = confirmatory.choose_range(targets, hours)
+    manifest = {"environment": record,
+                "probe": {**timing, "n_full": len(targets),
+                          "full_range": [config.CONFIRM["first_target"], confirmatory.full_last_target(targets)],
+                          "estimate_hours": hours, "runtime_limit_hours": config.CONFIRM["runtime_limit_hours"]},
+                "target_range": target_range}
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     path = config.RESULTS_DIR / "EXECUTION_MANIFEST.json"
     with open(path, "w") as fh:
-        json.dump(record, fh, indent=1)
-    print(json.dumps(record, indent=1))
-    print(f"Wrote {path}")
+        json.dump(manifest, fh, indent=1)
+    print(json.dumps(manifest, indent=1))
+    print(f"Estimated runtime for targets {manifest['probe']['full_range']}: {hours:.2f} h "
+          f"(limit {config.CONFIRM['runtime_limit_hours']} h) -> target range {target_range}")
+    print(f"Wrote {path}; probe runtime {time.perf_counter() - t0:.1f}s")
 
 
 def run_confirmatory(limit=None, force=False, manifest=None):
@@ -567,11 +587,13 @@ def run_confirmatory(limit=None, force=False, manifest=None):
     import phase1
 
     t0 = time.perf_counter()
-    env = execution.check_manifest(Path(manifest) if manifest else config.MANIFEST_FILE)
+    man = execution.check_manifest(Path(manifest) if manifest else config.MANIFEST_FILE)
+    env = man["environment"]
     print(f"Environment matches the execution manifest ({env['device']}, {env['gpu_name']})")
     infer.set_seed()
     data.ensure_annotations()
-    targets = confirmatory.load_or_create_targets(data.load_coco())
+    targets = confirmatory.select_range(confirmatory.load_or_create_targets(data.load_coco()), man)
+    print(f"Target range from the manifest: {man['target_range']} ({len(targets)} targets)")
     if limit is not None:
         targets = targets[:limit]
     data.ensure_images(targets)
