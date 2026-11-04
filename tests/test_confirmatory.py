@@ -158,6 +158,16 @@ class TestProductionProtocol(unittest.TestCase):
         with self.assertRaises(SystemExit):
             execution.validate_production(bad)
 
+    def test_t4_names_accepted(self):
+        for name in ("Tesla T4", "NVIDIA T4", "  Tesla T4\n"):
+            execution.validate_production({**self.good(), "gpu_name": name})
+
+    def test_other_gpu_names_rejected(self):
+        for name in ("NVIDIA T400", "T4000", "Tesla T40", "T4", "tesla t4", "NVIDIA Tesla T4",
+                     "Tesla T4 (2)", "", None):
+            with self.subTest(name=name), self.assertRaises(SystemExit):
+                execution.validate_production({**self.good(), "gpu_name": name})
+
     def test_flag_and_version_rejected(self):
         for change in ({"flags": {**execution.EXPECTED_FLAGS, "cudnn_benchmark": True}},
                        {"scipy": "0.0.0"}, {"dtype": "float16"}):

@@ -530,3 +530,16 @@ fix or decision.
 - **Minimal proposed fix (not applied):** Handle the empty-table output explicitly so the file retains the provenance values while still representing zero target observations.
 - **Fix (applied 2026-11-04, committed with this text):** `confirmatory.with_provenance` turns an empty wide table into one row that holds only the provenance (run label, manifest path, manifest SHA-256), marked `row_type = "metadata: provenance only, no data rows"`, with the table's columns kept empty. Long tables already append provenance rows, so they carry it even with no data rows. Unit tests write each output to CSV and read it back: the empty targets table, an empty selection report, and all five outputs of a zero-eligible analysis contain "TEST ONLY", the path and the SHA-256. Non-empty tables are unchanged apart from the provenance columns.
 - **Impact:** None on saved results.
+
+
+### Production GPU-name validation accepts T400 as T4
+- **Date:** 2026-11-04
+- **Stage:** Confirmatory setup / production protocol validation.
+- **What is wrong:** validate_production checks whether the substring "T4" occurs anywhere in gpu_name. This accepts "NVIDIA T400" (and "T400") as the required T4 model. Reproduced with one CUDA GPU, float32, all expected flags/environment settings and the pinned numpy/scipy versions: validate_production accepted the record, and production check_manifest accepted the same saved and mocked live environment naming NVIDIA T400. Thus matching manifests on a different GPU model can still pass the fixed T4 protocol. This was a memory-only validation test, not an actual GPU run.
+- **File and line:** execution.py:113.
+- **Found by:** found by Codex.
+- **Impact:** Only future production runs on an incorrectly accepted GPU model; no saved confirmatory results exist and all earlier results are unchanged.
+- **Minimal proposed fix (not applied):** Match the complete T4 model name/token against the accepted T4 identifiers instead of an arbitrary substring, preserving legitimate naming aliases while rejecting T400 and other different models.
+- **Fix (applied 2026-11-04, committed with this text):** `execution.validate_production` now requires the recorded GPU name, after stripping surrounding whitespace, to equal one entry of the explicit allow-list `T4_NAMES = {"Tesla T4", "NVIDIA T4"}` (case-sensitive, whole string); anything else, including a missing name, is rejected. docs/CONFIRMATORY_DESIGN.md states the allow-list (committed first, ccff3c4). Unit tests: "Tesla T4", "NVIDIA T4" and "  Tesla T4
+" are accepted; "NVIDIA T400", "T4000", "Tesla T40", "T4", "tesla t4", "NVIDIA Tesla T4", "Tesla T4 (2)", "" and None are rejected; all 20 tests pass.
+- **Impact:** None on saved results.

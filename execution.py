@@ -18,6 +18,8 @@ def cuda_flags():
             "deterministic_algorithms_warn_only": torch.is_deterministic_algorithms_warn_only_enabled()}
 
 
+T4_NAMES = {"Tesla T4", "NVIDIA T4"}  # exact, case-sensitive device names (after strip)
+
 EXPECTED_FLAGS = {"cuda_matmul_allow_tf32": False, "cudnn_allow_tf32": False, "cudnn_benchmark": False,
                   "cudnn_deterministic": True, "deterministic_algorithms": True,
                   "deterministic_algorithms_warn_only": False}
@@ -110,8 +112,10 @@ def validate_production(record):
     problems = []
     if not str(record.get("device", "")).startswith("cuda"):
         problems.append(f"device is {record.get('device')!r}, not CUDA")
-    if record.get("gpu_count") != 1 or "T4" not in str(record.get("gpu_name")):
-        problems.append(f"GPU must be one T4 (found {record.get('gpu_count')} x {record.get('gpu_name')!r})")
+    name = record.get("gpu_name")
+    if record.get("gpu_count") != 1 or not isinstance(name, str) or name.strip() not in T4_NAMES:
+        problems.append(f"GPU must be one T4 named exactly one of {sorted(T4_NAMES)} "
+                        f"(found {record.get('gpu_count')} x {name!r})")
     if record.get("dtype") != "float32":
         problems.append(f"dtype is {record.get('dtype')!r}, not float32")
     flags = record.get("flags") or {}
