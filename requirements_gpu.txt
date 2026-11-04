@@ -1,0 +1,13 @@
+# GPU (Kaggle) environment for --stage probe / confirmatory. torch and torchvision are NOT listed:
+# the preinstalled CUDA builds are used and recorded in the execution manifest.
+# Versions are those of the CPU environment that produced the pilot results;
+# numpy and scipy are pinned for the frozen statistics (docs/CONFIRMATORY_DESIGN.md).
+numpy==2.5.4
+scipy==1.18.1
+ultralytics==8.4.200
+pycocotools==2.0.11
+opencv-python==5.0.0.93
+matplotlib==3.11.2
+scikit-learn==1.9.1
+pandas==3.1.0
+tqdm==4.70.1
