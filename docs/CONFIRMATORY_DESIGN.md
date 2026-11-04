@@ -46,17 +46,22 @@ runtime for targets 101-952 exceeds 10 hours, the confirmatory run uses targets 
 This decision is recorded in docs/EXECUTION_MANIFEST.json before the run and cannot be changed
 afterwards.
 
-- **Probe targets:** the first two targets of the pilot list (`data/phase1_targets.json`) that
-  are eligible on the probe machine. Both measures run on all three conditions, exactly as in
-  the confirmatory run. Their results and images are discarded: nothing is written next to the
-  confirmatory results.
-- **Per-step times** (means over the 2 targets × 3 conditions):
+- **Probe targets:** exactly 2 eligible targets: the pilot list (`data/phase1_targets.json`) is
+  tried in order until 2 targets are eligible on the probe machine. If fewer than 2 of the 100
+  pilot targets are eligible, the probe aborts and writes no manifest. Both measures run on all
+  three conditions, exactly as in the confirmatory run. Their results and images are discarded:
+  nothing is written next to the confirmatory results.
+- **Warm-up:** before any timing, one untimed forward and backward pass of the targeted loss
+  runs on the GPU (on the first eligible probe target's center canvas). This keeps one-off
+  start-up costs (CUDA context, kernel loading) out of the per-step times.
+- **Per-step times** (measured after the warm-up; means over the 2 targets × 3 conditions):
   - t₁ = Measure 1 seconds per step (PGD step plus detection);
   - t₂ = Measure 2 seconds per PGD step;
   - L = mean number of Measure 2 PGD steps per condition (20 × the number of eps values
     tried).
-- **Estimate:** N × 3 × (50 · t₁ + L · t₂) seconds, where N = 852 (targets 101-952). It ignores
-  ineligible targets (which cost less) and the clean detections.
+- **Estimate:** N × 3 × (50 · t₁ + L · t₂) seconds, where N = 852 (targets 101-952), with t₁,
+  t₂ and L measured after the warm-up. It ignores ineligible targets (which cost less) and the
+  clean detections.
 - **Decision:** the target range is 101-952 if the estimate is at most 10 hours, otherwise
   101-400. The probe writes the per-step times, the estimate and the chosen range into the
   manifest.
@@ -229,10 +234,21 @@ the matched subset are reported but do not enter the decision.
 2. **Commit.** The manifest is copied to `docs/EXECUTION_MANIFEST.json` and committed before
    the confirmatory run.
 3. **Startup check.** At startup, `--stage confirmatory` builds the same environment record
-   from the live environment and compares it with the record in `docs/EXECUTION_MANIFEST.json`. It aborts with a message if
-   the file is missing or any field differs.
+   from the live environment and compares it with the record in `docs/EXECUTION_MANIFEST.json`.
+   It aborts with a message if:
+   - the file is missing or any field differs;
+   - the recorded environment does not follow the protocol: device not CUDA, a GPU other than
+     one T4, a determinism or TF32 flag or CUDA environment setting different from the values
+     above, a dtype other than float32, or numpy / scipy versions different from those pinned in
+     `requirements_gpu.txt`;
+   - the probe record does not contain exactly 2 timed targets, or its target range does not
+     follow from its estimate.
 4. **Test option.** A `--manifest` option exists only for code testing. It requires `--limit`
-   and is never used for the confirmatory run.
+   and is never used for the confirmatory run. A test run skips the protocol check, and:
+   - every output file records "TEST ONLY" with the test manifest's path and SHA-256 (CSV
+     columns or rows; text fields in the PNG figures);
+   - its caches and images go in a separate namespace (`cache_test_only/`, `adv_test_only/`), so
+     a production run never reuses them.
 5. **Caches.** Every per-target cache stores the manifest record, so a cache made in another
    environment is not reused.
 
