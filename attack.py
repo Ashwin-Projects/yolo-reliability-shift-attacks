@@ -19,10 +19,14 @@ from ultralytics import YOLO
 import config
 
 
+def device():
+    return torch.device(config.DEVICE)
+
+
 def load_attack_model():
     """Raw torch model (not fused, eval mode, float32); only the input needs gradients."""
     model = YOLO(str(config.WEIGHTS_DIR / config.MODEL_WEIGHTS)).model
-    model = model.float().eval()
+    model = model.float().eval().to(device())
     for p in model.parameters():
         p.requires_grad_(False)
     return model
@@ -88,11 +92,11 @@ def attack_loss(model, x, stride, top_k):
 
 def to_tensor(img_bgr):
     rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-    return torch.from_numpy(rgb).permute(2, 0, 1).unsqueeze(0).float() / 255.0
+    return torch.from_numpy(rgb).permute(2, 0, 1).unsqueeze(0).float().to(device()) / 255.0
 
 
 def to_uint8_bgr(x):
-    rgb = np.rint(x[0].permute(1, 2, 0).numpy() * 255.0).clip(0, 255).astype(np.uint8)
+    rgb = np.rint(x[0].detach().cpu().permute(1, 2, 0).numpy() * 255.0).clip(0, 255).astype(np.uint8)
     return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
 
 

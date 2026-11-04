@@ -191,7 +191,8 @@ def targeted_loss(gt, stride, h, w):
     new_h, new_w, top, _, left, _ = attack.letterbox_params(h, w, stride)
     rx, ry = new_w / w, new_h / h
     x, y, bw, bh = gt
-    g = torch.tensor([x * rx + left, y * ry + top, (x + bw) * rx + left, (y + bh) * ry + top])
+    g = torch.tensor([x * rx + left, y * ry + top, (x + bw) * rx + left, (y + bh) * ry + top],
+                     device=attack.device())
     stats = {"fallback_steps": 0, "no_target_preds": 0}
 
     def loss_fn(model, xin, stride_):

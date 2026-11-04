@@ -527,6 +527,17 @@ def run_phase1b(limit=None, force=False):
           f"total {time.perf_counter() - t0:.1f}s")
 
 
+GPU_STAGES = []  # stages that support --device cuda
+
+
+def startup_info():
+    import torch
+
+    gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else None
+    print(f"torch {torch.__version__}; CUDA available: {torch.cuda.is_available()}; GPU: {gpu}; "
+          f"device: {config.DEVICE}; out: {config.RESULTS_DIR}; data: {config.DATA_DIR}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
     parser.add_argument("--stage", required=True,
@@ -537,7 +548,17 @@ def main():
                         help="shift stage: run a single condition")
     parser.add_argument("--gradcheck", type=int, metavar="N",
                         help="attack stage: only run the gradient check on the first N images")
+    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu",
+                        help="cuda: one GPU (cuda:0); only for --stage probe and confirmatory")
+    parser.add_argument("--out", default="results", help="results folder (relative: to this folder)")
+    parser.add_argument("--data", default="data", help="data folder (relative: to this folder)")
     args = parser.parse_args()
+    if args.device == "cuda" and args.stage not in GPU_STAGES:
+        parser.error(f"--device cuda applies only to --stage {' / '.join(GPU_STAGES)}")
+    config.set_paths(args.out, args.data)
+    if args.device == "cuda":
+        config.DEVICE = config.CUDA_DEVICE
+    startup_info()
     if args.gradcheck is not None and args.stage != "attack":
         parser.error("--gradcheck applies to --stage attack")
     if args.stage == "baseline":

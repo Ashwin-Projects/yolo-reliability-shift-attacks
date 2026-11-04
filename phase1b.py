@@ -85,7 +85,7 @@ def box_mask(gt, shape):
     x, y, bw, bh = gt
     cx, cy = np.arange(w) + 0.5, np.arange(h) + 0.5
     m = np.outer((cy >= y) & (cy <= y + bh), (cx >= x) & (cx <= x + bw)).astype(np.float32)
-    return torch.from_numpy(m)[None, None]
+    return torch.from_numpy(m)[None, None].to(attack.device())
 
 
 def cache_meta(phase1_meta):

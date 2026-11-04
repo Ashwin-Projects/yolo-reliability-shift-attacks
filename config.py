@@ -1,16 +1,11 @@
-"""Central configuration for detconf. All paths are relative to this file's folder."""
+"""Central configuration for detconf. Data and result paths are set by set_paths() (run.py
+--data / --out); by default they are data/ and results/ in this file's folder."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 
 # Data
-DATA_DIR = ROOT / "data"
-COCO_DIR = DATA_DIR / "coco"
 ANN_ZIP_URL = "http://images.cocodataset.org/annotations/annotations_trainval2017.zip"
-ANN_ZIP = COCO_DIR / "annotations_trainval2017.zip"
-ANN_FILE = COCO_DIR / "annotations" / "instances_val2017.json"
-IMG_DIR = COCO_DIR / "val2017"
-SUBSET_FILE = DATA_DIR / "subset.json"
 N_IMAGES = 500
 PERSON_CAT_ID = 1  # COCO category id for "person"
 
@@ -29,14 +24,6 @@ MATCH_IOU = 0.5
 N_BINS = 10
 
 # Outputs
-RESULTS_DIR = ROOT / "results"
-PREDS_DIR = RESULTS_DIR / "preds"
-VIS_DIR = RESULTS_DIR / "vis"
-TABLE_FILE = RESULTS_DIR / "table.csv"
-SMOKE_TABLE_FILE = RESULTS_DIR / "table_smoke.csv"  # --limit runs only
-DETS_DIR = RESULTS_DIR / "dets"  # per-detection labels and radial distance
-BINS_DIR = RESULTS_DIR / "bins"  # per-condition D-ECE bin breakdown
-FISHEYE_DIR = RESULTS_DIR / "fisheye"  # per-image focal length and dropped GT counts
 N_VIS = 5
 N_VIS_SHIFT = 3
 
@@ -93,7 +80,6 @@ ATTACK_CONDITIONS = {
 # letterbox used inside the attack forward pass (matches model.predict, which sets rect=True)
 ATTACK_LETTERBOX = {"auto": True, "stride": 32, "pad_value": 114, "resize": "bilinear"}
 ATTACK_GRADCHECK_PASS_RATIO = 0.5  # best loss must be <= this share of the starting loss
-ADV_DIR = RESULTS_DIR / "adv"  # saved (uint8 PNG) attacked images per condition
 ATTACK_DETECT_POSITIVE = "pgd_eps8"
 ATTACK_DETECT_NEGATIVES = ["clean_100", "rand_eps8"]
 ATTACK_DETECT_SIGNALS = ["view_disagreement", "mean_conf"]
@@ -118,8 +104,6 @@ PHASE1 = {
 }
 PHASE1_CONDITIONS = ["center", "edge", "center_shrunk"]
 PHASE1_COMPARISONS = [("edge", "center"), ("edge", "center_shrunk"), ("center_shrunk", "center")]
-PHASE1_TARGETS_FILE = DATA_DIR / "phase1_targets.json"
-PHASE1_DIR = RESULTS_DIR / "phase1"
 
 # Phase 1b: finer measures on the Phase 1 eligible targets (docs/PHASE1B_DESIGN.md)
 PHASE1B = {
@@ -130,4 +114,41 @@ PHASE1B = {
     "local_eps_255": [1, 2, 4, 8, 16], "local_censored_eps_255": 32,
     "bootstrap": 10000, "seed": SEED,
 }
-PHASE1B_DIR = RESULTS_DIR / "phase1b"
+
+# Confirmatory study (docs/CONFIRMATORY_DESIGN.md): qualifying targets first..last (1-based)
+# in the Phase 1 selection order; Phase 1b measures and frozen statistics
+CONFIRM = {"first_target": 101, "last_target": 400, "conf_diff_max": 0.02, "alpha": 0.05,
+           "primary_metric": "auc", "primary_comparison": ("edge", "center_shrunk")}
+MANIFEST_FILE = ROOT / "docs" / "EXECUTION_MANIFEST.json"
+# GPU execution protocol (applied by run.py --device cuda)
+CUDA_DEVICE = "cuda:0"
+CUBLAS_WORKSPACE_CONFIG = ":4096:8"
+
+
+def set_paths(results_dir=ROOT / "results", data_dir=ROOT / "data"):
+    """(Re)bind every data and result path; relative paths are taken from this file's folder."""
+    g = globals()
+    data_dir, results_dir = ROOT / Path(data_dir), ROOT / Path(results_dir)  # absolute stays absolute
+    g["DATA_DIR"] = data_dir
+    g["COCO_DIR"] = data_dir / "coco"
+    g["ANN_ZIP"] = g["COCO_DIR"] / "annotations_trainval2017.zip"
+    g["ANN_FILE"] = g["COCO_DIR"] / "annotations" / "instances_val2017.json"
+    g["IMG_DIR"] = g["COCO_DIR"] / "val2017"
+    g["SUBSET_FILE"] = data_dir / "subset.json"
+    g["PHASE1_TARGETS_FILE"] = data_dir / "phase1_targets.json"
+    g["CONFIRM_TARGETS_FILE"] = data_dir / "confirmatory_targets.json"
+    g["RESULTS_DIR"] = results_dir
+    g["PREDS_DIR"] = results_dir / "preds"
+    g["VIS_DIR"] = results_dir / "vis"
+    g["TABLE_FILE"] = results_dir / "table.csv"
+    g["SMOKE_TABLE_FILE"] = results_dir / "table_smoke.csv"  # --limit runs only
+    g["DETS_DIR"] = results_dir / "dets"  # per-detection labels and radial distance
+    g["BINS_DIR"] = results_dir / "bins"  # per-condition D-ECE bin breakdown
+    g["FISHEYE_DIR"] = results_dir / "fisheye"  # per-image focal length and dropped GT counts
+    g["ADV_DIR"] = results_dir / "adv"  # saved (uint8 PNG) attacked images per condition
+    g["PHASE1_DIR"] = results_dir / "phase1"
+    g["PHASE1B_DIR"] = results_dir / "phase1b"
+    g["CONFIRM_DIR"] = results_dir / "confirmatory"
+
+
+set_paths()
