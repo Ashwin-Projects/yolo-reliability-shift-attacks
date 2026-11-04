@@ -479,10 +479,55 @@ def run_phase1(limit=None, force=False):
           f"total {time.perf_counter() - t0:.1f}s")
 
 
+def run_phase1b(limit=None, force=False):
+    """Phase 1b (docs/PHASE1B_DESIGN.md): steps-to-suppress and localized eps_min on the
+    Phase 1 eligible targets. --limit N: the first N eligible targets."""
+    import phase1
+    import phase1b
+
+    t0 = time.perf_counter()
+    infer.set_seed()
+    data.ensure_annotations()
+    targets = phase1.load_or_create_targets(data.load_coco())
+    data.ensure_images(targets)
+    f = phase1.focal()
+    eligible = [t for t in targets if phase1b.load_phase1_result(t, f)[1]["eligible"]]
+    if limit is not None:
+        eligible = eligible[:limit]
+    smoke = "" if limit is None else "_smoke"
+    print(f"Phase 1b: {len(eligible)} eligible targets, f = {f:.4f} px")
+
+    get_models = phase1.model_loader()
+    results, seconds = [], []
+    for t in eligible:
+        t1 = time.perf_counter()
+        results.append(phase1b.run_target(t, f, get_models, force=force))
+        seconds.append(time.perf_counter() - t1)
+        print(f"target {t['id']}: {seconds[-1]:.1f}s")
+
+    out = config.PHASE1B_DIR
+    out.mkdir(parents=True, exist_ok=True)
+    df = phase1b.table(results)
+    df.to_csv(out / f"targets{smoke}.csv", index=False)
+    summary = phase1b.summarize(df)
+    summary.to_csv(out / f"summary{smoke}.csv", index=False)
+    if limit is not None:
+        phase1b.perturbation_figure(eligible[0], results[0], f, out / "vis_smoke.png")
+
+    pd.set_option("display.width", 250)
+    cols = ["image_id", "condition", "clean_conf", "steps_to_suppress", "steps_censored", "auc",
+            "saved_png_confirms", "local_eps_min_255", "local_censored", "local_n_eps_tried"]
+    print(df[cols].to_string(index=False))
+    print(f"\n{out / f'summary{smoke}.csv'}:")
+    print(summary.to_string(index=False))
+    print(f"\nPer-target runtime (s): {', '.join(f'{s:.1f}' for s in seconds)}; "
+          f"total {time.perf_counter() - t0:.1f}s")
+
+
 def main():
     parser = argparse.ArgumentParser(description="detconf experiments")
     parser.add_argument("--stage", required=True,
-                        choices=["baseline", "shift", "reliability", "attack", "phase1"])
+                        choices=["baseline", "shift", "reliability", "attack", "phase1", "phase1b"])
     parser.add_argument("--limit", type=int, default=None, help="use only the first N subset images")
     parser.add_argument("--force", action="store_true", help="recompute cached predictions")
     parser.add_argument("--only", choices=list(config.SHIFT_CONDITIONS),
@@ -516,6 +561,10 @@ def main():
         if args.only:
             parser.error("--only is not supported for --stage phase1")
         run_phase1(limit=args.limit, force=args.force)
+    elif args.stage == "phase1b":
+        if args.only:
+            parser.error("--only is not supported for --stage phase1b")
+        run_phase1b(limit=args.limit, force=args.force)
 
 
 if __name__ == "__main__":
