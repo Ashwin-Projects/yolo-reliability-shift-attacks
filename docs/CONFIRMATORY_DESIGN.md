@@ -204,7 +204,10 @@ the matched subset are reported but do not enter the decision.
 ## Device and execution protocol
 
 - **Hardware:** the entire confirmatory run (all targets, conditions and measures) runs on a
-  Kaggle GPU T4, using one GPU only (`cuda:0`; `CUDA_VISIBLE_DEVICES=0`).
+  Kaggle GPU T4, using one GPU only (`cuda:0`; `CUDA_VISIBLE_DEVICES=0`). The recorded device
+  name must be exactly one of the allow-list "Tesla T4" or "NVIDIA T4" (case-sensitive, whole
+  string after stripping surrounding whitespace); any other name, e.g. "NVIDIA T400", "T4000" or
+  "Tesla T40", is rejected.
 - **Precision:** float32 throughout, for both the attack model and the predictor (no half
   precision).
 - **Determinism and TF32 settings,** applied at startup before any CUDA work:
@@ -238,7 +241,7 @@ the matched subset are reported but do not enter the decision.
    It aborts with a message if:
    - the file is missing or any field differs;
    - the recorded environment does not follow the protocol: device not CUDA, a GPU other than
-     one T4, a determinism or TF32 flag or CUDA environment setting different from the values
+     one T4 on the allow-list above, a determinism or TF32 flag or CUDA environment setting different from the values
      above, a dtype other than float32, or numpy / scipy versions different from those pinned in
      `requirements_gpu.txt`;
    - the probe record does not contain exactly 2 timed targets, does not have `warm_up` exactly
